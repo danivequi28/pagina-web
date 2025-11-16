@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión | La Verdad</title>
+    <style>
+        :root {
+            --ink: #0f0f0f;
+            --soft-ink: #4d4d4d;
+            --border: #e0e0e0;
+            --accent: #0d6efd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, sans-serif;
+            background: #f7f6f4;
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 16px;
+        }
+
+        .login-shell {
+            width: min(500px, 100%);
+            background: #fff;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+            padding: 48px 40px 40px;
+            position: relative;
+        }
+
+        .wordmark {
+            font-family: "Libre Baskerville", "Times New Roman", serif;
+            font-size: 30px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+
+        .wordmark a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .feedback {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            display: none;
+        }
+
+        .feedback.error {
+            background: #ffe6e6;
+            color: #a10000;
+        }
+
+        .feedback.success {
+            background: #e6ffee;
+            color: #0f7a37;
+        }
+
+        .form-field {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: var(--soft-ink);
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 16px;
+        }
+
+        .form-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .form-meta a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 999px;
+            border: none;
+            background: var(--ink);
+            color: #fff;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .social-login {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-button {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 12px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: border 0.2s ease;
+        }
+
+        .social-button:hover {
+            border-color: var(--ink);
+        }
+
+        .social-button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 18px 0;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--soft-ink);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-shell">
+        <div class="feedback" data-feedback></div>
+        <div class="wordmark">
+            <a href="archivp">La Verdad</a>
+        </div>
+        <form id="login-form">
+            <div class="form-field">
+                <label for="email">Correo</label>
+                <input type="email" id="email" placeholder="usuario@correo.com" required>
+            </div>
+            <div class="form-field">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" placeholder="********" required>
+            </div>
+            <div class="form-meta">
+                <a href="recuperar.html">¿Olvidaste tu contraseña?</a>
+                <a href="signup.html">¿No tienes cuenta? Crea una</a>
+            </div>
+            <button type="submit" class="primary-button">Entra</button>
+        </form>
+
+        <div class="divider">o inicia con</div>
+        <div class="social-login">
+            <button class="social-button" type="button">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21.6 12.23c0-.74-.06-1.44-.18-2.11H12v3.99h5.4a4.61 4.61 0 0 1-2 3.02v2.5h3.26c1.91-1.76 3.01-4.35 3.01-7.4z" fill="#4285F4"/>
+                    <path d="M12 22c2.7 0 4.97-.9 6.62-2.45l-3.26-2.5c-.9.6-2.05.95-3.36.95-2.58 0-4.77-1.74-5.55-4.08H3.09v2.57A9.99 9.99 0 0 0 12 22z" fill="#34A853"/>
+                    <path d="M6.45 13.92a5.99 5.99 0 0 1 0-3.84V7.51H3.09a10 10 0 0 0 0 8.98l3.36-2.57z" fill="#FBBC05"/>
+                    <path d="M12 5.4c1.47 0 2.79.51 3.83 1.51l2.87-2.87C16.95 2.27 14.68 1.4 12 1.4A9.99 9.99 0 0 0 3.09 7.51l3.36 2.57C7.23 7.14 9.42 5.4 12 5.4z" fill="#EA4335"/>
+                </svg>
+                Inicia con Google
+            </button>
+            <button class="social-button" type="button">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17.4 12.75c0-2.2 1.77-3.25 1.84-3.3-1.01-1.48-2.59-1.69-3.15-1.71-1.33-.14-2.59.78-3.26.78-.68 0-1.72-.76-2.83-.74-1.45.03-2.79.85-3.54 2.15-1.5 2.62-.38 6.5 1.07 8.63.71 1.02 1.56 2.16 2.67 2.12 1.07-.04 1.47-.69 2.76-.69 1.29 0 1.65.69 2.78.67 1.15-.02 1.88-1.04 2.58-2.06.82-1.21 1.15-2.37 1.17-2.43-.03-.01-2.25-.86-2.29-3.42zM14.99 5.2C15.66 4.43 16.1 3.38 15.99 2.34c-.94.04-2.08.65-2.76 1.43-.61.68-1.17 1.77-1.03 2.8 1.08.08 2.19-.55 2.79-1.37z" fill="#111"/>
+                </svg>
+                Inicia con Apple
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("login-form");
+        const feedback = document.querySelector("[data-feedback]");
+
+        const showFeedback = (message, type = "error") => {
+            feedback.textContent = message;
+            feedback.className = `feedback ${type}`;
+            feedback.style.display = "block";
+            setTimeout(() => {
+                feedback.style.display = "none";
+            }, 4000);
+        };
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            if (!email || !password) {
+                showFeedback("Rellena correo y contraseña.", "error");
+                return;
+            }
+            const name = email.split("@")[0] || "lector";
+            localStorage.setItem("laVerdadUser", name);
+            showFeedback("Sesión iniciada correctamente.", "success");
+            setTimeout(() => {
+                window.location.href = `archivp?user=${encodeURIComponent(name)}`;
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
