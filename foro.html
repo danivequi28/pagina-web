@@ -1,0 +1,4506 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Foro | La Verdad</title>
+
+    <style>
+
+        :root {
+
+            --ink: #0f0f0f;
+
+            --soft: #5d5d5d;
+
+            --border: #e5e5e5;
+
+            --bg: #ffffff; /* Unifica el tono de fondo con la portada principal */
+
+            --accent: #0d6efd;
+
+            --highlight: #f1f5ff;
+
+            --field-bg: #f8f7f4;
+
+            --text-scale: 1;
+
+            --font-base: "Inter", "Roboto", Arial, sans-serif;
+
+        }
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        [hidden] {
+
+            display: none !important;
+
+        }
+
+
+
+        body {
+
+            margin: 0;
+
+            background: var(--bg);
+
+            font-family: var(--font-base);
+
+            color: var(--ink);
+
+            font-size: calc(16px * var(--text-scale));
+
+        }
+
+
+
+        input[type="text"],
+
+        input[type="email"],
+
+        input[type="search"],
+
+        input[type="password"],
+
+        input[type="tel"],
+
+        input[type="url"],
+
+        input[type="number"],
+
+        textarea {
+
+            font-family: var(--font-base);
+
+            font-size: 16px;
+
+            font-weight: 400;
+
+            line-height: 1.5;
+
+            color: var(--ink);
+
+            padding: 12px 16px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: #fff;
+
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        }
+
+
+
+        input[type="text"]:focus,
+
+        input[type="email"]:focus,
+
+        input[type="search"]:focus,
+
+        input[type="password"]:focus,
+
+        input[type="tel"]:focus,
+
+        input[type="url"]:focus,
+
+        input[type="number"]:focus,
+
+        textarea:focus {
+
+            outline: none;
+
+            border-color: var(--ink);
+
+            box-shadow: 0 0 0 2px rgba(15, 15, 15, 0.08);
+
+        }
+
+
+
+        input::placeholder,
+
+        textarea::placeholder {
+
+            font-family: inherit;
+
+            font-size: 16px;
+
+            font-weight: 400;
+
+            line-height: 1.5;
+
+            color: var(--soft, #5d5d5d);
+
+            opacity: 1;
+
+        }
+
+
+
+        .sr-only {
+
+            position: absolute;
+
+            width: 1px;
+
+            height: 1px;
+
+            padding: 0;
+
+            margin: -1px;
+
+            overflow: hidden;
+
+            clip: rect(0, 0, 0, 0);
+
+            white-space: nowrap;
+
+            border: 0;
+
+        }
+
+
+
+        .header-shell {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 0 16px;
+
+        }
+
+
+
+        header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 2px solid var(--ink);
+
+            padding: 16px 0 12px;
+
+            position: relative;
+
+        }
+
+
+
+        .menu-toggle {
+
+            border: none;
+
+            background: none;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 4px;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .menu-toggle span {
+
+            display: block;
+
+            width: 24px;
+
+            height: 2px;
+
+            background: var(--ink);
+
+        }
+
+
+
+        .wordmark {
+
+            font-family: var(--font-base);
+
+            font-size: 28px;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+
+            font-weight: 700;
+
+            position: absolute;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            color: inherit;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .wordmark a {
+
+            color: inherit;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .top-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 14px;
+
+        }
+
+
+
+        .login-link {
+
+            text-decoration: none;
+
+            color: var(--soft);
+
+        }
+
+
+
+        .top-divider {
+
+            color: var(--soft);
+
+        }
+
+
+
+        .language-selector {
+
+            position: relative;
+
+        }
+
+
+
+        .language-toggle {
+
+            border: none;
+
+            background: none;
+
+            cursor: pointer;
+
+            color: var(--ink);
+
+        }
+
+
+
+        .language-menu {
+
+            position: absolute;
+
+            right: 0;
+
+            top: calc(100% + 8px);
+
+            background: #fff;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 8px;
+
+            display: none;
+
+            min-width: 140px;
+
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+
+            list-style: none;
+
+            margin: 0;
+
+            z-index: 60;
+
+        }
+
+
+
+        .language-menu.open {
+
+            display: block;
+
+        }
+
+
+
+        .language-menu button {
+
+            width: 100%;
+
+            border: none;
+
+            background: none;
+
+            text-align: left;
+
+            padding: 6px 8px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            font-family: var(--font-base);
+
+            cursor: pointer;
+
+        }
+
+
+
+        .user-pill {
+
+            display: none;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 14px;
+
+            letter-spacing: 0.08em;
+
+            text-transform: capitalize;
+
+            color: var(--soft);
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .user-pill svg {
+
+            width: 16px;
+
+            height: 16px;
+
+        }
+
+
+
+        .tools-menu {
+
+            position: relative;
+
+        }
+
+
+
+        .tools-toggle {
+
+            border: none;
+
+            background: transparent;
+
+            font-family: "Inter", system-ui, sans-serif;
+
+            font-size: 15px;
+
+            letter-spacing: 0.04em;
+
+            padding: 6px 0;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .tools-menu.is-open .tools-panel {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+            pointer-events: auto;
+
+        }
+
+
+
+        .tools-panel {
+
+            position: absolute;
+
+            top: calc(100% + 10px);
+
+            left: 50%;
+
+            transform: translate(-50%, -6px);
+
+            background: #111;
+
+            color: #fff;
+
+            border-radius: 18px;
+
+            padding: 14px;
+
+            min-width: 240px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: opacity 0.2s ease, transform 0.2s ease;
+
+            box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+
+            z-index: 10;
+
+        }
+
+
+
+        .tool-option {
+
+            display: block;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            padding: 10px;
+
+            border-radius: 12px;
+
+        }
+
+
+
+        .tool-option + .tool-option {
+
+            margin-top: 8px;
+
+        }
+
+
+
+        .tool-option strong {
+
+            display: block;
+
+            font-size: 14px;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+
+        }
+
+
+
+        .tool-option span {
+
+            font-size: 13px;
+
+            color: rgba(255,255,255,0.7);
+
+        }
+
+
+
+        .nav-tooltip {
+
+            position: relative;
+
+        }
+
+
+
+        .nav-tooltip::before {
+
+            content: attr(data-tip);
+
+            position: absolute;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            top: 100%;
+
+            margin-top: 8px;
+
+            background: #111;
+
+            color: #fff;
+
+            font-size: 12px;
+
+            padding: 6px 10px;
+
+            border-radius: 12px;
+
+            white-space: nowrap;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: opacity 0.15s ease;
+
+            z-index: 5;
+
+        }
+
+
+
+        .nav-tooltip:hover::before {
+
+            opacity: 1;
+
+        }
+
+
+
+        [data-journalist-link] {
+
+            display: none;
+
+        }
+
+
+
+        body.is-journalist [data-journalist-link] {
+
+            display: list-item;
+
+        }
+
+
+
+        .nav-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.6);
+
+            display: flex;
+
+            justify-content: flex-start;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: opacity 0.25s ease;
+
+            z-index: 40;
+
+        }
+
+
+
+        .nav-overlay.is-visible {
+
+            opacity: 1;
+
+            pointer-events: auto;
+
+        }
+
+
+
+        .nav-drawer {
+
+            width: min(420px, 90vw);
+
+            background: #050505;
+
+            color: #f4f4f4;
+
+            height: 100%;
+
+            padding: 28px 30px 60px;
+
+            transform: translateX(-20px);
+
+            transition: transform 0.25s ease;
+
+            overflow-y: auto;
+
+        }
+
+
+
+        .nav-overlay.is-visible .nav-drawer {
+
+            transform: translateX(0);
+
+        }
+
+
+
+        .drawer-top {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+        }
+
+
+
+        .drawer-close {
+
+            border: none;
+
+            background: transparent;
+
+            color: #f4f4f4;
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .drawer-section + .drawer-section {
+
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+            margin-top: 24px;
+
+            padding-top: 24px;
+
+        }
+
+
+
+        .drawer-section h3 {
+
+            font-family: \"Inter\", system-ui, sans-serif;
+
+            font-size: 14px;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+
+            color: rgba(255, 255, 255, 0.7);
+
+            margin: 0 0 14px;
+
+        }
+
+
+
+        .drawer-search {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            border: 1px solid rgba(255, 255, 255, 0.25);
+
+            border-radius: 999px;
+
+            padding: 0 12px;
+
+        }
+
+
+
+        .drawer-search input {
+
+            flex: 1;
+
+            border: none;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 15px;
+
+            padding: 10px 0;
+
+            font-family: \"Inter\", system-ui, sans-serif;
+
+        }
+
+
+
+        .drawer-search input::placeholder {
+
+            color: rgba(255, 255, 255, 0.5);
+
+        }
+
+
+
+        .nav-drawer .mic-button {
+
+            border: none;
+
+            background: transparent;
+
+            color: #f4f4f4;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+
+        .nav-drawer .mic-button svg {
+
+            width: 20px;
+
+            height: 20px;
+
+        }
+
+
+
+        .drawer-list {
+
+            list-style: none;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+        }
+
+
+
+        .drawer-list a,
+
+        .drawer-list button {
+
+            color: #f4f4f4;
+
+            text-decoration: none;
+
+            font-family: \"Inter\", system-ui, sans-serif;
+
+            font-size: 16px;
+
+            letter-spacing: 0.04em;
+
+            background: transparent;
+
+            border: none;
+
+            text-align: left;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .drawer-list button:hover,
+
+        .drawer-list a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+
+        .drawer-actions {
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+
+
+        .drawer-actions-user {
+
+            flex-direction: column;
+
+        }
+
+
+
+        .drawer-logout {
+
+            background: #d93025;
+
+            border: 1px solid #d93025;
+
+            color: #fff;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.08em;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .drawer-logout:hover {
+
+            background: #b0251c;
+
+            border-color: #b0251c;
+
+        }
+
+
+
+        .drawer-user-pill {
+
+            display: flex;
+
+            flex-direction: row;
+
+            align-items: center;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            border: 1px solid rgba(255, 255, 255, 0.35);
+
+            border-radius: 18px;
+
+            padding: 10px 16px;
+
+            gap: 10px;
+
+            font-family: "Inter", system-ui, sans-serif;
+
+        }
+
+
+
+        .drawer-user-pill svg {
+
+            width: 28px;
+
+            height: 28px;
+
+        }
+
+
+
+        .drawer-user-pill span {
+
+            font-size: 16px;
+
+            letter-spacing: 0.06em;
+
+        }
+
+
+
+        .chip-link {
+
+            flex: 1;
+
+            border: 1px solid rgba(255, 255, 255, 0.35);
+
+            border-radius: 999px;
+
+            padding: 10px 14px;
+
+            font-family: \"Inter\", system-ui, sans-serif;
+
+            font-size: 14px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            color: inherit;
+
+        }
+
+
+
+        .drawer-actions a:hover {
+
+            background: rgba(255, 255, 255, 0.08);
+
+        }
+
+
+
+        .social-icons {
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+
+
+        .social-icon {
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(255, 255, 255, 0.4);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-decoration: none;
+
+            color: inherit;
+
+        }
+
+
+
+        .social-icon svg {
+
+            width: 18px;
+
+            height: 18px;
+
+        }
+
+
+
+
+
+        .section-nav {
+
+            border-bottom: 2px solid var(--ink);
+
+        }
+
+
+
+        .section-nav ul {
+
+            list-style: none;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 32px;
+
+            margin: 0;
+
+            padding: 12px 0;
+
+            font-size: 15px;
+
+        }
+
+
+
+        .section-nav li {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+
+        .section-nav li + li {
+
+            padding-left: 16px;
+
+        }
+
+
+
+        .section-nav a,
+
+        .section-nav button {
+
+            text-decoration: none;
+
+            color: var(--ink);
+
+            text-align: center;
+
+            display: block;
+
+            padding: 6px 0 10px;
+
+            background: none;
+
+            border: none;
+
+            font: inherit;
+
+            cursor: pointer;
+
+            letter-spacing: 0.04em;
+
+            position: relative;
+
+        }
+
+
+
+        .section-nav a:focus-visible,
+
+        .section-nav button:focus-visible {
+
+            outline: 2px solid var(--ink);
+
+            outline-offset: 4px;
+
+        }
+
+
+
+        .section-nav a.topic-active {
+
+            font-weight: 600;
+
+            text-decoration: underline;
+
+            text-decoration-thickness: 2px;
+
+            text-underline-offset: 6px;
+
+        }
+
+
+
+        .section-nav a.topic-active::after {
+
+            content: none;
+
+        }
+
+
+
+        .section-nav a.is-active {
+
+            font-weight: 600;
+
+            text-decoration: underline;
+
+            text-decoration-thickness: 2px;
+
+            text-underline-offset: 6px;
+
+        }
+
+
+
+        .section-nav a.is-active::after {
+
+            content: none;
+
+        }
+
+
+
+        .section-nav li + li::before {
+
+            content: "|";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: rgba(0, 0, 0, 0.35);
+
+        }
+
+
+
+        .page-shell {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 24px 20px 60px;
+
+        }
+
+
+
+        .forum-grid {
+
+            display: grid;
+
+            grid-template-columns: 2fr 1fr;
+
+            gap: 30px;
+
+        }
+
+
+
+        .create-card,
+
+        .post-card,
+
+        .side-card {
+
+            background: #fff;
+
+            border-radius: 24px;
+
+            padding: 24px;
+
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+
+        }
+
+
+
+        .create-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            margin-bottom: 16px;
+
+        }
+
+
+
+        .create-header strong {
+
+            display: block;
+
+            font-family: var(--font-base);
+
+            font-size: 18px;
+
+            letter-spacing: 0.05em;
+
+        }
+
+
+
+        .create-header small {
+
+            display: block;
+
+            color: var(--soft);
+
+            font-size: 13px;
+
+        }
+
+
+
+        .avatar {
+
+            width: 46px;
+
+            height: 46px;
+
+            border-radius: 50%;
+
+            background: var(--ink);
+
+            color: #fff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 600;
+
+            font-size: 16px;
+
+        }
+
+
+
+        .avatar.avatar-incognito {
+
+            background: #111;
+
+        }
+
+
+
+        .avatar svg {
+
+            width: 24px;
+
+            height: 24px;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+        }
+
+
+
+        textarea {
+
+            width: 100%;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 16px;
+
+            font-size: 15px;
+
+            resize: none;
+
+            background: var(--field-bg);
+
+        }
+
+
+
+        textarea::placeholder {
+
+            color: var(--soft);
+
+        }
+
+
+
+        .toolbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-top: 12px;
+
+        }
+
+
+
+        .toolbar button {
+
+            position: relative;
+
+            border: 1px solid var(--border);
+
+            background: #fff;
+
+            border-radius: 12px;
+
+            width: 44px;
+
+            height: 44px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .toolbar .icon-upload {
+
+            border: 1px solid var(--border);
+
+            background: #fff;
+
+            border-radius: 12px;
+
+            width: 44px;
+
+            height: 44px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .icon-upload {
+
+            position: relative;
+
+            display: inline-flex;
+
+        }
+
+
+
+        .icon-upload input {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            opacity: 0;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .toolbar button svg {
+
+            width: 22px;
+
+            height: 22px;
+
+            stroke: var(--soft);
+
+            stroke-width: 1.6;
+
+        }
+
+
+
+        .toolbar .icon-upload svg {
+
+            width: 22px;
+
+            height: 22px;
+
+            stroke: var(--soft);
+
+            stroke-width: 1.6;
+
+        }
+
+
+
+        .publish-button {
+
+            border: none;
+
+            background: #f0f0f0;
+
+            color: var(--ink);
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+
+            padding: 16px 48px;
+
+            border-radius: 999px;
+
+            cursor: not-allowed;
+
+            font-size: 14px;
+
+            min-width: 150px;
+
+        }
+
+
+
+        .publish-button.is-active {
+
+            background: #0f0f0f;
+
+            color: #fff;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .post-section {
+
+            margin-top: 40px;
+
+        }
+
+
+
+        .post-actions {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 12px;
+
+        }
+
+
+
+        .post-actions button {
+
+            border: 1px solid var(--border);
+
+            background: #fff;
+
+            border-radius: 10px;
+
+            width: 36px;
+
+            height: 36px;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .post-actions button svg {
+
+            width: 18px;
+
+            height: 18px;
+
+            stroke: var(--soft);
+
+            stroke-width: 1.6;
+
+        }
+
+
+
+        .post-actions button.active {
+
+            background: #0f0f0f;
+
+            border-color: #0f0f0f;
+
+        }
+
+
+
+        .post-card + .post-card {
+
+            margin-top: 22px;
+
+        }
+
+
+
+        .post-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            margin-bottom: 12px;
+
+        }
+
+
+
+        .post-menu {
+
+            position: relative;
+
+        }
+
+
+
+        .menu-trigger {
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            width: 32px;
+
+            height: 32px;
+
+            border-radius: 50%;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: var(--soft);
+
+        }
+
+
+
+        .menu-trigger:hover {
+
+            background: rgba(0, 0, 0, 0.05);
+
+        }
+
+
+
+        .menu-trigger svg {
+
+            width: 18px;
+
+            height: 18px;
+
+        }
+
+
+
+        .menu-panel {
+
+            position: absolute;
+
+            top: 36px;
+
+            right: 0;
+
+            background: #fff;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+
+            min-width: 170px;
+
+            padding: 6px;
+
+            display: none;
+
+            z-index: 20;
+
+        }
+
+
+
+        .menu-panel.is-open {
+
+            display: block;
+
+        }
+
+
+
+        .menu-panel button {
+
+            width: 100%;
+
+            border: none;
+
+            background: transparent;
+
+            display: flex;
+
+            flex-direction: row-reverse;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            padding: 9px 10px;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            color: var(--ink);
+
+        }
+
+
+
+        .menu-panel button:hover {
+
+            background: rgba(0, 0, 0, 0.04);
+
+        }
+
+
+
+        .menu-panel svg {
+
+            width: 18px;
+
+            height: 18px;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+            fill: none;
+
+        }
+
+
+
+        .menu-panel .danger {
+
+            color: #c23616;
+
+        }
+
+
+
+        .post-card.is-muted {
+
+            opacity: 0.55;
+
+        }
+
+
+
+        .post-content {
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 16px;
+
+            min-height: 100px;
+
+            background: var(--field-bg);
+
+        }
+
+
+
+        .emoji-picker {
+
+            position: absolute;
+
+            top: 48px;
+
+            left: 0;
+
+            background: #fff;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            padding: 6px;
+
+            display: none;
+
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+            z-index: 10;
+
+        }
+
+
+
+        .emoji-picker button {
+
+            width: 34px;
+
+            height: 34px;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .post-user {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+        }
+
+
+
+        .follow-button {
+
+            border: 1px solid var(--border);
+
+            border-radius: 999px;
+
+            padding: 8px 18px;
+
+            background: #fff;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+        }
+
+
+
+        .follow-button.following {
+
+            background: #111;
+
+            color: #fff;
+
+            border-color: #111;
+
+        }
+
+
+
+        .side-card h3 {
+
+            margin-top: 0;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.08em;
+
+            font-size: 15px;
+
+        }
+
+
+
+        .search-box {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .search-box input {
+
+            flex: 1;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 12px;
+
+            background: var(--field-bg);
+
+        }
+
+
+
+        .audio-button {
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            width: 48px;
+
+            height: 48px;
+
+            background: #fff;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .trend-list {
+
+            list-style: none;
+
+            padding: 0;
+
+            margin: 0;
+
+        }
+
+
+
+        .trend-list li {
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 14px;
+
+            color: var(--soft);
+
+        }
+
+
+
+        .user-posts {
+
+            margin-top: 40px;
+
+        }
+
+
+
+        .user-posts h2 {
+
+            font-size: 18px;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+
+            margin-bottom: 16px;
+
+        }
+
+
+
+        .user-empty {
+
+            font-size: 14px;
+
+            color: var(--soft);
+
+            background: #fff;
+
+            border-radius: 18px;
+
+            padding: 18px;
+
+            border: 1px dashed var(--border);
+
+        }
+
+
+
+        .user-posts-list > article + article {
+
+            margin-top: 18px;
+
+        }
+
+
+
+        .post-card.user-owned .post-actions,
+
+        .post-card.user-owned .follow-button {
+
+            display: none;
+
+        }
+
+
+
+        .post-meta {
+
+            margin: 0;
+
+            color: var(--soft);
+
+            font-size: 13px;
+
+            line-height: 1.2;
+
+        }
+
+
+
+        .post-meta small {
+
+            color: inherit;
+
+            font-size: inherit;
+
+        }
+
+
+
+        .auth-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.6);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 60;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: opacity 0.25s ease;
+
+        }
+
+
+
+        .auth-modal.is-visible {
+
+            opacity: 1;
+
+            pointer-events: auto;
+
+        }
+
+
+
+        .auth-modal-card {
+
+            width: min(380px, calc(100% - 40px));
+
+            background: #fff;
+
+            border-radius: 28px;
+
+            padding: 32px 28px;
+
+            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.35);
+
+            text-align: center;
+
+        }
+
+
+
+        .auth-modal-card h3 {
+
+            margin: 0 0 10px;
+
+            font-size: 20px;
+
+            font-family: var(--font-base);
+
+        }
+
+
+
+        .auth-modal-card p {
+
+            color: var(--soft);
+
+            font-size: 15px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+
+        .auth-modal-actions {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            justify-content: center;
+
+        }
+
+
+
+        .auth-modal button,
+
+        .auth-modal a {
+
+            border-radius: 999px;
+
+            padding: 12px 24px;
+
+            border: 1px solid var(--ink);
+
+            background: #fff;
+
+            text-decoration: none;
+
+            color: var(--ink);
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            letter-spacing: 0.04em;
+
+            text-transform: uppercase;
+
+        }
+
+
+
+        .auth-modal .primary {
+
+            background: #0f0f0f;
+
+            color: #fff;
+
+            border-color: #0f0f0f;
+
+        }
+
+
+
+        .chat-dock {
+
+            position: fixed;
+
+            bottom: 32px;
+
+            right: 32px;
+
+            z-index: 35;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-end;
+
+            gap: 12px;
+
+        }
+
+
+
+        .chat-bubble {
+
+            width: 70px;
+
+            height: 70px;
+
+            border-radius: 24px 24px 4px 24px;
+
+            border: none;
+
+            background: #050505;
+
+            color: #fff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            cursor: pointer;
+
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+
+            transition: transform 0.2s ease, opacity 0.2s ease;
+
+        }
+
+
+
+        .chat-bubble:hover {
+
+            transform: translateY(-4px);
+
+        }
+
+
+
+        .chat-bubble::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: 8px;
+
+            right: 8px;
+
+            width: 12px;
+
+            height: 12px;
+
+            border-radius: 3px;
+
+            background: currentColor;
+
+            transform: rotate(45deg);
+
+        }
+
+
+
+        .chat-avatar {
+
+            font-size: 30px;
+
+        }
+
+
+
+        .chat-bubble.is-hidden {
+
+            opacity: 0;
+
+            pointer-events: none;
+
+        }
+
+
+
+        .chat-panel {
+
+            width: min(320px, calc(100vw - 32px));
+
+            background: #fff;
+
+            color: var(--ink);
+
+            border-radius: 22px;
+
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+
+            padding: 18px;
+
+            position: fixed;
+
+            right: 32px;
+
+            bottom: 115px;
+
+            opacity: 0;
+
+            transform: translateY(20px);
+
+            pointer-events: none;
+
+            transition: opacity 0.2s ease, transform 0.2s ease;
+
+        }
+
+
+
+        .chat-panel.is-visible {
+
+            transform: translateY(0);
+
+            opacity: 1;
+
+            pointer-events: auto;
+
+        }
+
+
+
+        .chat-panel header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+
+        }
+
+
+
+        .chat-panel h3 {
+
+            margin: 0;
+
+            font-size: 16px;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+
+        }
+
+
+
+        .chat-close {
+
+            border: none;
+
+            background: none;
+
+            color: inherit;
+
+            font-size: 26px;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .chat-messages {
+
+            max-height: 220px;
+
+            overflow-y: auto;
+
+            padding: 12px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            margin-bottom: 12px;
+
+            font-family: "Inter", system-ui, sans-serif;
+
+            font-size: 14px;
+
+            color: var(--soft);
+
+            background: #fafafa;
+
+        }
+
+
+
+        .chat-message {
+
+            margin-bottom: 10px;
+
+            line-height: 1.4;
+
+        }
+
+
+
+        .chat-message.user {
+
+            font-weight: 600;
+
+            color: var(--ink);
+
+        }
+
+
+
+        .chat-message.bot {
+
+            color: var(--soft);
+
+        }
+
+
+
+        .chat-input {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 8px;
+
+            background: #fff;
+
+        }
+
+
+
+        .chat-input textarea {
+
+            flex: 1;
+
+            border: none;
+
+            resize: none;
+
+            min-height: 48px;
+
+            font-family: "Inter", system-ui, sans-serif;
+
+            font-size: 14px;
+
+            outline: none;
+
+        }
+
+
+
+        .chat-mic,
+
+        .chat-send {
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 50%;
+
+            border: 1px solid var(--border);
+
+            background: transparent;
+
+            color: var(--soft);
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+
+        }
+
+
+
+        .chat-send:disabled {
+
+            opacity: 0.4;
+
+            cursor: default;
+
+        }
+
+
+
+        .chat-send.is-active {
+
+            background: var(--ink);
+
+            color: #fff;
+
+            border-color: var(--ink);
+
+        }
+
+
+
+        body.high-contrast .chat-panel {
+
+            background: #050505;
+
+            color: #f4f4f4;
+
+            border: 1px solid rgba(255, 255, 255, 0.3);
+
+        }
+
+
+
+        body.high-contrast .chat-messages {
+
+            background: #0f0f0f;
+
+            border-color: rgba(255, 255, 255, 0.3);
+
+            color: #ededed;
+
+        }
+
+
+
+        body.high-contrast .chat-input {
+
+            background: #111;
+
+            border-color: rgba(255, 255, 255, 0.25);
+
+        }
+
+
+
+        body.high-contrast .chat-mic,
+
+        body.high-contrast .chat-send {
+
+            border-color: rgba(255, 255, 255, 0.35);
+
+            color: #f3f3f3;
+
+        }
+
+
+
+        @media (max-width: 900px) {
+
+            .forum-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="accessibility.css">
+
+</head>
+
+<body data-page-context="el foro de La Verdad" data-topic="foro">
+
+    <div class="header-shell">
+
+        <header data-global-header>
+
+            <button class="menu-toggle" type="button" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="menu-lateral">
+
+                <span></span>
+
+                <span></span>
+
+                <span></span>
+
+            </button>
+
+            <div class="wordmark"><a href="archivp.html">La Verdad</a></div>
+
+            <div class="top-actions" data-user-area>
+
+                <a class="login-link" href="login.html" data-login-link>iniciar sesión</a>
+
+                <a class="user-pill" data-user-pill href="perfil.html" aria-label="Abrir perfil"></a>
+
+                <span class="top-divider" aria-hidden="true" data-top-divider>|</span>
+
+                <div class="language-selector" data-language>
+
+                    <button class="language-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+
+                        <span data-current-lang>ES</span>
+
+                        <span aria-hidden="true">&#x25BE;</span>
+
+                    </button>
+
+                    <ul class="language-menu" role="listbox" data-language-menu>
+
+                        <li><button type="button" data-lang-option="ES"><strong>ES</strong><span>Español</span></button></li>
+
+                        <li><button type="button" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+
+                        <li><button type="button" data-lang-option="PT"><strong>PT</strong><span>Portugués</span></button></li>
+
+                        <li><button type="button" data-lang-option="FR"><strong>FR</strong><span>Français</span></button></li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <nav class="section-nav" aria-label="Secciones principales">
+
+            <ul>
+
+                <li><a href="seccion.html?cat=internacional" data-topic-link="internacional" class="nav-tooltip" data-tip="Cobertura global de pol&iacute;tica y econom&iacute;a.">Internacional</a></li>
+
+                <li><a href="seccion.html?cat=espana" data-topic-link="espana" class="nav-tooltip" data-tip="Actualidad nacional explicada con contexto regional.">Espa&ntilde;a</a></li>
+
+                <li><a href="seccion.html?cat=economia" data-topic-link="economia" class="nav-tooltip" data-tip="Mercados, empresas y empleo.">Econom&iacute;a</a></li>
+
+                <li><a href="seccion.html?cat=sociedad" data-topic-link="sociedad" class="nav-tooltip" data-tip="Historias humanas, educaci&oacute;n y justicia social.">Sociedad</a></li>
+
+                <li><a href="seccion.html?cat=salud" data-topic-link="salud" class="nav-tooltip" data-tip="Sanidad p&uacute;blica y bienestar cotidiano.">Salud</a></li>
+
+                <li><a href="seccion.html?cat=tecnologia" data-topic-link="tecnologia" class="nav-tooltip" data-tip="Innovaci&oacute;n, ciencia y tendencias digitales.">Tecnolog&iacute;a</a></li>
+
+                <li><a href="seccion.html?cat=cultura" data-topic-link="cultura" class="nav-tooltip" data-tip="Artes, literatura y ocio cultural.">Cultura</a></li>
+
+                <li><a href="foro.html" data-topic-link="foro" class="nav-tooltip" data-tip="Debates y comunidad de lectores.">Foro</a></li>
+
+                <li><a href="resumen.html" data-topic-link="resumen" class="nav-tooltip" data-tip="Resumen autom&aacute;tico de cada noticia.">Resumen</a></li>
+
+                <li><a href="analisis.html" data-topic-link="analisis" class="nav-tooltip" data-tip="Analiza credibilidad, sesgos y tono.">An&aacute;lisis</a></li>
+
+                <li data-journalist-link hidden><a href="redaccion.html" data-topic-link="redaccion" class="nav-tooltip" data-tip="Crea, revisa y prepara tus noticias antes de publicarlas.">Redacci&oacute;n</a></li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+    <div class="nav-overlay" id="menu-lateral" data-nav-overlay aria-hidden="true">
+
+        <nav class="nav-drawer" role="navigation" aria-label="Menú principal" aria-labelledby="drawer-title-foro">
+
+            <div class="drawer-top">
+
+                <button class="drawer-close" type="button" aria-label="Cerrar menú" data-drawer-close>&times;</button>
+
+            </div>
+
+            <div class="drawer-section" data-language>
+                <h3>Idioma</h3>
+                <div class="language-selector">
+                    <button class="language-toggle" type="button" aria-label="Cambiar idioma" aria-haspopup="listbox" aria-expanded="false">
+                        <span data-current-lang>ES</span>
+                        <span aria-hidden="true">&#x25BE;</span>
+                    </button>
+                    <ul class="language-menu" role="listbox">
+                        <li><button type="button" data-lang-option="ES"><strong>ES</strong><span>Espa&ntilde;ol</span></button></li>
+                        <li><button type="button" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                        <li><button type="button" data-lang-option="PT"><strong>PT</strong><span>Portugu&eacute;s</span></button></li>
+                        <li><button type="button" data-lang-option="FR"><strong>FR</strong><span>Fran&ccedil;ais</span></button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="drawer-section">
+
+                <h3 id="drawer-title-foro">Explorar</h3>
+
+                <label class="sr-only" for="drawer-search-input-foro">Buscar</label>
+
+                <div class="drawer-search">
+
+                    <input type="search" id="drawer-search-input-foro" placeholder="Buscar en La Verdad">
+
+                    <button class="mic-button" type="button" aria-label="Buscar por voz">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+
+                            <path d="M12 18v3"></path>
+
+                            <path d="M9 21h6"></path>
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            
+
+            <div class="drawer-section">
+
+                <h3>Categor&iacute;as</h3>
+
+                <ul class="drawer-list">
+
+                    <li><a href="seccion.html?cat=internacional" data-topic-link="internacional">Internacional</a></li>
+
+                    <li><a href="seccion.html?cat=espana" data-topic-link="espana">Espa&ntilde;a</a></li>
+
+                    <li><a href="seccion.html?cat=economia" data-topic-link="economia">Econom&iacute;a</a></li>
+
+                    <li><a href="seccion.html?cat=sociedad" data-topic-link="sociedad">Sociedad</a></li>
+
+                    <li><a href="seccion.html?cat=salud" data-topic-link="salud">Salud</a></li>
+
+                    <li><a href="seccion.html?cat=tecnologia" data-topic-link="tecnologia">Tecnolog&iacute;a</a></li>
+
+                    <li><a href="seccion.html?cat=cultura" data-topic-link="cultura">Cultura</a></li>
+
+                    <li><a href="foro.html" data-topic-link="foro">Foro</a></li>
+
+                    <li><a href="resumen.html" data-topic-link="resumen">Resumen</a></li>
+
+                    <li><a href="analisis.html" data-topic-link="analisis">An&aacute;lisis</a></li>
+
+                    <li data-journalist-link hidden><a href="redaccion.html" data-topic-link="redaccion">Redacci&oacute;n</a></li>
+
+                </ul>
+
+            </div>
+
+
+
+            <div class="drawer-section">
+
+                <h3>Accesibilidad</h3>
+
+                <ul class="drawer-list">
+
+                    <li><button type="button" data-open-access-panel>Preferencias visuales</button></li>
+
+                    <li><button type="button" data-open-access-panel>Lectura asistida</button></li>
+
+                    <li><button type="button" data-open-access-panel>Controles de interacción</button></li>
+
+                </ul>
+
+            </div>
+
+            
+
+            <div class="drawer-section">
+
+                <h3>&Aacute;rea de usuario</h3>
+
+                <div class="drawer-actions" data-drawer-guest>
+
+                    <a class="chip-link" href="login.html" data-drawer-login>Iniciar sesi&oacute;n</a>
+
+                </div>
+
+                <div class="drawer-actions drawer-actions-user" data-drawer-user style="display:none;">
+
+                    <a class="chip-link drawer-user-pill" href="perfil.html" data-drawer-userlink>
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+
+                            <circle cx="12" cy="8" r="4"></circle>
+
+                            <path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path>
+
+                        </svg>
+
+                        <span data-drawer-username>Usuario</span>
+
+                    </a>
+
+                    <button class="chip-link drawer-logout" type="button" data-drawer-logout>Cerrar sesi&oacute;n</button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="drawer-section">
+
+                <h3>Información general</h3>
+
+                <ul class="drawer-list">
+
+                    <li><a href="#">Quiénes somos</a></li>
+
+                    <li><a href="#">Contacto</a></li>
+
+                    <li><a href="#">Ayuda</a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="drawer-section">
+
+                <h3>Redes oficiales</h3>
+
+                <div class="social-icons">
+
+                    <a class="social-icon" href="#" aria-label="Twitter">
+
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+
+                            <path d="M21.5 6.1a6 6 0 0 1-1.7.5 2.8 2.8 0 0 0 1.3-1.6 5.5 5.5 0 0 1-1.9.8A2.8 2.8 0 0 0 12 7.4a7.8 7.8 0 0 1-5.7-2.9 2.8 2.8 0 0 0 .9 3.8 2.7 2.7 0 0 1-1.3-.3 2.8 2.8 0 0 0 2.2 2.7 2.8 2.8 0 0 1-1.3.1 2.8 2.8 0 0 0 2.6 2 5.6 5.6 0 0 1-3.5 1.2 5.8 5.8 0 0 1-.7 0 8 8 0 0 0 12.2-6.8v-.4a5.3 5.3 0 0 0 1.3-1.3z"></path>
+
+                        </svg>
+
+                    </a>
+
+                    <a class="social-icon" href="#" aria-label="Facebook">
+
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+
+                            <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"></path>
+
+                        </svg>
+
+                    </a>
+
+                    <a class="social-icon" href="#" aria-label="Instagram">
+
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+
+                            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.8A4.2 4.2 0 1 1 7.8 12 4.2 4.2 0 0 1 12 7.8zm0 2A2.2 2.2 0 1 0 14.2 12 2.2 2.2 0 0 0 12 9.8zm5-2.1a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z"></path>
+
+                        </svg>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </div>
+
+
+
+    <div class="page-shell">
+
+        <div class="forum-grid">
+
+            <section>
+
+                <div class="create-card" data-composer>
+
+                    <div class="create-header">
+
+                        <div class="avatar" data-composer-avatar aria-hidden="true">LV</div>
+
+                        <div>
+
+                            <strong>&iquest;Qu&eacute; pasa hoy?</strong>
+
+                            <small data-composer-helper>Comparte una noticia, opini&oacute;n o recurso.</small>
+
+                        </div>
+
+                    </div>
+
+                    <textarea rows="4" placeholder="Comparte una noticia, opini&oacute;n o recurso..." data-post-text></textarea>
+
+                    <div class="toolbar">
+
+                        <div>
+
+                            <label class="icon-upload" title="Subir archivo">
+
+                                <input type="file" data-file-input>
+
+                                <svg viewBox="0 0 24 24" fill="none">
+
+                                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+
+                                    <path d="M7 9l5-5 5 5"></path>
+
+                                    <path d="M12 4v12"></path>
+
+                                </svg>
+
+                            </label>
+
+                            <div style="display:inline-block;position:relative;">
+
+                                <button type="button" title="Insertar emoji" data-emoji-button>
+
+                                    <svg viewBox="0 0 24 24" fill="none">
+
+                                        <circle cx="12" cy="12" r="9"></circle>
+
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+
+                                        <path d="M9 9h.01"></path>
+
+                                        <path d="M15 9h.01"></path>
+
+                                    </svg>
+
+                                </button>
+
+                                <div class="emoji-picker" data-emoji-picker>
+
+                                    <button type="button"></button>
+
+                                    <button type="button"></button>
+
+                                    <button type="button"></button>
+
+                                    <button type="button">️</button>
+
+                                    <button type="button"></button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <button class="publish-button" type="button" data-publish-button disabled>Publicar</button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="user-posts" data-user-section>
+
+                    <h2>Tus publicaciones</h2>
+
+                    <p class="user-empty" data-user-placeholder>Inicia sesi&oacute;n para ver tus aportes.</p>
+
+                    <div class="user-posts-list" data-user-posts></div>
+
+                </div>
+
+
+
+                <div class="post-section">
+
+                <article class="post-card" data-post data-owner="external" data-post-id="ext-sofia">
+
+                    <div class="post-header">
+
+                        <div class="post-user">
+
+                            <div class="avatar" style="width:40px;height:40px;">SM</div>
+
+                            <div>
+
+                                <strong>Sofía Moreno</strong>
+
+                                <p style="margin:0;color:var(--soft);font-size:13px;">Reportera independiente</p>
+
+                            </div>
+
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:6px;">
+
+                        <button class="follow-button" type="button">Seguir</button>
+
+                        <div class="post-menu" data-menu>
+
+                            <button class="menu-trigger" type="button" aria-label="Abrir opciones" data-menu-trigger>
+
+                                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round">
+
+                                    <circle cx="5" cy="12" r="1.5"></circle>
+
+                                    <circle cx="12" cy="12" r="1.5"></circle>
+
+                                    <circle cx="19" cy="12" r="1.5"></circle>
+
+                                </svg>
+
+                            </button>
+
+                            <div class="menu-panel" data-menu-panel>
+
+                                <button type="button" data-post-action="hide">
+
+                                    <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+
+                                    Ocultar
+
+                                </button>
+
+                                <button type="button" data-post-action="report">
+
+                                    <svg viewBox="0 0 24 24"><path d="M3 6l3-3h12l3 3v12l-3 3H6l-3-3z"></path><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+
+                                    Denunciar
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="post-content" contenteditable="true">El cierre del mercado editorial en marzo ha dejado a decenas de revistas regionales sin plan de impresión. Comparto una guía de recursos para que puedan migrar a digital sin perder su identidad.</div>
+
+                    <div class="post-actions">
+
+                        <button type="button" data-like>
+
+                            <svg viewBox="0 0 24 24" fill="none">
+
+                                <path d="M20.8 13.6a2 2 0 0 0-1.94-1.6H15l1.06-4.24a1.5 1.5 0 0 0-1.45-1.86H13a2 2 0 0 0-2 2v2l-3.46 5.18A2.57 2.57 0 0 0 7.2 17v4h9.78a2 2 0 0 0 1.97-1.64l1.08-5.76a2 2 0 0 0-1.97-2.4z"></path>
+
+                            </svg>
+
+                        </button>
+
+                        <button type="button" data-save>
+
+                            <svg viewBox="0 0 24 24" fill="none">
+
+                                <path d="M5 3h14a1 1 0 0 1 1 1v17l-8-4-8 4V4a1 1 0 0 1 1-1z"></path>
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="post-card" data-post data-owner="external" data-post-id="ext-javier">
+
+                    <div class="post-header">
+
+                        <div class="post-user">
+
+                            <div class="avatar" style="width:40px;height:40px;background:#4b4b4b;">JV</div>
+
+                            <div>
+
+                                <strong>Javier Vidal</strong>
+
+                                <p style="margin:0;color:var(--soft);font-size:13px;">Fotoperiodista</p>
+
+                            </div>
+
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:6px;">
+
+                        <button class="follow-button" type="button">Seguir</button>
+
+                        <div class="post-menu" data-menu>
+
+                            <button class="menu-trigger" type="button" aria-label="Abrir opciones" data-menu-trigger>
+
+                                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round">
+
+                                    <circle cx="5" cy="12" r="1.5"></circle>
+
+                                    <circle cx="12" cy="12" r="1.5"></circle>
+
+                                    <circle cx="19" cy="12" r="1.5"></circle>
+
+                                </svg>
+
+                            </button>
+
+                            <div class="menu-panel" data-menu-panel>
+
+                                <button type="button" data-post-action="hide">
+
+                                    <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+
+                                    Ocultar
+
+                                </button>
+
+                                <button type="button" data-post-action="report">
+
+                                    <svg viewBox="0 0 24 24"><path d="M3 6l3-3h12l3 3v12l-3 3H6l-3-3z"></path><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+
+                                    Denunciar
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="post-content" contenteditable="true">Comparto mi fotoreportaje sobre la sequía en la meseta y cómo afecta a las comunidades agrícolas. Feedback bienvenido.</div>
+
+                    <div class="post-actions">
+
+                        <button type="button" data-like>
+
+                            <svg viewBox="0 0 24 24" fill="none">
+
+                                <path d="M20.8 13.6a2 2 0 0 0-1.94-1.6H15l1.06-4.24a1.5 1.5 0 0 0-1.45-1.86H13a2 2 0 0 0-2 2v2l-3.46 5.18A2.57 2.57 0 0 0 7.2 17v4h9.78a2 2 0 0 0 1.97-1.64l1.08-5.76a2 2 0 0 0-1.97-2.4z"></path>
+
+                            </svg>
+
+                        </button>
+
+                        <button type="button" data-save>
+
+                            <svg viewBox="0 0 24 24" fill="none">
+
+                                <path d="M5 3h14a1 1 0 0 1 1 1v17l-8-4-8 4V4a1 1 0 0 1 1-1z"></path>
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+                </div>
+
+            </section>
+
+
+
+            <aside>
+
+                <div class="side-card">
+
+                    <h3>Buscar temas</h3>
+
+                    <div class="search-box">
+
+                        <input type="search" placeholder="Explora conversaciones">
+
+                        <button class="audio-button" title="Enviar audio" type="button">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke="currentColor">
+
+                                <path d="M12 4a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V6a2 2 0 0 0-2-2z"></path>
+
+                                <path d="M5 11v1a7 7 0 0 0 14 0v-1"></path>
+
+                                <path d="M12 18v4"></path>
+
+                                <path d="M9 22h6"></path>
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="side-card" style="margin-top:20px;">
+
+                    <h3>Tendencias periodísticas</h3>
+
+                    <ul class="trend-list">
+
+                        <li>#InvestigaciónLocal</li>
+
+                        <li>#SaludPublica</li>
+
+                        <li>#ClimaYDatos</li>
+
+                        <li>#NuevosFormatosAudio</li>
+
+                        <li>#HistoriasHumanas</li>
+
+                    </ul>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+        <div class="chat-dock" data-chat-dock>
+
+            <button class="chat-bubble" type="button" aria-label="Abrir chat con la IA" data-chat-toggle>
+
+                <span class="chat-avatar">&#129302;</span>
+
+            </button>
+
+            <section class="chat-panel" aria-hidden="true" data-chat-panel>
+
+                <header>
+
+                    <h3>Asistente IA</h3>
+
+                    <button class="chat-close" type="button" aria-label="Cerrar chat" data-chat-close>&times;</button>
+
+                </header>
+
+                <div class="chat-messages" data-chat-messages>
+
+                    <div class="chat-message bot" data-chat-greeting>
+
+                        Hola, soy Vera, la IA de La Verdad. Puedo ayudarte con esta secci&oacute;n.
+
+                    </div>
+
+                </div>
+
+                <form class="chat-input" data-chat-form>
+
+                    <button class="chat-mic" type="button" aria-label="Activar dictado" data-chat-mic>
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+
+                            <path d="M12 18v3"></path>
+
+                            <path d="M9 21h6"></path>
+
+                        </svg>
+
+                    </button>
+
+                    <label class="sr-only" for="chat-textarea">Escribe tu pregunta</label>
+
+                    <textarea id="chat-textarea" data-chat-input placeholder="Preg&uacute;ntame algo sobre esta p&aacute;gina..."></textarea>
+
+                    <button class="chat-send" type="submit" aria-label="Enviar mensaje" data-chat-send disabled>
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+
+                            <path d="M3 11l18-8-8 18-2.5-6L3 11z"></path>
+
+                        </svg>
+
+                    </button>
+
+                </form>
+
+            </section>
+
+        </div>
+
+        <div class="auth-modal" data-auth-modal aria-hidden="true">
+
+            <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+
+                <h3 id="auth-modal-title">Inicia sesi&oacute;n para publicar</h3>
+
+                <p data-auth-message>Para compartir en el foro de La Verdad necesitas tener una cuenta activa.</p>
+
+                <div class="auth-modal-actions">
+
+                    <a class="primary" href="login.html">Iniciar sesi&oacute;n</a>
+
+                    <button type="button" data-auth-dismiss>Seguir leyendo</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="accessibility-dock" data-access-dock>
+
+        <button class="dock-handle" type="button" aria-label="Ocultar opciones de accesibilidad" data-dock-toggle>&gt;</button>
+
+        <button class="accessibility-fab" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false">
+
+            <span class="sr-only">Accesibilidad</span>
+
+            <span class="wheelchair-icon">&#9855;</span>
+
+        </button>
+
+    </div>
+
+    <div class="accessibility-panel" aria-hidden="true" data-access-panel>
+
+        <header>
+
+            <h2>Accesibilidad</h2>
+
+            <button class="panel-close" type="button" aria-label="Cerrar panel">&times;</button>
+
+        </header>
+
+        <div class="panel-section">
+
+            <div class="control-row">
+
+                <div class="control-text">
+
+                    <strong>Lectura en Voz Alta</strong>
+
+                    <small>Modo para ciegos</small>
+
+                </div>
+
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="voice-mode">
+
+                    <span class="switch-thumb"></span>
+
+                </button>
+
+            </div>
+
+            <div class="control-row">
+
+                <div class="control-text">
+
+                    <strong>Alto contraste</strong>
+
+                    <small>Fondo oscuro y texto claro</small>
+
+                </div>
+
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="high-contrast">
+
+                    <span class="switch-thumb"></span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="panel-section">
+
+            <div class="control-row">
+
+                <div class="control-text">
+
+                    <strong>Aumentar tamaño del texto</strong>
+
+                    <small>Define el zoom de lectura</small>
+
+                </div>
+
+                <div class="text-scale-controls">
+
+                    <button type="button" class="text-scale-button" data-scale-step="-0.1" aria-label="Reducir texto">-</button>
+
+                    <span data-text-scale>100%</span>
+
+                    <button type="button" class="text-scale-button" data-scale-step="0.1" aria-label="Aumentar texto">+</button>
+
+                </div>
+
+            </div>
+
+            <div class="control-row">
+
+                <div class="control-text">
+
+                    <strong>Fuente Accesible / Disléxica</strong>
+
+                    <small>Elige la tipografía</small>
+
+                </div>
+
+                <div class="font-picker" role="radiogroup" aria-label="Opciones de fuente accesible">
+
+                    <button type="button" class="font-choice" role="radio" aria-checked="true" data-font-class="font-accessible">Accesible</button>
+
+                    <button type="button" class="font-choice" role="radio" aria-checked="false" data-font-class="font-dyslexic">Disléxica</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="panel-section">
+
+            <div class="control-row">
+
+                <div class="control-text">
+
+                    <strong>Subrayar y resaltar enlaces</strong>
+
+                    <small>Ayuda a detectar destinos clicables</small>
+
+                </div>
+
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="links-highlight">
+
+                    <span class="switch-thumb"></span>
+
+                </button>
+
+            </div>
+
+            <div class="control-row">
+
+                <div class="control-text">
+
+                    <strong>Desactivar animaciones</strong>
+
+                    <small>Elimina transiciones activas</small>
+
+                </div>
+
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="animations-off">
+
+                    <span class="switch-thumb"></span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="header.js"></script>
+
+    <script>
+
+        (function () {
+
+            const followButtons = document.querySelectorAll(".follow-button");
+
+            const emojiButton = document.querySelector("[data-emoji-button]");
+
+            const emojiPicker = document.querySelector("[data-emoji-picker]");
+
+            const postTextarea = document.querySelector("[data-post-text]");
+
+            const publishButton = document.querySelector("[data-publish-button]");
+
+            const composerAvatar = document.querySelector("[data-composer-avatar]");
+
+            const composerHelper = document.querySelector("[data-composer-helper]");
+
+            const userPlaceholder = document.querySelector("[data-user-placeholder]");
+
+            const userPostsList = document.querySelector("[data-user-posts]");
+
+            const postsStorageKey = "laVerdadForumPosts";
+
+            const savedPostsKey = "laVerdadSavedPosts";
+
+            const authModal = document.querySelector("[data-auth-modal]");
+
+            const authDismissBtn = document.querySelector("[data-auth-dismiss]");
+
+            const authModalTitle = document.getElementById("auth-modal-title");
+
+            const authModalMessage = authModal?.querySelector("[data-auth-message]");
+
+            const authModalCopy = {
+
+                publish: {
+
+                    title: "Inicia sesi\u00F3n para publicar",
+
+                    body: "Para compartir en el foro de La Verdad necesitas tener una cuenta activa."
+
+                },
+
+                save: {
+
+                    title: "Inicia sesi\u00F3n para guardar",
+
+                    body: "Necesitas una cuenta activa para guardar tus lecturas y retomarlas cuando quieras."
+
+                },
+
+                follow: {
+
+                    title: "Inicia sesi\u00F3n para seguir",
+
+                    body: "Crea una cuenta para seguir hilos y recibir novedades personalizadas."
+
+                }
+
+            };
+
+
+
+            const getCurrentUser = () => localStorage.getItem("laVerdadUser") || "";
+
+            const initialsFrom = (name) => {
+
+                const parts = name.split(/[\s._-]+/).filter(Boolean);
+
+                if (parts.length === 0) return name.charAt(0).toUpperCase();
+
+                const initials = parts.slice(0, 2).map((part) => part.charAt(0)).join("");
+
+                return initials.toUpperCase();
+
+            };
+
+
+
+            const readSavedPosts = () => {
+
+                try {
+
+                    return JSON.parse(localStorage.getItem(savedPostsKey)) || [];
+
+                } catch {
+
+                    return [];
+
+                }
+
+            };
+
+
+
+            const writeSavedPosts = (items) => {
+
+                localStorage.setItem(savedPostsKey, JSON.stringify(items));
+
+            };
+
+
+
+            const updateSaveButtonVisual = (btn) => {
+
+                const svg = btn.querySelector("svg");
+
+                if (!svg) return;
+
+                if (btn.classList.contains("active")) {
+
+                    svg.setAttribute("fill", "#fff");
+
+                    svg.setAttribute("stroke", "#fff");
+
+                } else {
+
+                    svg.setAttribute("fill", "none");
+
+                    svg.setAttribute("stroke", "currentColor");
+
+                }
+
+            };
+
+
+
+            const getPostCardInfo = (card) => {
+
+                if (!card) return null;
+
+                if (!card.dataset.postId) {
+
+                    const snippet = card.querySelector(".post-content")?.textContent?.trim().slice(0, 16) || Date.now().toString();
+
+                    card.dataset.postId = `ext-${snippet.replace(/\s+/g, "-").toLowerCase()}`;
+
+                }
+
+                const author = card.querySelector(".post-user strong")?.textContent?.trim() || "Foro La Verdad";
+
+                const excerpt = card.querySelector(".post-content")?.textContent?.trim().slice(0, 160) || "";
+
+                return {
+
+                    id: card.dataset.postId,
+
+                    author,
+
+                    excerpt,
+
+                    savedAt: new Date().toISOString()
+
+                };
+
+            };
+
+
+
+            const syncSavedButtons = () => {
+
+                const saved = readSavedPosts();
+
+                document.querySelectorAll("[data-save]").forEach((btn) => {
+
+                    const card = btn.closest("[data-post]");
+
+                    if (!card) return;
+
+                    const isSaved = saved.some((item) => String(item.id) === String(card.dataset.postId));
+
+                    btn.classList.toggle("active", isSaved);
+
+                    updateSaveButtonVisual(btn);
+
+                });
+
+            };
+
+            const escapeHtml = (value) =>
+
+                value
+
+                    .replace(/&/g, "&amp;")
+
+                    .replace(/</g, "&lt;")
+
+                    .replace(/>/g, "&gt;")
+
+                    .replace(/"/g, "&quot;")
+
+                    .replace(/'/g, "&#39;");
+
+
+
+            const formatPostText = (text) => escapeHtml(text).replace(/\n/g, "<br>");
+
+            const formatDate = (iso) => {
+
+                try {
+
+                    return new Date(iso).toLocaleString("es-ES", {
+
+                        day: "numeric",
+
+                        month: "short",
+
+                        hour: "2-digit",
+
+                        minute: "2-digit"
+
+                    });
+
+                } catch {
+
+                    return "";
+
+                }
+
+            };
+
+            const readPosts = () => {
+
+                try {
+
+                    return JSON.parse(localStorage.getItem(postsStorageKey)) || [];
+
+                } catch {
+
+                    return [];
+
+                }
+
+            };
+
+            const writePosts = (posts) =>
+
+                localStorage.setItem(postsStorageKey, JSON.stringify(posts));
+
+
+
+            const updateComposerIdentity = () => {
+
+                if (!composerAvatar) return;
+
+                const user = getCurrentUser();
+
+                if (user) {
+
+                    composerAvatar.textContent = initialsFrom(user);
+
+                    composerAvatar.classList.remove("avatar-incognito");
+
+                    composerHelper && (composerHelper.textContent = `Publica como ${user}.`);
+
+                } else {
+
+                    composerAvatar.classList.add("avatar-incognito");
+
+                    composerAvatar.innerHTML = `
+
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+
+                            <circle cx="16" cy="12" r="5"></circle>
+
+                            <path d="M6 26c2-4.6 5.4-6.5 10-6.5s8 1.9 10 6.5"></path>
+
+                        </svg>`;
+
+                    composerHelper &&
+
+                        (composerHelper.textContent =
+
+                            "Inicia sesi\u00F3n para participar en el foro.");
+
+                }
+
+            };
+
+
+
+        const renderUserPosts = () => {
+
+            if (!userPostsList || !userPlaceholder) return;
+
+            const user = getCurrentUser();
+
+            if (!user) {
+
+                userPostsList.innerHTML = "";
+
+                userPlaceholder.hidden = false;
+
+                    userPlaceholder.textContent =
+
+                        "Inicia sesi\u00F3n para ver tus aportes y compartir con la comunidad.";
+
+                    return;
+
+                }
+
+                const ownPosts = readPosts().filter((post) => post.user === user);
+
+                if (ownPosts.length === 0) {
+
+                    userPostsList.innerHTML = "";
+
+                    userPlaceholder.hidden = false;
+
+                    userPlaceholder.textContent =
+
+                        "Todav\u00EDa no has publicado nada. Comparte tu primera noticia.";
+
+                    return;
+
+                }
+
+                userPlaceholder.hidden = true;
+
+                const fragment = document.createDocumentFragment();
+
+                ownPosts.forEach((post) => {
+
+                    const article = document.createElement("article");
+
+                    article.className = "post-card user-owned";
+
+                    article.dataset.postId = String(post.id);
+
+                    article.dataset.owner = "self";
+
+                    article.setAttribute("data-post", "");
+
+                    article.innerHTML = `
+
+                        <div class="post-header">
+
+                            <div class="post-user">
+
+                                <div class="avatar" style="width:40px;height:40px;">${initialsFrom(post.user)}</div>
+
+                                <div>
+
+                                    <strong>${escapeHtml(post.user)}</strong>
+
+                                    <p class="post-meta"><small>${formatDate(post.createdAt)}</small></p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="post-menu" data-menu>
+
+                                <button class="menu-trigger" type="button" aria-label="Abrir opciones" data-menu-trigger>
+
+                                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round">
+
+                                        <circle cx="5" cy="12" r="1.5"></circle>
+
+                                        <circle cx="12" cy="12" r="1.5"></circle>
+
+                                        <circle cx="19" cy="12" r="1.5"></circle>
+
+                                    </svg>
+
+                                </button>
+
+                                <div class="menu-panel" data-menu-panel>
+
+                                    <button type="button" data-post-action="edit">
+
+                                        <svg viewBox="0 0 24 24"><path d="M3 21v-3l12-12 3 3-12 12z"></path><line x1="14" y1="4" x2="20" y2="10"></line></svg>
+
+                                        Editar
+
+                                    </button>
+
+                                    <button type="button" class="danger" data-post-action="delete">
+
+                                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+
+                                        Borrar
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="post-content">${formatPostText(post.text)}</div>
+
+                    `;
+
+                    fragment.appendChild(article);
+
+                });
+
+                userPostsList.innerHTML = "";
+
+                userPostsList.appendChild(fragment);
+
+            };
+
+
+
+            const updatePublishState = () => {
+
+                if (!publishButton || !postTextarea) return;
+
+                const hasText = postTextarea.value.trim().length > 0;
+
+                publishButton.disabled = !hasText;
+
+                publishButton.classList.toggle("is-active", hasText);
+
+            };
+
+
+
+            const setAuthModalCopy = (variant = "publish") => {
+
+                const copy = authModalCopy[variant] || authModalCopy.publish;
+
+                if (authModalTitle) {
+
+                    authModalTitle.textContent = copy.title;
+
+                }
+
+                if (authModalMessage) {
+
+                    authModalMessage.textContent = copy.body;
+
+                }
+
+            };
+
+            setAuthModalCopy();
+
+
+
+            const openAuthModal = (variant = "publish") => {
+
+                if (!authModal) return;
+
+                setAuthModalCopy(variant);
+
+                authModal.classList.add("is-visible");
+
+                authModal.setAttribute("aria-hidden", "false");
+
+            };
+
+
+
+            followButtons.forEach((btn) => {
+
+                btn.addEventListener("click", () => {
+
+                    const user = getCurrentUser();
+
+                    if (!user) {
+
+                        openAuthModal("follow");
+
+                        return;
+
+                    }
+
+                    const isFollowing = btn.classList.toggle("following");
+
+                    btn.textContent = isFollowing ? "Siguiendo" : "Seguir";
+
+                });
+
+            });
+
+
+
+            const closeAuthModal = () => {
+
+                if (!authModal) return;
+
+                authModal.classList.remove("is-visible");
+
+                authModal.setAttribute("aria-hidden", "true");
+
+            };
+
+
+
+            authModal &&
+
+                authModal.addEventListener("click", (event) => {
+
+                    if (event.target === authModal) {
+
+                        closeAuthModal();
+
+                    }
+
+                });
+
+
+
+            authDismissBtn?.addEventListener("click", closeAuthModal);
+
+            document.addEventListener("keydown", (event) => {
+
+                if (event.key === "Escape" && authModal?.classList.contains("is-visible")) {
+
+                    closeAuthModal();
+
+                }
+
+            });
+
+
+
+            publishButton &&
+
+                publishButton.addEventListener("click", () => {
+
+                    if (!postTextarea) return;
+
+                    const text = postTextarea.value.trim();
+
+                    if (!text) return;
+
+                    const user = getCurrentUser();
+
+                    if (!user) {
+
+                        openAuthModal();
+
+                        return;
+
+                    }
+
+                    const posts = readPosts();
+
+                    posts.unshift({
+
+                        id: Date.now(),
+
+                        text,
+
+                        user,
+
+                        createdAt: new Date().toISOString()
+
+                    });
+
+                    writePosts(posts);
+
+                    postTextarea.value = "";
+
+                    updatePublishState();
+
+                    renderUserPosts();
+
+                });
+
+
+
+            postTextarea && postTextarea.addEventListener("input", updatePublishState);
+
+            updatePublishState();
+
+            updateComposerIdentity();
+
+            renderUserPosts();
+
+
+
+            const closeAllMenus = () => {
+
+                document.querySelectorAll("[data-menu-panel]").forEach((panel) => panel.classList.remove("is-open"));
+
+            };
+
+
+
+            document.addEventListener("click", (event) => {
+
+                const trigger = event.target.closest("[data-menu-trigger]");
+
+                if (trigger) {
+
+                    const panel = trigger.parentElement?.querySelector("[data-menu-panel]");
+
+                    if (panel) {
+
+                        const isOpen = panel.classList.contains("is-open");
+
+                        closeAllMenus();
+
+                        if (!isOpen) {
+
+                            panel.classList.add("is-open");
+
+                        }
+
+                    }
+
+                    return;
+
+                }
+
+                if (!event.target.closest("[data-menu-panel]")) {
+
+                    closeAllMenus();
+
+                }
+
+            });
+
+
+
+            const handleOwnPostAction = (action, article) => {
+
+                const postId = Number(article.dataset.postId);
+
+                const posts = readPosts();
+
+                const post = posts.find((p) => p.id === postId);
+
+                if (!post) return;
+
+                if (action === "delete") {
+
+                    if (confirm("¿Seguro que quieres borrar esta publicación?")) {
+
+                        const updated = posts.filter((p) => p.id !== postId);
+
+                        writePosts(updated);
+
+                        renderUserPosts();
+
+                    }
+
+                } else if (action === "edit") {
+
+                    const edited = prompt("Edita tu publicación:", post.text);
+
+                    if (edited === null) return;
+
+                    if (!confirm("¿Guardar los cambios?")) return;
+
+                    post.text = edited.trim();
+
+                    writePosts(posts);
+
+                    renderUserPosts();
+
+                }
+
+            };
+
+
+
+            const handleExternalAction = (action, article) => {
+
+                if (action === "hide") {
+
+                    article.classList.add("is-muted");
+
+                    const content = article.querySelector(".post-content");
+
+                    if (content) {
+
+                        content.innerHTML = "<em>Publicación oculta.</em>";
+
+                    }
+
+                } else if (action === "report") {
+
+                    alert("Gracias. Revisaremos esta publicación.");
+
+                }
+
+            };
+
+
+
+            document.addEventListener("click", (event) => {
+
+                const actionBtn = event.target.closest("[data-post-action]");
+
+                if (!actionBtn) return;
+
+                const article = actionBtn.closest("[data-post]");
+
+                closeAllMenus();
+
+                if (!article) return;
+
+                const action = actionBtn.dataset.postAction;
+
+                const owner = article.dataset.owner;
+
+                if (owner === "self") {
+
+                    handleOwnPostAction(action, article);
+
+                } else {
+
+                    handleExternalAction(action, article);
+
+                }
+
+            });
+
+
+
+            if (emojiButton && emojiPicker && postTextarea) {
+
+                emojiButton.addEventListener("click", () => {
+
+                    const isOpen = emojiPicker.style.display === "block";
+
+                    emojiPicker.style.display = isOpen ? "none" : "block";
+
+                });
+
+
+
+                emojiPicker.querySelectorAll("button").forEach((button) => {
+
+                    button.addEventListener("click", () => {
+
+                        postTextarea.value += button.textContent;
+
+                        emojiPicker.style.display = "none";
+
+                        postTextarea.focus();
+
+                        updatePublishState();
+
+                    });
+
+                });
+
+
+
+                document.addEventListener("click", (event) => {
+
+                    if (
+
+                        emojiPicker &&
+
+                        !emojiPicker.contains(event.target) &&
+
+                        event.target !== emojiButton
+
+                    ) {
+
+                        emojiPicker.style.display = "none";
+
+                    }
+
+                });
+
+            }
+
+
+
+            document.querySelectorAll("[data-like]").forEach((btn) => {
+
+                btn.addEventListener("click", () => {
+
+                    btn.classList.toggle("active");
+
+                    const svg = btn.querySelector("svg");
+
+                    if (!svg) return;
+
+                    if (btn.classList.contains("active")) {
+
+                        svg.setAttribute("fill", "#fff");
+
+                        svg.setAttribute("stroke", "#fff");
+
+                    } else {
+
+                        svg.setAttribute("fill", "none");
+
+                        svg.setAttribute("stroke", "currentColor");
+
+                    }
+
+                });
+
+            });
+
+
+
+            document.querySelectorAll("[data-save]").forEach((btn) => {
+
+                btn.addEventListener("click", () => {
+
+                    const user = getCurrentUser();
+
+                    if (!user) {
+
+                        openAuthModal("save");
+
+                        return;
+
+                    }
+
+                    const card = btn.closest("[data-post]");
+
+                    if (!card) return;
+
+                    const shouldSave = !btn.classList.contains("active");
+
+                    if (shouldSave) {
+
+                        const info = getPostCardInfo(card);
+
+                        if (!info) return;
+
+                        const saved = readSavedPosts();
+
+                        if (!saved.some((item) => String(item.id) === String(info.id))) {
+
+                            saved.unshift(info);
+
+                            writeSavedPosts(saved);
+
+                        }
+
+                    } else {
+
+                        const updated = readSavedPosts().filter(
+
+                            (item) => String(item.id) !== String(card.dataset.postId)
+
+                        );
+
+                        writeSavedPosts(updated);
+
+                    }
+
+                    btn.classList.toggle("active", shouldSave);
+
+                    updateSaveButtonVisual(btn);
+
+                });
+
+            });
+
+            syncSavedButtons();
+
+
+
+            const pageContextLabel = () =>
+
+                document.body.dataset.pageContext || document.title;
+
+            const chatDock = document.querySelector("[data-chat-dock]");
+
+            if (chatDock) {
+
+                const chatToggle = chatDock.querySelector("[data-chat-toggle]");
+
+                const chatPanel = chatDock.querySelector("[data-chat-panel]");
+
+                const chatCloseBtn = chatDock.querySelector("[data-chat-close]");
+
+                const chatMessages = chatDock.querySelector("[data-chat-messages]");
+
+                const chatInput = chatDock.querySelector("[data-chat-input]");
+
+                const chatSendBtn = chatDock.querySelector("[data-chat-send]");
+
+                const chatGreeting = chatDock.querySelector("[data-chat-greeting]");
+
+                const chatForm = chatDock.querySelector("[data-chat-form]");
+
+
+
+                const updateSendState = () => {
+
+                    if (!chatInput || !chatSendBtn) return;
+
+                    const hasText = chatInput.value.trim().length > 0;
+
+                    chatSendBtn.disabled = !hasText;
+
+                    chatSendBtn.classList.toggle("is-active", hasText);
+
+                };
+
+
+
+                const appendMessage = (text, role) => {
+
+                    if (!chatMessages) return;
+
+                    const bubble = document.createElement("div");
+
+                    bubble.className = `chat-message ${role}`;
+
+                    bubble.innerHTML = text;
+
+                    chatMessages.appendChild(bubble);
+
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                };
+
+
+
+                const openChat = () => {
+
+                    if (!chatPanel || !chatToggle) return;
+
+                    chatPanel.classList.add("is-visible");
+
+                    chatPanel.setAttribute("aria-hidden", "false");
+
+                    chatToggle.classList.add("is-hidden");
+
+                };
+
+
+
+                const closeChat = () => {
+
+                    if (!chatPanel || !chatToggle) return;
+
+                    chatPanel.classList.remove("is-visible");
+
+                    chatPanel.setAttribute("aria-hidden", "true");
+
+                    chatToggle.classList.remove("is-hidden");
+
+                };
+
+
+
+                chatGreeting &&
+
+                    (chatGreeting.textContent = `Hola, soy Vera, la IA de La Verdad. Est\u00E1s leyendo ${pageContextLabel()}. Preg\u00FAntame sobre esta secci\u00F3n o cualquier duda que tengas.`);
+
+
+
+                chatToggle && chatToggle.addEventListener("click", openChat);
+
+                chatCloseBtn && chatCloseBtn.addEventListener("click", closeChat);
+
+                chatInput && chatInput.addEventListener("input", updateSendState);
+
+
+
+                chatForm &&
+
+                    chatForm.addEventListener("submit", (event) => {
+
+                        event.preventDefault();
+
+                        if (!chatInput) return;
+
+                        const text = chatInput.value.trim();
+
+                        if (!text) return;
+
+                        appendMessage(escapeHtml(text), "user");
+
+                        chatInput.value = "";
+
+                        updateSendState();
+
+                        setTimeout(() => {
+
+                            const context = escapeHtml(pageContextLabel());
+
+                            appendMessage(
+
+                                `En breve podr\u00E9 darte respuestas personalizadas sobre ${context}.`,
+
+                                "bot"
+
+                            );
+
+                        }, 500);
+
+                    });
+
+
+
+                document.addEventListener("keydown", (event) => {
+
+                    if (event.key === "Escape" && chatPanel?.classList.contains("is-visible")) {
+
+                        closeChat();
+
+                    }
+
+                });
+
+
+
+                document.addEventListener("click", (event) => {
+
+                    if (
+
+                        chatPanel &&
+
+                        chatToggle &&
+
+                        chatPanel.classList.contains("is-visible") &&
+
+                        !chatPanel.contains(event.target) &&
+
+                        !chatToggle.contains(event.target)
+
+                    ) {
+
+                        closeChat();
+
+                    }
+
+                });
+
+            }
+
+        })();
+
+    </script>
+
+    <script src="accessibility.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+

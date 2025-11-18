@@ -1,0 +1,2173 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>La Verdad</title>
+    <style>
+        :root {
+            --ink: #0f0f0f;
+            --soft-ink: #3a3a3a;
+            --muted: #7c7c7c;
+            --border: #dcdcdc;
+            --accent: #f1b500;
+            --text-scale: 1;
+            --font-base: "Inter", "Roboto", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-base);
+            background: #fff;
+            color: var(--ink);
+            font-size: calc(16px * var(--text-scale));
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="search"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea {
+            font-family: var(--font-base);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink);
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="search"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--ink);
+            box-shadow: 0 0 0 2px rgba(15, 15, 15, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--soft-ink, #6a6a6a);
+            opacity: 1;
+        }
+
+        body.high-contrast {
+            background: #050505;
+            color: #f1f1f1;
+        }
+
+        body.high-contrast .page-shell,
+        body.high-contrast header,
+        body.high-contrast nav,
+        body.high-contrast .news-feed {
+            background: transparent;
+            color: inherit;
+        }
+
+        body.high-contrast a {
+            color: #4cbfff;
+        }
+
+        body.links-highlight a {
+            text-decoration: underline;
+            background: rgba(255, 255, 0, 0.25);
+            outline: 1px dashed rgba(255, 255, 0, 0.8);
+        }
+
+        body.animations-off *,
+        body.animations-off *::before,
+        body.animations-off *::after {
+            animation-play-state: paused !important;
+            animation: none !important;
+            transition: none !important;
+        }
+
+        body.voice-mode .news-feed article {
+            outline: 1px dashed rgba(35, 160, 148, 0.5);
+            outline-offset: 6px;
+        }
+
+        body.font-accessible {
+            font-family: var(--font-base);
+        }
+
+        body.font-dyslexic {
+            font-family: var(--font-base);
+        }
+
+        .page-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        header.top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0 14px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+
+        .menu-toggle {
+            width: 32px;
+            height: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 2px;
+            background: var(--ink);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: flex-start;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 40;
+        }
+
+        .nav-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-drawer {
+            width: min(420px, 90vw);
+            background: #050505;
+            color: #f4f4f4;
+            height: 100%;
+            padding: 28px 30px 60px;
+            transform: translateX(-20px);
+            transition: transform 0.25s ease;
+            overflow-y: auto;
+        }
+
+        .nav-overlay.is-visible .nav-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .drawer-close {
+            border: none;
+            background: transparent;
+            color: #f4f4f4;
+            font-size: 28px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .drawer-section + .drawer-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            margin-top: 24px;
+            padding-top: 24px;
+        }
+
+        .drawer-section h3 {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 14px;
+        }
+
+        .drawer-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            padding: 0 12px;
+        }
+
+        .drawer-search input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 15px;
+            padding: 10px 0;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .drawer-search input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .mic-button {
+            border: none;
+            background: transparent;
+            color: #f4f4f4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .drawer-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drawer-list a,
+        .drawer-list button {
+            color: #f4f4f4;
+            text-decoration: none;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .drawer-list button:hover,
+        .drawer-list a:hover {
+            text-decoration: underline;
+        }
+
+        .drawer-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .drawer-actions-user {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .drawer-user-pill {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 10px 16px;
+            gap: 10px;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .drawer-user-pill svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .drawer-user-pill span {
+            font-size: 16px;
+            letter-spacing: 0.06em;
+        }
+
+        .chip-link {
+            flex: 1;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .drawer-logout {
+            background: #d32f2f;
+            border-color: #d32f2f;
+            color: #fff;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .social-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: #f4f4f4;
+        }
+
+        .newsletter {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .newsletter input {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            padding: 10px 12px;
+            border-radius: 6px;
+            color: #f4f4f4;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .newsletter button {
+            border: none;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-family: "Inter", system-ui, sans-serif;
+            background: #fff;
+            color: #050505;
+            cursor: pointer;
+        }
+
+        footer.site-footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0 20px;
+            font-family: "Inter", system-ui, sans-serif;
+            color: var(--soft-ink);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-base);
+            font-size: 24px;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .footer-nav {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            padding: 0;
+            margin: 0 0 18px;
+            list-style: none;
+        }
+
+        .footer-nav a {
+            text-decoration: none;
+            color: inherit;
+            font-size: 14px;
+            letter-spacing: 0.04em;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+
+        .footer-social span {
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+        }
+
+        .footer-social .social-icon {
+            border-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-social .social-icon svg {
+            fill: #111;
+        }
+
+        .footer-legal {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            margin-bottom: 12px;
+        }
+
+        .footer-legal a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .footer-copy {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .wordmark {
+            font-size: 30px;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .user-pill {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: capitalize;
+            color: var(--soft-ink);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-pill svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .top-divider {
+            color: var(--soft-ink);
+            display: none;
+            margin: 0 8px;
+        }
+
+        .login-link {
+            font-size: 15px;
+            text-transform: lowercase;
+            letter-spacing: 0.08em;
+            border: none;
+            background: none;
+            color: var(--soft-ink);
+            cursor: pointer;
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-toggle {
+            border: none;
+            background: none;
+            color: var(--soft-ink);
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .language-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px;
+            min-width: 180px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            list-style: none;
+            margin: 0;
+            display: none;
+            z-index: 50;
+        }
+
+        .language-selector.open .language-menu {
+            display: block;
+        }
+
+        .language-menu li {
+            margin: 0;
+        }
+
+        .language-option {
+            width: 100%;
+            border: none;
+            background: none;
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 14px;
+            letter-spacing: 0.04em;
+            color: var(--ink);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .language-option strong {
+            letter-spacing: 0.08em;
+        }
+
+        .language-option:hover,
+        .language-option:focus {
+            background: rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+        body.high-contrast .language-menu {
+            background: #050505;
+            color: #f1f1f1;
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        body.high-contrast .language-option {
+            color: #f1f1f1;
+        }
+
+        nav.section-nav {
+            border-bottom: 2px solid var(--ink);
+        }
+
+        nav.section-nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            padding: 12px 0;
+            list-style: none;
+            margin: 0;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 15px;
+            text-transform: capitalize;
+        }
+
+        nav.section-nav li {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        nav.section-nav li + li {
+            padding-left: 16px;
+        }
+
+        nav.section-nav a {
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            display: block;
+            text-align: center;
+            padding: 6px 0 10px;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        nav.section-nav a:focus-visible {
+            outline: 2px solid var(--ink);
+            outline-offset: 4px;
+        }
+
+        nav.section-nav li + li::before {
+            content: "|";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(15, 15, 15, 0.4);
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 12px;
+        }
+
+        .nav-tooltip {
+            position: relative;
+        }
+
+        .topic-active {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+        }
+
+        .topic-active::after {
+            content: none;
+        }
+
+        [data-journalist-link] {
+            display: none;
+        }
+
+        body.is-journalist [data-journalist-link] {
+            display: list-item;
+        }
+
+        .tools-menu {
+            position: relative;
+        }
+
+        .tools-toggle {
+            border: none;
+            background: transparent;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            width: 100%;
+            padding: 8px 6px;
+            cursor: pointer;
+        }
+
+        .tools-panel {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: calc(100% + 10px);
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+            width: 240px;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 30;
+        }
+
+        .tools-menu.is-open .tools-panel {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .tool-option {
+            display: block;
+            text-align: left;
+            margin-bottom: 14px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .tool-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .tool-option strong {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tool-option span {
+            display: block;
+            font-size: 13px;
+            color: var(--soft-ink);
+            margin-top: 4px;
+        }
+
+        nav.section-nav a:hover {
+            text-decoration: underline;
+        }
+
+        main.content {
+            margin-top: 28px;
+        }
+
+        .news-feed {
+            width: 100%;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 26px;
+            margin-bottom: 40px;
+        }
+
+        .lead-story,
+        .stacked-story,
+        .mosaic-story {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .lead-story {
+            border-bottom: none;
+        }
+
+        .lead-figure {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin: 0 0 18px;
+            overflow: hidden;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .lead-figure img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .lead-story h1 {
+            font-size: 36px;
+            margin: 0 0 12px;
+            line-height: 1.2;
+        }
+
+        .lead-story p {
+            margin: 0 0 8px;
+            color: var(--soft-ink);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .lead-story .meta {
+            color: var(--muted);
+            font-size: 13px;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .stacked-story + .stacked-story {
+            margin-top: 16px;
+        }
+
+        .stacked-story h2 {
+            font-size: 22px;
+            margin: 0 0 6px;
+        }
+
+        .stacked-story p {
+            margin: 0;
+            color: var(--soft-ink);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .mosaic {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            border-top: 1px solid var(--ink);
+            padding-top: 26px;
+        }
+
+        .mosaic-story {
+            border-bottom: none;
+        }
+
+        .mosaic-story h3 {
+            font-size: 18px;
+            margin: 0 0 8px;
+            line-height: 1.3;
+        }
+
+        .mosaic-story p {
+            margin: 0;
+            color: var(--soft-ink);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .story-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 12px;
+            color: var(--soft-ink);
+            letter-spacing: 0.05em;
+        }
+
+        .story-source {
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .truth-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid currentColor;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .truth-pill::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .truth-pill[data-level="bajo"] {
+            color: #c91f37;
+        }
+
+        .truth-pill[data-level="medio"] {
+            color: #c58600;
+        }
+
+        .truth-pill[data-level="alto"] {
+            color: #0f8a46;
+        }
+
+        .detail-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--ink);
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 4px;
+        }
+
+        body.high-contrast .detail-link {
+            color: #f0f0f0;
+            border-color: currentColor;
+        }
+
+        .detail-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-family: "Inter", system-ui, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--soft-ink);
+            margin-bottom: 8px;
+        }
+
+        .tag::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            display: inline-block;
+        }
+
+        .accessibility-copy {
+            margin-top: 18px;
+            color: var(--muted);
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+        }
+
+        .accessibility-dock {
+            position: fixed;
+            right: 0;
+            top: 30%;
+            display: flex;
+            align-items: stretch;
+            z-index: 30;
+            transition: transform 0.25s ease, opacity 0.2s ease;
+        }
+
+        .dock-handle {
+            width: 32px;
+            border: none;
+            background: #050505;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dock-handle {
+            border-radius: 12px 0 0 12px;
+            width: 36px;
+        }
+
+        .accessibility-fab {
+            width: 78px;
+            height: 78px;
+            border: none;
+            background: #000;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            border-radius: 0 24px 24px 0;
+        }
+
+        .accessibility-fab:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .accessibility-dock.is-collapsed {
+            transform: translateX(calc(100% - 32px));
+        }
+
+        .accessibility-dock.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .wheelchair-icon {
+            font-size: 38px;
+            line-height: 1;
+            color: #fff;
+        }
+
+        .chat-dock {
+            position: fixed;
+            right: 32px;
+            bottom: 34px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 26;
+        }
+
+        .chat-bubble {
+            width: 70px;
+            height: 70px;
+            border-radius: 24px 24px 4px 24px;
+            border: none;
+            background: #050505;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .chat-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            background: currentColor;
+            transform: rotate(45deg);
+        }
+
+        .chat-avatar {
+            font-size: 30px;
+        }
+
+        .chat-bubble.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chat-panel {
+            width: 320px;
+            background: #fff;
+            color: var(--ink);
+            border-radius: 22px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+            padding: 18px;
+            position: fixed;
+            right: 32px;
+            bottom: 115px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .chat-panel.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .chat-panel header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chat-panel h3 {
+            margin: 0;
+            font-size: 16px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .chat-close {
+            border: none;
+            background: transparent;
+            color: inherit;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            color: var(--soft-ink);
+            background: #fafafa;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .chat-message.user {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .chat-message.bot {
+            color: var(--soft-ink);
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            background: #fff;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            border: none;
+            resize: none;
+            min-height: 48px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-mic,
+        .chat-send {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--soft-ink);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+        }
+
+        .chat-send:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .chat-send.is-active {
+            background: var(--ink);
+            color: #fff;
+            border-color: var(--ink);
+        }
+
+        body.high-contrast .chat-panel {
+            background: #050505;
+            color: #f4f4f4;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        body.high-contrast .chat-messages {
+            background: #0f0f0f;
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ededed;
+        }
+
+        body.high-contrast .chat-input {
+            background: #111;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        body.high-contrast .chat-mic,
+        body.high-contrast .chat-send {
+            border-color: rgba(255, 255, 255, 0.35);
+            color: #f3f3f3;
+        }
+
+        .accessibility-panel {
+            position: fixed;
+            right: 24px;
+            bottom: 120px;
+            width: min(360px, calc(100% - 48px));
+            background: #050505;
+            color: #f1f1f1;
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.55);
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 25;
+        }
+
+        .accessibility-panel.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .accessibility-panel header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .accessibility-panel h2 {
+            margin: 0;
+            font-size: 18px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .accessibility-panel button {
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .panel-close {
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: inherit;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .panel-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 14px;
+            margin-top: 14px;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .control-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .control-text small {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .access-switch {
+            width: 52px;
+            height: 26px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .access-switch .switch-thumb {
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform 0.2s ease;
+        }
+
+        .access-switch[aria-checked="true"] {
+            background: #23a094;
+        }
+
+        .access-switch[aria-checked="true"] .switch-thumb {
+            transform: translateX(24px);
+        }
+
+        .text-scale-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .text-scale-controls button {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: transparent;
+            color: inherit;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .font-picker {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .font-choice {
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            background: transparent;
+            color: inherit;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        .font-choice[aria-checked="true"] {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (max-width: 900px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mosaic {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .accessibility-dock {
+                right: 8px;
+                top: 40%;
+            }
+
+            .accessibility-fab {
+                width: 64px;
+                height: 64px;
+            }
+
+            .chat-dock {
+                right: 16px;
+                bottom: 24px;
+            }
+
+            .chat-panel {
+                right: 16px;
+                width: 280px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav.section-nav ul {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 12px 18px;
+            }
+
+            nav.section-nav li {
+                flex: initial;
+                padding-left: 0;
+            }
+
+            nav.section-nav a {
+                padding: 4px 0;
+                text-align: left;
+            }
+
+            nav.section-nav li + li::before {
+                display: none;
+            }
+
+            .mosaic {
+                grid-template-columns: 1fr;
+            }
+
+            .wordmark {
+                font-size: 22px;
+                letter-spacing: 0.08em;
+            }
+
+            .accessibility-panel {
+                right: 12px;
+                left: 12px;
+                width: auto;
+                bottom: 110px;
+            }
+
+            .chat-panel {
+                right: 12px;
+                left: 12px;
+                width: auto;
+            }
+
+            .chat-dock {
+                right: 12px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="accessibility.css">
+</head>
+<body data-page-context="la portada de La Verdad">
+    <div class="page-shell">
+        <header class="top-bar" data-global-header>
+            <button class="menu-toggle" type="button" aria-label="Abrir men&uacute; de navegaci&oacute;n" aria-expanded="false" aria-controls="menu-lateral">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a class="wordmark" href="archivp.html">La Verdad</a>
+            <div class="top-actions" data-user-area>
+                <a class="login-link" href="login.html" data-login-link>iniciar sesi&oacute;n</a>
+                <a class="user-pill" data-user-pill href="perfil.html" aria-label="Abrir perfil"></a>
+                <span class="top-divider" aria-hidden="true" data-top-divider>|</span>
+                <div class="language-selector" data-language>
+                    <button class="language-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span data-current-lang>ES</span>
+                        <span aria-hidden="true">&#x25BE;</span>
+                    </button>
+                    <ul class="language-menu" role="listbox">
+                        <li><button type="button" class="language-option" data-lang-option="ES"><strong>ES</strong><span>Espa&ntilde;ol</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="PT"><strong>PT</strong><span>Portugu&ecirc;s</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="CA"><strong>CA</strong><span>Catal&agrave;</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="DE"><strong>DE</strong><span>Deutsch</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="FR"><strong>FR</strong><span>Fran&ccedil;ais</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="IT"><strong>IT</strong><span>Italiano</span></button></li>
+                        <li><button type="button" class="language-option" data-lang-option="NL"><strong>NL</strong><span>Nederlands</span></button></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="nav-overlay" id="menu-lateral" data-nav-overlay aria-hidden="true">
+            <nav class="nav-drawer" role="navigation" aria-label="Men&uacute; principal">
+                <div class="drawer-top">
+                    <button class="drawer-close" type="button" aria-label="Cerrar men&uacute;" data-drawer-close>&times;</button>
+                </div>
+                <div class="drawer-section">
+                    <h3 id="drawer-title">Explorar</h3>
+                    <label class="sr-only" for="drawer-search-input">Buscar</label>
+                    <div class="drawer-search">
+                        <input type="search" id="drawer-search-input" placeholder="Buscar en La Verdad">
+                        <button class="mic-button" type="button" aria-label="Buscar por voz">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                                <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+                                <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+                                <path d="M12 18v3"></path>
+                                <path d="M9 21h6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="drawer-section" data-language>
+                    <h3>Idioma</h3>
+                    <div class="language-selector">
+                        <button class="language-toggle" type="button" aria-label="Cambiar idioma" aria-haspopup="listbox" aria-expanded="false">
+                            <span data-current-lang>ES</span>
+                            <span aria-hidden="true">&#x25BE;</span>
+                        </button>
+                        <ul class="language-menu" role="listbox">
+                            <li><button type="button" class="language-option" data-lang-option="ES"><strong>ES</strong><span>Espa&ntilde;ol</span></button></li>
+                            <li><button type="button" class="language-option" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                            <li><button type="button" class="language-option" data-lang-option="PT"><strong>PT</strong><span>Portugu&ecirc;s</span></button></li>
+                            <li><button type="button" class="language-option" data-lang-option="CA"><strong>CA</strong><span>Catal&agrave;</span></button></li>
+                            <li><button type="button" class="language-option" data-lang-option="FR"><strong>FR</strong><span>Fran&ccedil;ais</span></button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                
+            <div class="drawer-section">
+                <h3>Categor&iacute;as</h3>
+                <ul class="drawer-list">
+                    <li><a href="seccion.html?cat=internacional" data-topic-link="internacional">Internacional</a></li>
+                    <li><a href="seccion.html?cat=espana" data-topic-link="espana">Espa&ntilde;a</a></li>
+                    <li><a href="seccion.html?cat=economia" data-topic-link="economia">Econom&iacute;a</a></li>
+                    <li><a href="seccion.html?cat=sociedad" data-topic-link="sociedad">Sociedad</a></li>
+                    <li><a href="seccion.html?cat=salud" data-topic-link="salud">Salud</a></li>
+                    <li><a href="seccion.html?cat=tecnologia" data-topic-link="tecnologia">Tecnolog&iacute;a</a></li>
+                    <li><a href="seccion.html?cat=cultura" data-topic-link="cultura">Cultura</a></li>
+                    <li><a href="foro.html" data-topic-link="foro">Foro</a></li>
+                    <li><a href="resumen.html" data-topic-link="resumen">Resumen</a></li>
+                    <li><a href="analisis.html" data-topic-link="analisis">An&aacute;lisis</a></li>
+                    <li data-journalist-link hidden><a href="redaccion.html" data-topic-link="redaccion">Redacci&oacute;n</a></li>
+                </ul>
+            </div>
+
+
+                <div class="drawer-section">
+                    <h3>Accesibilidad</h3>
+                    <ul class="drawer-list">
+                        <li><button type="button" data-open-access-panel>Preferencias visuales</button></li>
+                        <li><button type="button" data-open-access-panel>Lectura asistida</button></li>
+                        <li><button type="button" data-open-access-panel>Controles de interacci&oacute;n</button></li>
+                    </ul>
+                </div>
+
+                
+            <div class="drawer-section">
+                <h3>&Aacute;rea de usuario</h3>
+                <div class="drawer-actions" data-drawer-guest>
+                    <a class="chip-link" href="login.html" data-drawer-login>Iniciar sesi&oacute;n</a>
+                    <a class="chip-link" href="signup.html" data-drawer-register>Registrarse</a>
+                </div>
+                <div class="drawer-actions drawer-actions-user" data-drawer-user style="display:none;">
+                    <a class="chip-link drawer-user-pill" href="perfil.html" data-drawer-userlink>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path>
+                        </svg>
+                        <span data-drawer-username>Usuario</span>
+                    </a>
+                    <button class="chip-link drawer-logout" type="button" data-drawer-logout>Cerrar sesión</button>
+                </div>
+            </div>
+
+
+                <div class="drawer-section">
+                    <h3>Informaci&oacute;n general</h3>
+                    <ul class="drawer-list">
+                        <li><a href="#">Qui&eacute;nes somos</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Ayuda</a></li>
+                    </ul>
+                </div>
+
+                <div class="drawer-section">
+                    <h3>Redes sociales</h3>
+                    <div class="social-icons">
+                        <a class="social-icon" href="#" aria-label="Twitter">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                                <path d="M17.83 3h3.37l-7.37 8.42L22 21h-6.56l-5.14-6.45L4 21H.63l7.88-9L0 3h6.69l4.73 5.97L17.83 3z"></path>
+                            </svg>
+                        </a>
+                        <a class="social-icon" href="#" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                                <path d="M13.5 8.6V6.6c0-.7.5-1.3 1.2-1.3H16V2h-2.3C12 2 10.6 3.4 10.6 5.1v3.5H8V12h2.6v10H13.5V12H16l.5-3.4h-3z"></path>
+                            </svg>
+                        </a>
+                        <a class="social-icon" href="#" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                                <path d="M12 7.3A4.7 4.7 0 1 0 16.7 12 4.71 4.71 0 0 0 12 7.3zm0 7.7A3 3 0 1 1 15 12a3 3 0 0 1-3 3zm4.92-8.35a1.09 1.09 0 1 0 1.09 1.09 1.09 1.09 0 0 0-1.09-1.09z"></path>
+                                <path d="M17.89 3H6.11A3.11 3.11 0 0 0 3 6.11v11.78A3.11 3.11 0 0 0 6.11 21h11.78A3.11 3.11 0 0 0 21 17.89V6.11A3.11 3.11 0 0 0 17.89 3zm1.94 14.89a1.94 1.94 0 0 1-1.94 1.94H6.11a1.94 1.94 0 0 1-1.94-1.94V6.11A1.94 1.94 0 0 1 6.11 4.17h11.78a1.94 1.94 0 0 1 1.94 1.94z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="drawer-section">
+                    <h3>Newsletter</h3>
+                    <form class="newsletter">
+                        <input type="email" placeholder="Correo electr&oacute;nico">
+                        <button type="button">Suscribirme</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+
+        <nav class="section-nav" aria-label="Secciones principales">
+            <ul>
+                <li><a href="seccion.html?cat=internacional" class="nav-tooltip" data-topic-link="internacional" data-tip="Cobertura global de pol&iacute;tica y econom&iacute;a.">Internacional</a></li>
+                <li><a href="seccion.html?cat=espana" class="nav-tooltip" data-topic-link="espana" data-tip="Actualidad nacional explicada con contexto regional.">Espa&ntilde;a</a></li>
+                <li><a href="seccion.html?cat=economia" class="nav-tooltip" data-topic-link="economia" data-tip="Mercados, empresas y empleo.">Econom&iacute;a</a></li>
+                <li><a href="seccion.html?cat=sociedad" class="nav-tooltip" data-topic-link="sociedad" data-tip="Historias humanas, educaci&oacute;n y justicia social.">Sociedad</a></li>
+                <li><a href="seccion.html?cat=salud" class="nav-tooltip" data-topic-link="salud" data-tip="Sanidad p&uacute;blica y bienestar cotidiano.">Salud</a></li>
+                <li><a href="seccion.html?cat=tecnologia" class="nav-tooltip" data-topic-link="tecnologia" data-tip="Innovaci&oacute;n, ciencia y tendencias digitales.">Tecnolog&iacute;a</a></li>
+                <li><a href="seccion.html?cat=cultura" class="nav-tooltip" data-topic-link="cultura" data-tip="Artes, literatura y ocio cultural.">Cultura</a></li>
+                <li><a href="foro.html" class="nav-tooltip" data-topic-link="foro" data-tip="Debates y comunidad de lectores.">Foro</a></li>
+                <li><a href="resumen.html" class="nav-tooltip" data-topic-link="resumen" data-tip="Resumen autom&aacute;tico de cada noticia.">Resumen</a></li>
+                <li><a href="analisis.html" class="nav-tooltip" data-topic-link="analisis" data-tip="Analiza credibilidad, sesgos y tono.">An&aacute;lisis</a></li>
+                <li data-journalist-link hidden><a href="redaccion.html" class="nav-tooltip" data-topic-link="redaccion" data-tip="Crea, revisa y prepara tus noticias antes de publicarlas.">Redacci&oacute;n</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section class="news-feed" aria-label="Noticias destacadas">
+                <div class="feature-grid">
+                    <article class="lead-story">
+                        <div class="tag">Portada</div>
+                        <figure class="lead-figure">
+                            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=900&q=60" alt="Sala de prensa del Ministerio de Sanidad">
+                        </figure>
+                        <h1>Sanidad abrir&aacute; una ofensiva legal para blindar el derecho al aborto</h1>
+                        <p>El Gobierno prepara un recurso expr&eacute;s tras la negativa regional a actualizar el registro de objetores. La Verdad explica qu&eacute; pasos seguir&aacute;n los juristas encargados del caso.</p>
+                        <p class="meta">Juan Diego Quesada | Madrid &middot; Hace 2 horas</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: El Pa&iacute;s</span>
+                            <span class="truth-pill" data-level="medio">Veracidad 62%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=portada">Leer noticia completa &#10132;</a>
+                    </article>
+
+                    <div>
+                        <article class="stacked-story">
+                            <div class="tag">An&aacute;lisis</div>
+                            <h2>Diez juristas desmenuzan las claves del procedimiento</h2>
+                            <p>La fiscal&iacute;a recopila testimonios de catedr&aacute;ticos que sostienen que la normativa auton&oacute;mica es incompatible con la jurisprudencia europea.</p>
+                            <div class="story-meta">
+                                <span class="story-source">Fuente: Diario Libre</span>
+                                <span class="truth-pill" data-level="bajo">Veracidad 34%</span>
+                            </div>
+                            <a class="detail-link" href="detalle.html?art=analisis">Leer noticia completa &#10132;</a>
+                        </article>
+                        <article class="stacked-story">
+                            <div class="tag">Reportaje</div>
+                            <h2>Los rostros tras el debate: historias de quienes esperan la sentencia</h2>
+                            <p>Los equipos de La Verdad se internan en hospitales y asociaciones para recoger testimonios personales.</p>
+                            <div class="story-meta">
+                                <span class="story-source">Fuente: Agencia Futura</span>
+                                <span class="truth-pill" data-level="alto">Veracidad 81%</span>
+                            </div>
+                            <a class="detail-link" href="detalle.html?art=reportaje">Leer noticia completa &#10132;</a>
+                        </article>
+                        <article class="stacked-story">
+                            <div class="tag">Cultura</div>
+                            <h2>Los 50 libros esenciales del medio siglo</h2>
+                            <p>Un jurado de 116 especialistas comparte las obras que redefinieron la narrativa espa&ntilde;ola contempor&aacute;nea.</p>
+                            <div class="story-meta">
+                                <span class="story-source">Fuente: Revista Babelia</span>
+                                <span class="truth-pill" data-level="medio">Veracidad 58%</span>
+                            </div>
+                            <a class="detail-link" href="detalle.html?art=cultura">Leer noticia completa &#10132;</a>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="mosaic">
+                    <article class="mosaic-story">
+                        <div class="tag">Sociedad</div>
+                        <h3>Encarnita Polo, icono popular que trasciende los t&oacute;picos</h3>
+                        <p>Familiares y amigos reconstruyen la vida de la cantante a trav&eacute;s de fotograf&iacute;as y cartas in&eacute;ditas.</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: Cr&oacute;nica Popular</span>
+                            <span class="truth-pill" data-level="medio">Veracidad 65%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=sociedad">Leer noticia completa &#10132;</a>
+                    </article>
+                    <article class="mosaic-story">
+                        <div class="tag">Tecnolog&iacute;a</div>
+                        <h3>El laboratorio que quiere reinventar la inteligencia clim&aacute;tica</h3>
+                        <p>Una start-up espa&ntilde;ola comparte algoritmos abiertos para anticipar sequ&iacute;as y olas de calor.</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: TecnoPress</span>
+                            <span class="truth-pill" data-level="alto">Veracidad 78%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=tecnologia">Leer noticia completa &#10132;</a>
+                    </article>
+                    <article class="mosaic-story">
+                        <div class="tag">Econom&iacute;a</div>
+                        <h3>Las cifras del nuevo presupuesto y lo que significan para tu bolsillo</h3>
+                        <p>Gr&aacute;ficos interactivos muestran c&oacute;mo cambian los impuestos, el empleo y la inversi&oacute;n p&uacute;blica.</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: Mercado Global</span>
+                            <span class="truth-pill" data-level="bajo">Veracidad 28%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=economia">Leer noticia completa &#10132;</a>
+                    </article>
+                    <article class="mosaic-story">
+                        <div class="tag">Internacional</div>
+                        <h3>Las capitales europeas se reorganizan ante el ciclo electoral</h3>
+                        <p>Analizamos c&oacute;mo cada gobierno prepara pactos cruzados para asegurar mayor&iacute;as estables.</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: Tribune Europe</span>
+                            <span class="truth-pill" data-level="medio">Veracidad 52%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=internacional">Leer noticia completa &#10132;</a>
+                    </article>
+                    <article class="mosaic-story">
+                        <div class="tag">Salud</div>
+                        <h3>La medicina personalizada aterriza en los hospitales regionales</h3>
+                        <p>Primeros pacientes reciben tratamientos basados en gen&oacute;mica con resultados prometedores.</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: Salud Hoy</span>
+                            <span class="truth-pill" data-level="alto">Veracidad 89%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=salud">Leer noticia completa &#10132;</a>
+                    </article>
+                    <article class="mosaic-story">
+                        <div class="tag">Cultura</div>
+                        <h3>Agenda de fin de semana: exposiciones, teatro y m&uacute;sica</h3>
+                        <p>Una selecci&oacute;n curada para quienes buscan propuestas discretas y sofisticadas.</p>
+                        <div class="story-meta">
+                            <span class="story-source">Fuente: Radar Cultural</span>
+                            <span class="truth-pill" data-level="medio">Veracidad 55%</span>
+                        </div>
+                        <a class="detail-link" href="detalle.html?art=agenda">Leer noticia completa &#10132;</a>
+                    </article>
+                </div>
+            </section>
+
+            <p class="accessibility-copy">
+                Este m&oacute;dulo ser&aacute; desmontable y alojar&aacute; herramientas de lectura sencilla, contraste y audiodescripci&oacute;n.
+            </p>
+
+        </main>
+
+        <div class="accessibility-dock" data-access-dock>
+            <button class="dock-handle" type="button" aria-label="Ocultar opciones de accesibilidad" data-dock-toggle>&gt;</button>
+            <button class="accessibility-fab" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false">
+                <span class="sr-only">Accesibilidad</span>
+                <span class="wheelchair-icon">&#9855;</span>
+            </button>
+        </div>
+        <div class="accessibility-panel" aria-hidden="true" data-access-panel>
+            <header>
+                <h2>Accesibilidad</h2>
+                <button class="panel-close" type="button" aria-label="Cerrar panel">&times;</button>
+            </header>
+            <div class="panel-section">
+                <div class="control-row">
+                    <div class="control-text">
+                        <strong>Lectura en Voz Alta</strong>
+                        <small>Modo para ciegos</small>
+                    </div>
+                    <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="voice-mode">
+                        <span class="switch-thumb"></span>
+                    </button>
+                </div>
+                <div class="control-row">
+                    <div class="control-text">
+                        <strong>Alto contraste</strong>
+                        <small>Fondo oscuro y texto claro</small>
+                    </div>
+                    <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="high-contrast">
+                        <span class="switch-thumb"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-section">
+                <div class="control-row">
+                    <div class="control-text">
+                        <strong>Aumentar tama&ntilde;o del texto</strong>
+                        <small>Define el zoom de lectura</small>
+                    </div>
+                    <div class="text-scale-controls">
+                        <button type="button" class="text-scale-button" data-scale-step="-0.1" aria-label="Reducir texto">-</button>
+                        <span data-text-scale>100%</span>
+                        <button type="button" class="text-scale-button" data-scale-step="0.1" aria-label="Aumentar texto">+</button>
+                    </div>
+                </div>
+                <div class="control-row">
+                    <div class="control-text">
+                        <strong>Fuente Accesible / Disl&eacute;xica</strong>
+                        <small>Elige la tipograf&iacute;a</small>
+                    </div>
+                    <div class="font-picker" role="radiogroup" aria-label="Opciones de fuente accesible">
+                        <button type="button" class="font-choice" role="radio" aria-checked="true" data-font-class="font-accessible">Accesible</button>
+                        <button type="button" class="font-choice" role="radio" aria-checked="false" data-font-class="font-dyslexic">Disl&eacute;xica</button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-section">
+                <div class="control-row">
+                    <div class="control-text">
+                        <strong>Subrayar y resaltar enlaces</strong>
+                        <small>Ayuda a detectar destinos clicables</small>
+                    </div>
+                    <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="links-highlight">
+                        <span class="switch-thumb"></span>
+                    </button>
+                </div>
+                <div class="control-row">
+                    <div class="control-text">
+                        <strong>Desactivar animaciones</strong>
+                        <small>Elimina transiciones activas</small>
+                    </div>
+                    <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="animations-off">
+                        <span class="switch-thumb"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-dock" data-chat-dock>
+            <button class="chat-bubble" type="button" aria-label="Abrir chat con la IA" data-chat-toggle>
+                <span class="chat-avatar">&#129302;</span>
+            </button>
+            <section class="chat-panel" aria-hidden="true" data-chat-panel>
+                <header>
+                    <h3>Asistente IA</h3>
+                    <button class="chat-close" type="button" aria-label="Cerrar chat" data-chat-close>&times;</button>
+                </header>
+                <div class="chat-messages" data-chat-messages>
+                    <div class="chat-message bot" data-chat-greeting>
+                        Hola, soy Vera, la IA de La Verdad. Puedo ayudarte con esta sección.
+                    </div>
+                </div>
+                <form class="chat-input" data-chat-form>
+                    <button class="chat-mic" type="button" aria-label="Activar dictado" data-chat-mic>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+                            <path d="M12 18v3"></path>
+                            <path d="M9 21h6"></path>
+                        </svg>
+                    </button>
+                    <label class="sr-only" for="chat-textarea">Escribe tu pregunta</label>
+                    <textarea id="chat-textarea" data-chat-input placeholder="Pregúntame algo sobre esta página..."></textarea>
+                    <button class="chat-send" type="submit" aria-label="Enviar mensaje" data-chat-send disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M3 11l18-8-8 18-2.5-6L3 11z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const menuToggleBtn = document.querySelector(".menu-toggle");
+        const navOverlay = document.querySelector(".nav-overlay");
+        const drawerCloseBtn = document.querySelector(".drawer-close");
+
+        const openDrawer = () => {
+            navOverlay.classList.add("is-visible");
+            navOverlay.setAttribute("aria-hidden", "false");
+            document.body.classList.add("menu-open");
+            menuToggleBtn.setAttribute("aria-expanded", "true");
+        };
+
+        const closeDrawer = () => {
+            navOverlay.classList.remove("is-visible");
+            navOverlay.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("menu-open");
+            menuToggleBtn.setAttribute("aria-expanded", "false");
+        };
+        window.LaVerdadCloseDrawer = closeDrawer;
+
+        menuToggleBtn.addEventListener("click", openDrawer);
+        drawerCloseBtn.addEventListener("click", closeDrawer);
+        navOverlay.addEventListener("click", (event) => {
+            if (event.target === navOverlay) {
+                closeDrawer();
+            }
+        });
+
+        const fab = document.querySelector(".accessibility-fab");
+        const panel = document.querySelector(".accessibility-panel");
+        const closePanelBtn = document.querySelector(".panel-close");
+        const scaleLabel = document.querySelector("[data-text-scale]");
+        const textButtons = document.querySelectorAll(".text-scale-button");
+        const switchButtons = document.querySelectorAll(".access-switch");
+        const fontChoices = document.querySelectorAll(".font-choice");
+        let textScale = 1;
+
+        const updateScale = () => {
+            const clamped = Math.min(1.4, Math.max(0.85, textScale));
+            textScale = clamped;
+            document.documentElement.style.setProperty("--text-scale", clamped);
+            scaleLabel.textContent = Math.round(clamped * 100) + "%";
+        };
+
+        const openPanel = () => {
+            panel.classList.add("is-visible");
+            panel.setAttribute("aria-hidden", "false");
+            fab.setAttribute("aria-expanded", "true");
+            dock.classList.add("is-hidden");
+        };
+
+        const closePanel = () => {
+            panel.classList.remove("is-visible");
+            panel.setAttribute("aria-hidden", "true");
+            fab.setAttribute("aria-expanded", "false");
+            dock.classList.remove("is-hidden");
+            syncDockState();
+        };
+
+        const handleEsc = (event) => {
+            if (event.key === "Escape" && navOverlay.classList.contains("is-visible")) {
+                closeDrawer();
+            }
+        };
+
+        document.addEventListener("keydown", handleEsc);
+
+        const userArea = document.querySelector("[data-user-area]");
+        const loginLinkEl = document.querySelector("[data-login-link]");
+        const userPillEl = document.querySelector("[data-user-pill]");
+        const topDivider = document.querySelector("[data-top-divider]");
+        const languageSelector = document.querySelector("[data-language]");
+        const languageToggle = languageSelector.querySelector(".language-toggle");
+        const languageMenu = languageSelector.querySelector(".language-menu");
+        const languageOptions = languageSelector.querySelectorAll("[data-lang-option]");
+        const currentLang = languageSelector.querySelector("[data-current-lang]");
+
+        const chatDock = document.querySelector("[data-chat-dock]");
+        const chatToggle = document.querySelector("[data-chat-toggle]");
+        const chatPanel = document.querySelector("[data-chat-panel]");
+        const chatCloseBtn = document.querySelector("[data-chat-close]");
+        const chatMessages = document.querySelector("[data-chat-messages]");
+        const chatInput = document.querySelector("[data-chat-input]");
+        const chatSendBtn = document.querySelector("[data-chat-send]");
+        const chatGreeting = document.querySelector("[data-chat-greeting]");
+        const chatForm = document.querySelector("[data-chat-form]");
+        const ROLE_KEY = "laVerdadRole";
+
+        const pageContextLabel = () => document.body.dataset.pageContext || document.title;
+
+        const params = new URLSearchParams(window.location.search);
+        const incomingUser = params.get("user");
+        const isLogout = params.has("logout");
+        if (isLogout) {
+            localStorage.removeItem("laVerdadUser");
+            localStorage.removeItem(ROLE_KEY);
+            document.dispatchEvent(new CustomEvent("laverdad:role-change"));
+        }
+        if (incomingUser) {
+            const safeName = incomingUser.trim();
+            if (safeName) {
+                localStorage.setItem("laVerdadUser", safeName);
+            }
+            if (history.replaceState) {
+                history.replaceState({}, document.title, window.location.pathname);
+            }
+        } else if (isLogout) {
+            if (history.replaceState) {
+                history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        const renderUserState = () => {
+            const storedUser = localStorage.getItem("laVerdadUser");
+            if (storedUser) {
+                userPillEl.innerHTML = `${storedUser} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path></svg>`;
+                userPillEl.style.display = "inline-flex";
+                userPillEl.dataset.username = storedUser;
+                loginLinkEl.style.display = "none";
+                topDivider.style.display = "inline";
+            } else {
+                userPillEl.style.display = "none";
+                userPillEl.removeAttribute("data-username");
+                loginLinkEl.style.display = "inline";
+                topDivider.style.display = "inline";
+            }
+        };
+
+        renderUserState();
+
+        userPillEl.addEventListener("click", (event) => {
+            const storedUser = localStorage.getItem("laVerdadUser");
+            if (!storedUser) {
+                event.preventDefault();
+                loginLinkEl.click();
+                return;
+            }
+            userPillEl.href = `perfil.html?user=${encodeURIComponent(storedUser)}`;
+        });
+
+        const refreshChatGreeting = () => {
+            if (chatGreeting) {
+                chatGreeting.textContent = `Hola, soy Vera, la IA de La Verdad. Estás leyendo ${pageContextLabel()}. Pregúntame sobre esta sección o cualquier duda que tengas.`;
+            }
+        };
+
+        refreshChatGreeting();
+
+        const updateSendState = () => {
+            const hasText = chatInput.value.trim().length > 0;
+            chatSendBtn.disabled = !hasText;
+            chatSendBtn.classList.toggle("is-active", hasText);
+        };
+
+        const openChat = () => {
+            chatPanel.classList.add("is-visible");
+            chatPanel.setAttribute("aria-hidden", "false");
+            chatToggle.classList.add("is-hidden");
+        };
+
+        const closeChat = () => {
+            chatPanel.classList.remove("is-visible");
+            chatPanel.setAttribute("aria-hidden", "true");
+            chatToggle.classList.remove("is-hidden");
+        };
+
+        chatToggle.addEventListener("click", openChat);
+        chatCloseBtn.addEventListener("click", closeChat);
+        chatInput.addEventListener("input", updateSendState);
+        updateSendState();
+
+        chatForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) {
+                return;
+            }
+            const userMsg = document.createElement("div");
+            userMsg.className = "chat-message user";
+            userMsg.textContent = text;
+            chatMessages.appendChild(userMsg);
+
+            const botMsg = document.createElement("div");
+            botMsg.className = "chat-message bot";
+            botMsg.textContent = `En breve podré darte respuestas personalizadas sobre ${pageContextLabel()}.`;
+            chatMessages.appendChild(botMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatInput.value = "";
+            updateSendState();
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && chatPanel.classList.contains("is-visible")) {
+                closeChat();
+            }
+        });
+
+        const openLanguageMenu = () => {
+            languageSelector.classList.add("open");
+            languageToggle.setAttribute("aria-expanded", "true");
+        };
+
+        const closeLanguageMenu = () => {
+            languageSelector.classList.remove("open");
+            languageToggle.setAttribute("aria-expanded", "false");
+        };
+
+        languageToggle.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const isOpen = languageSelector.classList.contains("open");
+            if (isOpen) {
+                closeLanguageMenu();
+            } else {
+                openLanguageMenu();
+            }
+        });
+
+        languageOptions.forEach((option) => {
+            option.addEventListener("click", () => {
+                const lang = option.dataset.langOption;
+                currentLang.textContent = lang;
+                closeLanguageMenu();
+            });
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!languageSelector.contains(event.target)) {
+                closeLanguageMenu();
+            }
+
+            if (
+                chatPanel.classList.contains("is-visible") &&
+                !chatPanel.contains(event.target) &&
+                !chatToggle.contains(event.target)
+            ) {
+                closeChat();
+            }
+        });
+
+        const toolsMenu = document.querySelector("[data-tools-menu]");
+        const toolsToggle = toolsMenu ? toolsMenu.querySelector(".tools-toggle") : null;
+        if (toolsToggle && toolsMenu) {
+            toolsToggle.addEventListener("click", (event) => {
+                event.stopPropagation();
+                toolsMenu.classList.toggle("is-open");
+            });
+
+            document.addEventListener("click", (event) => {
+                if (!toolsMenu.contains(event.target)) {
+                    toolsMenu.classList.remove("is-open");
+                }
+            });
+        }
+
+    </script>
+    <script>
+        (function () {
+            const guestBlocks = document.querySelectorAll("[data-drawer-guest]");
+            const userBlocks = document.querySelectorAll("[data-drawer-user]");
+            const usernameSpans = document.querySelectorAll("[data-drawer-username]");
+            const userLinks = document.querySelectorAll("[data-drawer-userlink]");
+            const logoutButtons = document.querySelectorAll("[data-drawer-logout]");
+            const storedUser = localStorage.getItem("laVerdadUser");
+
+            if (storedUser) {
+                guestBlocks.forEach((block) => (block.style.display = "none"));
+                userBlocks.forEach((block) => (block.style.display = "flex"));
+                usernameSpans.forEach((span) => (span.textContent = storedUser));
+                userLinks.forEach((link) =>
+                    link.setAttribute("href", `perfil.html?user=${encodeURIComponent(storedUser)}`)
+                );
+            } else {
+                guestBlocks.forEach((block) => (block.style.display = "flex"));
+                userBlocks.forEach((block) => (block.style.display = "none"));
+            }
+
+            logoutButtons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    localStorage.removeItem("laVerdadUser");
+                    localStorage.removeItem("laVerdadEmail");
+                    localStorage.removeItem("laVerdadRole");
+                    document.dispatchEvent(new CustomEvent("laverdad:role-change"));
+                    window.location.href = "archivp.html?logout=1";
+                });
+            });
+        })();
+    </script>
+    <script src="accessibility.js"></script>
+
+    <footer class="site-footer">
+        <div class="footer-logo">La Verdad</div>
+        <ul class="footer-nav">
+            <li><a href="#internacional" class="nav-tooltip" data-tip="Cobertura global de pol&iacute;tica y econom&iacute;a.">Internacional</a></li>
+            <li><a href="#espana" class="nav-tooltip" data-tip="Actualidad nacional explicada con contexto regional.">Espa&ntilde;a</a></li>
+            <li><a href="#economia" class="nav-tooltip" data-tip="Mercados, empresas y empleo.">Econom&iacute;a</a></li>
+            <li><a href="#sociedad" class="nav-tooltip" data-tip="Historias humanas, educaci&oacute;n y justicia social.">Sociedad</a></li>
+            <li><a href="#salud" class="nav-tooltip" data-tip="Sanidad p&uacute;blica y bienestar cotidiano.">Salud</a></li>
+            <li><a href="#tecnologia" class="nav-tooltip" data-tip="Innovaci&oacute;n, ciencia y tendencias digitales.">Tecnolog&iacute;a</a></li>
+            <li><a href="#cultura" class="nav-tooltip" data-tip="Artes, literatura y ocio cultural.">Cultura</a></li>
+            <li><a href="foro.html" class="nav-tooltip" data-tip="Debates y comunidad de lectores.">Foro</a></li>
+            <li><a href="resumen.html" class="nav-tooltip" data-tip="Resumen autom&aacute;tico de cada noticia.">Resumen</a></li>
+            <li><a href="analisis.html" class="nav-tooltip" data-tip="Analiza credibilidad, sesgos y tono.">An&aacute;lisis</a></li>
+        </ul>
+        <div class="footer-social">
+            <span>S&iacute;guenos</span>
+            <div class="social-icons">
+                <a class="social-icon" href="#" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                        <path d="M17.83 3h3.37l-7.37 8.42L22 21h-6.56l-5.14-6.45L4 21H.63l7.88-9L0 3h6.69l4.73 5.97L17.83 3z"></path>
+                    </svg>
+                </a>
+                <a class="social-icon" href="#" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                        <path d="M13.5 8.6V6.6c0-.7.5-1.3 1.2-1.3H16V2h-2.3C12 2 10.6 3.4 10.6 5.1v3.5H8V12h2.6v10H13.5V12H16l.5-3.4h-3z"></path>
+                    </svg>
+                </a>
+                <a class="social-icon" href="#" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                        <path d="M12 7.3A4.7 4.7 0 1 0 16.7 12 4.71 4.71 0 0 0 12 7.3zm0 7.7A3 3 0 1 1 15 12a3 3 0 0 1-3 3zm4.92-8.35a1.09 1.09 0 1 0 1.09 1.09 1.09 1.09 0 0 0-1.09-1.09z"></path>
+                        <path d="M17.89 3H6.11A3.11 3.11 0 0 0 3 6.11v11.78A3.11 3.11 0 0 0 6.11 21h11.78A3.11 3.11 0 0 0 21 17.89V6.11A3.11 3.11 0 0 0 17.89 3zm1.94 14.89a1.94 1.94 0 0 1-1.94 1.94H6.11a1.94 1.94 0 0 1-1.94-1.94V6.11A1.94 1.94 0 0 1 6.11 4.17h11.78a1.94 1.94 0 0 1 1.94 1.94z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-legal">
+            <a href="#">Condiciones de uso</a>
+            <a href="#">T&eacute;rminos de suscripci&oacute;n</a>
+            <a href="#">Sobre La Verdad</a>
+            <a href="#">Pol&iacute;tica de privacidad</a>
+            <a href="#">Cookies</a>
+            <a href="#">Accesibilidad</a>
+            <a href="#">Ayuda</a>
+            <a href="#">Publicidad</a>
+            <a href="#">No vender mi informaci&oacute;n</a>
+            <a href="#">Centro de ayuda</a>
+            <a href="#">Mapa de contenidos</a>
+        </div>
+        <p class="footer-copy">
+            &copy; 2025 La Verdad. Todos los derechos reservados. La Verdad no se responsabiliza del contenido de sitios externos.
+            <a href="#">Lee nuestro enfoque sobre enlaces externos.</a>
+        </p>
+    </footer>
+</body>
+</html>
+

@@ -1,0 +1,1730 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sección | La Verdad</title>
+    <style>
+        :root {
+            --ink: #0f0f0f;
+            --soft: #6b6b6b;
+            --border: #dcdcdc;
+            --accent: #f1b500;
+            --text-scale: 1;
+            --font-base: "Inter", "Roboto", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-base);
+            background: #fff;
+            color: var(--ink);
+            font-size: calc(16px * var(--text-scale));
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="search"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea {
+            font-family: var(--font-base);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink);
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="search"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--ink);
+            box-shadow: 0 0 0 2px rgba(15, 15, 15, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--soft, var(--soft-ink, #6b6b6b));
+            opacity: 1;
+        }
+
+        .header-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--ink);
+            padding: 16px 0 12px;
+            position: relative;
+        }
+
+        .menu-toggle {
+            border: none;
+            background: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--ink);
+        }
+
+        .wordmark {
+            font-family: var(--font-base);
+            font-size: 28px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .wordmark a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .login-link {
+            text-decoration: none;
+            color: var(--soft);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-toggle {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .language-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+            min-width: 140px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            list-style: none;
+            margin: 0;
+            z-index: 60;
+        }
+
+        .language-menu.open {
+            display: block;
+        }
+
+        .language-menu button {
+            width: 100%;
+            border: none;
+            background: none;
+            text-align: left;
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-base);
+            cursor: pointer;
+        }
+
+        nav.section-nav {
+            border-bottom: 2px solid var(--ink);
+        }
+
+        nav.section-nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin: 0;
+            padding: 12px 0;
+            font-size: 15px;
+        }
+
+        nav.section-nav li {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        nav.section-nav li + li {
+            padding-left: 16px;
+        }
+
+        nav.section-nav li + li::before {
+            content: "|";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0,0,0,0.35);
+        }
+
+        nav.section-nav a {
+            text-decoration: none;
+            color: var(--ink);
+            text-align: center;
+            letter-spacing: 0.04em;
+            padding: 6px 0 10px;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        nav.section-nav a:focus-visible {
+            outline: 2px solid var(--ink);
+            outline-offset: 4px;
+        }
+
+        /* Destaca claramente la categoría activa dentro del menú de secciones */
+        nav.section-nav a.topic-active {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+        }
+
+        nav.section-nav a.topic-active::after {
+            content: none;
+        }
+
+        .nav-tooltip {
+            position: relative;
+        }
+
+        /* Reubica el tooltip en ::before para no interferir con el indicador activo */
+        .nav-tooltip::before {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
+            margin-top: 8px;
+            background: #111;
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            z-index: 5;
+        }
+
+        .nav-tooltip:hover::before {
+            opacity: 1;
+        }
+
+        .auth-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 100;
+        }
+
+        .auth-modal.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auth-modal-card {
+            background: #fff;
+            border-radius: 32px;
+            padding: 36px 40px;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+        }
+
+        .auth-modal-card h3 {
+            margin: 0 0 12px;
+            font-size: 24px;
+        }
+
+        .auth-modal-card p {
+            margin: 0 0 24px;
+            color: var(--soft);
+        }
+
+        .auth-modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .auth-modal-actions .primary {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            background: var(--ink);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .auth-modal-actions button {
+            border-radius: 999px;
+            border: 1px solid var(--ink);
+            padding: 12px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        [data-journalist-link] {
+            display: none;
+        }
+
+        body.is-journalist [data-journalist-link] {
+            display: list-item;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 40;
+        }
+
+        .nav-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-drawer {
+            width: min(400px, 90vw);
+            background: #050505;
+            color: #f4f4f4;
+            height: 100%;
+            padding: 28px 30px 60px;
+            transform: translateX(-20px);
+            transition: transform 0.25s ease;
+            overflow-y: auto;
+        }
+        .nav-overlay.is-visible .nav-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-section + .drawer-section {
+            border-top: 1px solid rgba(255,255,255,0.12);
+            margin-top: 24px;
+            padding-top: 24px;
+        }
+
+        .drawer-section h3 {
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin: 0 0 14px;
+        }
+
+        .drawer-list,
+        .drawer-actions {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drawer-list a,
+        .drawer-list button {
+            color: inherit;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 16px;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .drawer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .drawer-actions-user {
+            flex-direction: column;
+        }
+
+        .drawer-user-pill {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 18px;
+            padding: 12px 18px;
+        }
+
+        .drawer-logout {
+            width: 100%;
+            border: 1px solid #d93025;
+            border-radius: 999px;
+            padding: 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: #d93025;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .section-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 16px 80px;
+        }
+
+        .section-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 12px;
+            color: var(--soft);
+        }
+
+        .section-pill::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ink);
+        }
+
+        .section-shell h1 {
+            font-family: var(--font-base);
+            font-size: clamp(28px, 3vw, 42px);
+            margin: 16px 0 10px;
+        }
+
+        .section-shell p.section-description {
+            margin: 0 0 32px;
+            font-size: 18px;
+            color: var(--soft);
+            max-width: 760px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: minmax(0,2fr) minmax(0,1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        /* Refuerza visualmente la historia principal */
+        .hero-card {
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f6f2e8, #ffffff);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .hero-card h2 {
+            font-size: clamp(30px, 4vw, 46px);
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .hero-card p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .feature-side {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Compacta las tarjetas secundarias para reforzar la jerarquía */
+        .feature-side article {
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 18px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature-side article h3 {
+            font-size: 20px;
+            margin: 4px 0;
+        }
+
+        .tag {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 12px;
+            color: var(--soft);
+        }
+
+        .story-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .story-source {
+            font-weight: 600;
+        }
+
+        .truth-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid currentColor;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .truth-pill::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .truth-pill[data-level="bajo"] { color: #c91f37; }
+        .truth-pill[data-level="medio"] { color: #c58600; }
+        .truth-pill[data-level="alto"] { color: #0f8a46; }
+
+        /* Estado neutro para los casos en evaluación */
+        .truth-pill.is-pending {
+            color: #8e8e8e;
+            border-color: #d7d7d7;
+            background: #f6f6f6;
+        }
+
+        .favorite-button {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: #fff;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .favorite-button.is-active {
+            background: #0f0f0f;
+            color: #fff;
+            border-color: #0f0f0f;
+        }
+
+        .favorite-button .favorite-icon {
+            font-size: 15px;
+            color: #b8a879;
+            transition: color 0.2s ease;
+        }
+
+        .favorite-button:hover,
+        .favorite-button:focus-visible {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .favorite-button:hover .favorite-icon,
+        .favorite-button.is-active .favorite-icon {
+            color: #f1b500;
+        }
+
+        .detail-link {
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink);
+            margin-top: auto;
+        }
+
+        .news-mosaic {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .news-card {
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 18px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 200px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .news-card.is-horizontal {
+            flex-direction: row;
+        }
+
+        .news-card.is-horizontal .card-body {
+            flex: 1;
+        }
+
+        .news-card .card-body h3 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        }
+
+        .news-card .card-body p {
+            margin: 0;
+            color: var(--soft);
+        }
+
+        /* Microinteracción visual para resaltar la interactividad de las tarjetas */
+        .news-card:hover,
+        .news-card:focus-within {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .briefs-panel {
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            padding: 24px;
+            background: #fff;
+        }
+
+        .briefs-panel h2 {
+            margin: 0 0 16px;
+            font-size: 20px;
+        }
+
+        .briefs-panel ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .briefs-panel li {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 15px;
+        }
+
+        /* Nuevos enlaces informativos dentro de la sección de complementos */
+        .supplement-links {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            font-size: 14px;
+        }
+
+        .supplement-links a {
+            color: var(--soft);
+            text-decoration: none;
+        }
+
+        .supplement-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Se oculta el asa flotante que generaba el rectángulo sin contexto */
+        .dock-handle {
+            display: none;
+        }
+
+        .briefs-meta {
+            color: var(--soft);
+            font-size: 13px;
+        }
+
+        @media (max-width: 960px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card {
+                padding: 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="accessibility.css">
+</head>
+<body id="top">
+    <div class="header-shell">
+        <header data-global-header>
+            <button class="menu-toggle" type="button" aria-label="Abrir men&uacute; de navegaci&oacute;n" aria-expanded="false" aria-controls="menu-lateral">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="wordmark"><a href="archivp.html">La Verdad</a></div>
+            <div class="top-actions" data-user-area>
+                <a class="login-link" href="login.html" data-login-link>iniciar sesi&oacute;n</a>
+                <a class="user-pill" data-user-pill href="perfil.html" aria-label="Abrir perfil"></a>
+                <span class="top-divider" aria-hidden="true" data-top-divider>|</span>
+                <div class="language-selector" data-language>
+                    <button class="language-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span data-current-lang>ES</span>
+                        <span aria-hidden="true">&#x25BE;</span>
+                    </button>
+                    <ul class="language-menu" role="listbox" data-language-menu>
+                        <li><button type="button" data-lang-option="ES"><strong>ES</strong><span>Espa&ntilde;ol</span></button></li>
+                        <li><button type="button" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                        <li><button type="button" data-lang-option="PT"><strong>PT</strong><span>Portugu&eacute;s</span></button></li>
+                        <li><button type="button" data-lang-option="FR"><strong>FR</strong><span>Fran&ccedil;ais</span></button></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <nav class="section-nav" aria-label="Secciones principales">
+            <ul>
+                <li><a href="seccion.html?cat=internacional" data-topic-link="internacional" class="nav-tooltip" data-tip="Cobertura global de pol&iacute;tica y econom&iacute;a.">Internacional</a></li>
+                <li><a href="seccion.html?cat=espana" data-topic-link="espana" class="nav-tooltip" data-tip="Actualidad nacional explicada con contexto regional.">Espa&ntilde;a</a></li>
+                <li><a href="seccion.html?cat=economia" data-topic-link="economia" class="nav-tooltip" data-tip="Mercados, empresas y empleo.">Econom&iacute;a</a></li>
+                <li><a href="seccion.html?cat=sociedad" data-topic-link="sociedad" class="nav-tooltip" data-tip="Historias humanas, educaci&oacute;n y justicia social.">Sociedad</a></li>
+                <li><a href="seccion.html?cat=salud" data-topic-link="salud" class="nav-tooltip" data-tip="Sanidad p&uacute;blica y bienestar cotidiano.">Salud</a></li>
+                <li><a href="seccion.html?cat=tecnologia" data-topic-link="tecnologia" class="nav-tooltip" data-tip="Innovaci&oacute;n, ciencia y tendencias digitales.">Tecnolog&iacute;a</a></li>
+                <li><a href="seccion.html?cat=cultura" data-topic-link="cultura" class="nav-tooltip" data-tip="Artes, literatura y ocio cultural.">Cultura</a></li>
+                <li><a href="foro.html" data-topic-link="foro" class="nav-tooltip" data-tip="Debates y comunidad de lectores.">Foro</a></li>
+                <li><a href="resumen.html" data-topic-link="resumen" class="nav-tooltip" data-tip="Resumen autom&aacute;tico de cada noticia.">Resumen</a></li>
+                <li><a href="analisis.html" data-topic-link="analisis" class="nav-tooltip" data-tip="Analiza credibilidad, sesgos y tono.">An&aacute;lisis</a></li>
+                <li data-journalist-link hidden><a href="redaccion.html" data-topic-link="redaccion" class="nav-tooltip" data-tip="Crea, revisa y prepara tus noticias antes de publicarlas.">Redacci&oacute;n</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="nav-overlay" id="menu-lateral" data-nav-overlay aria-hidden="true">
+        <nav class="nav-drawer" role="navigation" aria-label="Menú principal" aria-labelledby="drawer-title">
+            <div class="drawer-top">
+                <button class="drawer-close" type="button" aria-label="Cerrar men&uacute;" data-drawer-close>&times;</button>
+            </div>
+            <div class="drawer-section">
+                <h3 id="drawer-title">Explorar</h3>
+                <div class="drawer-search">
+                    <input type="search" placeholder="Buscar en La Verdad">
+                    <button class="mic-button" type="button" aria-label="Buscar por voz">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+                            <path d="M12 18v3"></path>
+                            <path d="M9 21h6"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="drawer-section" data-language>
+                <h3>Idioma</h3>
+                <div class="language-selector">
+                    <button class="language-toggle" type="button" aria-label="Cambiar idioma" aria-haspopup="listbox" aria-expanded="false">
+                        <span data-current-lang>ES</span>
+                        <span aria-hidden="true">&#x25BE;</span>
+                    </button>
+                    <ul class="language-menu" role="listbox">
+                        <li><button type="button" data-lang-option="ES"><strong>ES</strong><span>Espa&ntilde;ol</span></button></li>
+                        <li><button type="button" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                        <li><button type="button" data-lang-option="PT"><strong>PT</strong><span>Portugu&eacute;s</span></button></li>
+                        <li><button type="button" data-lang-option="FR"><strong>FR</strong><span>Fran&ccedil;ais</span></button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="drawer-section">
+                <h3>Categor&iacute;as</h3>
+                <ul class="drawer-list">
+                    <li><a href="seccion.html?cat=internacional" data-topic-link="internacional">Internacional</a></li>
+                    <li><a href="seccion.html?cat=espana" data-topic-link="espana">Espa&ntilde;a</a></li>
+                    <li><a href="seccion.html?cat=economia" data-topic-link="economia">Econom&iacute;a</a></li>
+                    <li><a href="seccion.html?cat=sociedad" data-topic-link="sociedad">Sociedad</a></li>
+                    <li><a href="seccion.html?cat=salud" data-topic-link="salud">Salud</a></li>
+                    <li><a href="seccion.html?cat=tecnologia" data-topic-link="tecnologia">Tecnolog&iacute;a</a></li>
+                    <li><a href="seccion.html?cat=cultura" data-topic-link="cultura">Cultura</a></li>
+                    <li><a href="foro.html" data-topic-link="foro">Foro</a></li>
+                    <li><a href="resumen.html" data-topic-link="resumen">Resumen</a></li>
+                    <li><a href="analisis.html" data-topic-link="analisis">An&aacute;lisis</a></li>
+                    <li data-journalist-link hidden><a href="redaccion.html" data-topic-link="redaccion">Redacci&oacute;n</a></li>
+                </ul>
+            </div>
+            <div class="drawer-section">
+                <h3>Accesibilidad</h3>
+                <ul class="drawer-list">
+                    <li><button type="button" data-open-access-panel>Preferencias visuales</button></li>
+                    <li><button type="button" data-open-access-panel>Lectura asistida</button></li>
+                    <li><button type="button" data-open-access-panel>Controles de interacci&oacute;n</button></li>
+                </ul>
+            </div>
+            <div class="drawer-section">
+                <h3>&Aacute;rea de usuario</h3>
+                <div class="drawer-actions" data-drawer-guest>
+                    <a class="chip-link" href="login.html" data-drawer-login>Iniciar sesi&oacute;n</a>
+                    <a class="chip-link" href="signup.html" data-drawer-register>Registrarse</a>
+                </div>
+                <div class="drawer-actions drawer-actions-user" data-drawer-user style="display:none;">
+                    <a class="chip-link drawer-user-pill" href="perfil.html" data-drawer-userlink>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path>
+                        </svg>
+                        <span data-drawer-username>Usuario</span>
+                    </a>
+                    <button class="chip-link drawer-logout" type="button" data-drawer-logout>Cerrar sesi&oacute;n</button>
+                </div>
+            </div>
+            <div class="drawer-section">
+                <h3>Informaci&oacute;n general</h3>
+                <ul class="drawer-list">
+                    <li><a href="#">Qui&eacute;nes somos</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <main class="section-shell">
+        <section class="section-intro">
+            <p class="section-pill" data-section-pill>Actualidad</p>
+            <h1 data-section-title>Portada tem&aacute;tica</h1>
+            <p class="section-description" data-section-description>Actualizamos esta portada en tiempo real con los protagonistas y los datos verificados m&aacute;s relevantes.</p>
+        </section>
+
+        <section class="feature-grid">
+            <article class="hero-card" data-hero-main></article>
+            <div class="feature-side" data-hero-side></div>
+        </section>
+
+        <section class="news-mosaic" data-news-grid></section>
+
+        <section class="briefs-panel">
+            <h2>Complementos</h2>
+            <ul data-briefs-list></ul>
+            <!-- Enlaces informativos adicionales para mantener la navegación al pie -->
+            <div class="supplement-links" aria-label="Enlaces institucionales">
+                <a href="#">Sobre La Verdad</a>
+                <a href="#">Contacto</a>
+                <a href="#">Pol&iacute;tica de privacidad</a>
+                <a href="#">Accesibilidad</a>
+                <a href="#top">Volver arriba</a>
+            </div>
+        </section>
+    </main>
+
+    <div class="auth-modal" data-auth-modal aria-hidden="true">
+        <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="section-auth-title">
+            <h3 id="section-auth-title">Inicia sesi&oacute;n para guardar</h3>
+            <p>Necesitas una cuenta activa para guardar tus lecturas y recuperarlas luego.</p>
+            <div class="auth-modal-actions">
+                <a class="primary" href="login.html" data-auth-login>Iniciar sesi&oacute;n</a>
+                <button type="button" data-auth-dismiss>Seguir leyendo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="accessibility-dock" data-access-dock>
+        <button class="accessibility-fab" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false">
+            <span class="sr-only">Accesibilidad</span>
+            <span class="wheelchair-icon">&#9855;</span>
+        </button>
+    </div>
+    <div class="accessibility-panel" aria-hidden="true" data-access-panel>
+        <header>
+            <h2>Accesibilidad</h2>
+            <button class="panel-close" type="button" aria-label="Cerrar panel">&times;</button>
+        </header>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Lectura en Voz Alta</strong>
+                    <small>Modo para ciegos</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="voice-mode">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Alto contraste</strong>
+                    <small>Fondo oscuro y texto claro</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="high-contrast">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Aumentar tama&ntilde;o del texto</strong>
+                    <small>Define el zoom de lectura</small>
+                </div>
+                <div class="text-scale-controls">
+                    <button type="button" class="text-scale-button" data-scale-step="-0.1" aria-label="Reducir texto">-</button>
+                    <span data-text-scale>100%</span>
+                    <button type="button" class="text-scale-button" data-scale-step="0.1" aria-label="Aumentar texto">+</button>
+                </div>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Fuente accesible / disl&eacute;xica</strong>
+                    <small>Elige la tipograf&iacute;a</small>
+                </div>
+                <div class="font-picker" role="radiogroup" aria-label="Opciones de fuente accesible">
+                    <button type="button" class="font-choice" role="radio" aria-checked="true" data-font-class="font-accessible">Accesible</button>
+                    <button type="button" class="font-choice" role="radio" aria-checked="false" data-font-class="font-dyslexic">Disl&eacute;xica</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Subrayar y resaltar enlaces</strong>
+                    <small>Ayuda a detectar destinos clicables</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="links-highlight">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Desactivar animaciones</strong>
+                    <small>Elimina transiciones activas</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="animations-off">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="header.js"></script>
+    <script src="accessibility.js"></script>
+    <script>
+        const SECTION_DATA = {
+            internacional: {
+                label: "Internacional",
+                strap: "Cobertura global",
+                intro: "Seguimos minuto a minuto los movimientos diplomáticos y los mercados que condicionan la agenda mundial.",
+                hero: {
+                    main: {
+                        tag: "Geopolítica",
+                        title: "Los países bálticos blindan su cooperación energética",
+                        summary: "La cumbre en Tallin acelera una red compartida para limitar la dependencia del gas ruso.",
+                        source: "Fuente: Baltic Watch",
+                        veracity: 74,
+                        link: "detalle.html?art=internacional-baltico"
+                    },
+                    side: [
+                        {
+                            tag: "Diplomacia",
+                            title: "Washington y Bruselas preparan un frente común",
+                            summary: "Equipos técnicos definen un arbitraje antes de la campaña electoral.",
+                            source: "Fuente: Atlantic Report",
+                            veracity: 66,
+                            link: "detalle.html?art=internacional-subsidios"
+                        },
+                        {
+                            tag: "Conflictos",
+                            title: "El acuerdo humanitario en el Sahel abre un corredor médico",
+                            summary: "Médicos locales describen las primeras evacuaciones seguras desde abril.",
+                            source: "Fuente: Observatorio Sahel",
+                            veracity: 81,
+                            link: "detalle.html?art=internacional-sahel"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Cumbres",
+                        title: "Asia-Pacífico apuesta por arbitrajes de renovables",
+                        summary: "Japón impulsa una alianza de bancos verdes para financiar la transición en el sudeste asiático.",
+                        source: "Fuente: Nikkei",
+                        veracity: 69,
+                        link: "detalle.html?art=internacional-apac",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Mercados",
+                        title: "Las materias primas saltan tras el cierre del Corredor Negro",
+                        summary: "El cereal ucraniano y el cobre chileno empujan una subida que ya impacta en la inflación.",
+                        source: "Fuente: Commodities Desk",
+                        veracidad: 58,
+                        link: "detalle.html?art=internacional-corridor"
+                    },
+                    {
+                        tag: "Reportaje",
+                        title: "México teje alianzas locales para sostener sus ciudades santuario",
+                        summary: "Ondas de solidaridad mantienen comedores y clínicas con apoyo ciudadano.",
+                        source: "Fuente: Ruta 50",
+                        veracidad: 83,
+                        link: "detalle.html?art=internacional-santuario"
+                    },
+                    {
+                        tag: "Opinión",
+                        title: "Argentina busca inversión del Golfo para hidrógeno",
+                        summary: "El gabinete económico viaja a Doha con propuestas de agroindustria.",
+                        source: "Fuente: Cono Sur Monitor",
+                        veracidad: 51,
+                        link: "detalle.html?art=internacional-argentina"
+                    }
+                ],
+                briefs: [
+                    { title: "Podcast: claves del debate electoral en Surinam", meta: "Audio · 6 min", link: "detalle.html?art=internacional-podcast" },
+                    { title: "Newsletter: tratado digital UE-ASEAN", meta: "Boletín diario", link: "detalle.html?art=internacional-newsletter" },
+                    { title: "Fotogalería: reconstrucción en Marruecos", meta: "Reportaje visual", link: "detalle.html?art=internacional-fotos" }
+                ]
+            },
+            espana: {
+                label: "España",
+                strap: "Territorio",
+                intro: "Las comunidades autónomas actualizan infraestructuras, educación y agenda económica.",
+                hero: {
+                    main: {
+                        tag: "Congreso",
+                        title: "El nuevo paquete fiscal incentiva la vivienda sostenible",
+                        summary: "Los grupos ultiman un texto que bonifica reformas en barrios con rehabilitación colectiva.",
+                        source: "Fuente: Boletín Cortes",
+                        veracity: 72,
+                        link: "detalle.html?art=espana-fiscal"
+                    },
+                    side: [
+                        {
+                            tag: "Sanidad",
+                            title: "Castilla y León activa un turno extra para reducir listas",
+                            summary: "El plan permite pagar guardias compartidas con fondos europeos.",
+                            source: "Fuente: Salud Autonómica",
+                            veracity: 79,
+                            link: "detalle.html?art=espana-guardias"
+                        },
+                        {
+                            tag: "Educación",
+                            title: "Andalucía estrena bachillerato bilingüe rural",
+                            summary: "Clases presenciales y streaming con docentes nativos y tutoría compartida.",
+                            source: "Fuente: Aula Abierta",
+                            veracity: 82,
+                            link: "detalle.html?art=espana-bachillerato"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Economía",
+                        title: "El corredor mediterráneo fija nuevas obras para 2025",
+                        summary: "Cataluña y Valencia pactan calendarios y nodos logísticos.",
+                        source: "Fuente: Infraestructuras",
+                        veracity: 67,
+                        link: "detalle.html?art=espana-corredor",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Sociedad",
+                        title: "Galicia impulsa cooperativas de cuidados",
+                        summary: "Ayuntamientos pequeños agrupan servicios para hogares con dependencia.",
+                        source: "Fuente: Rede Atlántica",
+                        veracidad: 76,
+                        link: "detalle.html?art=espana-cuidados"
+                    },
+                    {
+                        tag: "Justicia",
+                        title: "El Poder Judicial propone tribunales itinerantes",
+                        summary: "La medida acercaría procedimientos mercantiles a zonas rurales.",
+                        source: "Fuente: Consejo Consultivo",
+                        veracidad: 54,
+                        link: "detalle.html?art=espana-tribunales"
+                    },
+                    {
+                        tag: "Cultura",
+                        title: "Red de teatros municipales estrena abonos flexibles",
+                        summary: "Los espectadores combinan danza, escena y música con un solo pase.",
+                        source: "Fuente: Escena Local",
+                        veracidad: 88,
+                        link: "detalle.html?art=espana-teatro"
+                    }
+                ],
+                briefs: [
+                    { title: "Radar autonómico: inversión verde en Navarra", meta: "Informe semanal", link: "detalle.html?art=espana-navarra" },
+                    { title: "Podcast: transporte metropolitano en Málaga", meta: "Audio · 5 min", link: "detalle.html?art=espana-malaga" },
+                    { title: "Newsletter: agenda educativa en Cataluña", meta: "Boletín diario", link: "detalle.html?art=espana-cataluna" }
+                ]
+            },
+            economia: {
+                label: "Economía",
+                strap: "Mercados y empresa",
+                intro: "Seguimos a los sectores que marcan la inversión, el empleo y los precios.",
+                hero: {
+                    main: {
+                        tag: "Banca",
+                        title: "Los grandes bancos pactan un código para hipotecas variables",
+                        summary: "Se limitarán subidas trimestrales y se ofrecerán prórrogas automáticas.",
+                        source: "Fuente: Plaza Financiera",
+                        veracity: 70,
+                        link: "detalle.html?art=economia-hipotecas"
+                    },
+                    side: [
+                        {
+                            tag: "Startups",
+                            title: "España lidera la captación de series B en ciberseguridad",
+                            summary: "Los fondos internacionales premian el talento en identidad digital.",
+                            source: "Fuente: Venture Atlas",
+                            veracity: 64,
+                            link: "detalle.html?art=economia-ciberseguridad"
+                        },
+                        {
+                            tag: "Trabajo",
+                            title: "Los nuevos PERTE recuperan plantillas industriales",
+                            summary: "Las plantas de baterías y chips anuncian 11.000 puestos en tres años.",
+                            source: "Fuente: Observatorio Laboral",
+                            veracidad: 86,
+                            link: "detalle.html?art=economia-perte"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Mercados",
+                        title: "Las empresas energéticas emiten deuda sostenible récord",
+                        summary: "Las colocaciones verdes superan los 6.000 millones en el primer trimestre.",
+                        source: "Fuente: Energy Ledger",
+                        veracidad: 73,
+                        link: "detalle.html?art=economia-verde",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Consumo",
+                        title: "El comercio minorista incorpora IA para ajustar inventarios",
+                        summary: "Cadenas de moda y alimentación reducen mermas con gemelos digitales.",
+                        source: "Fuente: Retail 4.0",
+                        veracidad: 62,
+                        link: "detalle.html?art=economia-retail"
+                    },
+                    {
+                        tag: "Inversión",
+                        title: "Los family office buscan acuerdos con universidades",
+                        summary: "Laboratorios mixtos aceleran patentes biofarmacéuticas.",
+                        source: "Fuente: Capital Académico",
+                        veracidad: 80,
+                        link: "detalle.html?art=economia-family"
+                    },
+                    {
+                        tag: "Tributos",
+                        title: "Hacienda ultima un visor único para pymes",
+                        summary: "Permitirá declarar IVA, IRPF y cotizaciones en un mismo panel.",
+                        source: "Fuente: Agencia Tributaria",
+                        veracidad: 59,
+                        link: "detalle.html?art=economia-visor"
+                    }
+                ],
+                briefs: [
+                    { title: "Podcast: ¿vuelven las fusiones bancarias?", meta: "Audio · 7 min", link: "detalle.html?art=economia-podcast" },
+                    { title: "Newsletter: inflación y cesta básica", meta: "Boletín diario", link: "detalle.html?art=economia-newsletter" },
+                    { title: "Guía rápida: bonos ligados al clima", meta: "Especial inversores", link: "detalle.html?art=economia-bonos" }
+                ]
+            },
+            sociedad: {
+                label: "Sociedad",
+                strap: "Personas",
+                intro: "Historias humanas, educación y justicia social con datos contrastados.",
+                hero: {
+                    main: {
+                        tag: "Vivienda",
+                        title: "Cooperativas urbanas liberan suelo para alquiler asequible",
+                        summary: "Madrid y Valencia ensayan cesiones de 30 años con tarifas moderadas.",
+                        source: "Fuente: Observatorio Urbano",
+                        veracity: 78,
+                        link: "detalle.html?art=sociedad-vivienda"
+                    },
+                    side: [
+                        {
+                            tag: "Juventud",
+                            title: "El voluntariado suma créditos en bachillerato",
+                            summary: "Programas piloto reconocen proyectos sociales como optativas.",
+                            source: "Fuente: Aula Social",
+                            veracidad: 63,
+                            link: "detalle.html?art=sociedad-voluntariado"
+                        },
+                        {
+                            tag: "Igualdad",
+                            title: "Las empresas auditan sus algoritmos de selección",
+                            summary: "Las auditorías externas serán obligatorias en RR. HH.",
+                            source: "Fuente: Agencia Igualdad",
+                            veracidad: 71,
+                            link: "detalle.html?art=sociedad-algoritmo"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Reportaje",
+                        title: "Telemedicina comunitaria sostiene la red de cuidados rurales",
+                        summary: "En Castilla-La Mancha doce pueblos comparten enfermería digital.",
+                        source: "Fuente: Salud Cercana",
+                        veracidad: 84,
+                        link: "detalle.html?art=sociedad-telemedicina"
+                    },
+                    {
+                        tag: "Migración",
+                        title: "Las capitales medianas integran oficinas de atención exprés",
+                        summary: "Tramitan empadronamientos y permisos con cita única.",
+                        source: "Fuente: Red Ciudades",
+                        veracidad: 57,
+                        link: "detalle.html?art=sociedad-oficinas",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Justicia",
+                        title: "El Supremo recurre a mediadores en juicios de familia",
+                        summary: "Las partes logran acuerdos vinculantes en menos de seis semanas.",
+                        source: "Fuente: Consejo General",
+                        veracidad: 69,
+                        link: "detalle.html?art=sociedad-mediacion"
+                    },
+                    {
+                        tag: "Cultura",
+                        title: "Bibliotecas públicas crean clubes de reparación tecnológica",
+                        summary: "Vecinos comparten herramientas y evitan residuos.",
+                        source: "Fuente: Cultura Circular",
+                        veracidad: 75,
+                        link: "detalle.html?art=sociedad-biblioteca"
+                    }
+                ],
+                briefs: [
+                    { title: "Podcast: retrato de los nuevos cuidadores", meta: "Audio · 5 min", link: "detalle.html?art=sociedad-cuidadores" },
+                    { title: "Newsletter: justicia restaurativa", meta: "Boletín semanal", link: "detalle.html?art=sociedad-newsletter" },
+                    { title: "Mapa: transporte público nocturno", meta: "Datos interactivos", link: "detalle.html?art=sociedad-mapa" }
+                ]
+            },
+            salud: {
+                label: "Salud",
+                strap: "Cuidados",
+                intro: "Recogemos las innovaciones clínicas y las políticas de bienestar.",
+                hero: {
+                    main: {
+                        tag: "Investigación",
+                        title: "Los hospitales españoles ensayan terapias personalizadas con IA",
+                        summary: "Los primeros pacientes reciben combinaciones oncológicas diseñadas por gemelos digitales.",
+                        source: "Fuente: Instituto Biomédico",
+                        veracidad: 89,
+                        link: "detalle.html?art=salud-ia"
+                    },
+                    side: [
+                        {
+                            tag: "Sanidad pública",
+                            title: "Las farmacias dispensarán receta electrónica a turistas europeos",
+                            summary: "Llega la interoperabilidad completa en verano.",
+                            source: "Fuente: Consejo Farmacéutico",
+                            veracidad: 77,
+                            link: "detalle.html?art=salud-receta"
+                        },
+                        {
+                            tag: "Bienestar",
+                            title: "La salud mental se integra en los reconocimientos laborales",
+                            summary: "Las empresas deberán ofrecer apoyo psicológico preventivo.",
+                            source: "Fuente: Salud Laboral",
+                            veracidad: 68,
+                            link: "detalle.html?art=salud-mental"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Salud 4.0",
+                        title: "Los drones logísticos entregan plasma en zonas rurales",
+                        summary: "Cuatro comunidades prueban vuelos automatizados.",
+                        source: "Fuente: Red Aérea",
+                        veracidad: 72,
+                        link: "detalle.html?art=salud-drones"
+                    },
+                    {
+                        tag: "Prevención",
+                        title: "Educación física prescribe ejercicio para mayores",
+                        summary: "Institutos colaboran con centros de día para crear rutinas.",
+                        source: "Fuente: Consejo Superior",
+                        veracidad: 83,
+                        link: "detalle.html?art=salud-ejercicio",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Farmacia",
+                        title: "Las terapias génicas llegan al catálogo público",
+                        summary: "Habrá financiación condicionada a resultados.",
+                        source: "Fuente: Agencia del Medicamento",
+                        veracidad: 58,
+                        link: "detalle.html?art=salud-terapia"
+                    },
+                    {
+                        tag: "Sociedad",
+                        title: "España crea un registro de alergias climáticas",
+                        summary: "Permitirá anticipar campañas de vacunación estacional.",
+                        source: "Fuente: Meteosalud",
+                        veracidad: 65,
+                        link: "detalle.html?art=salud-alergias"
+                    }
+                ],
+                briefs: [
+                    { title: "Podcast: medicina de precisión en la sanidad pública", meta: "Audio · 4 min", link: "detalle.html?art=salud-podcast" },
+                    { title: "Newsletter: ciencia ciudadana y salud", meta: "Boletín semanal", link: "detalle.html?art=salud-newsletter" },
+                    { title: "Agenda: congresos médicos del mes", meta: "Calendario actualizado", link: "detalle.html?art=salud-agenda" }
+                ]
+            },
+            tecnologia: {
+                label: "Tecnología",
+                strap: "Innovación",
+                intro: "Exploramos las ideas digitales que impactan en la economía y en la vida cotidiana.",
+                hero: {
+                    main: {
+                        tag: "Industria",
+                        title: "España fabrica el primer chip cuántico modular del sur de Europa",
+                        summary: "El prototipo operará a temperatura ambiente y estará en la nube pública antes de fin de año.",
+                        source: "Fuente: Quantum Hub",
+                        veracity: 61,
+                        link: "detalle.html?art=tecnologia-cuantico"
+                    },
+                    side: [
+                        {
+                            tag: "Movilidad",
+                            title: "Los autobuses autónomos prueban rutas mixtas",
+                            summary: "Bilbao y Zaragoza combinan conducción humana y piloto automático en horas valle.",
+                            source: "Fuente: Movilidad Hoy",
+                            veracidad: 57,
+                            link: "detalle.html?art=tecnologia-bus"
+                        },
+                        {
+                            tag: "Startups",
+                            title: "El capital riesgo apuesta por la computación espacial",
+                            summary: "Los fondos buscan software para realidad mixta aplicada a logística.",
+                            source: "Fuente: Atlas Venture",
+                            veracidad: 74,
+                            link: "detalle.html?art=tecnologia-spatial"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Innovación",
+                        title: "La administración libera 200 API ciudadanas",
+                        summary: "Se podrán crear servicios sobre padrón, vivienda y movilidad.",
+                        source: "Fuente: Secretaría Digital",
+                        veracidad: 82,
+                        link: "detalle.html?art=tecnologia-api",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Videojuegos",
+                        title: "Los estudios indies se agrupan para exportar a Asia",
+                        summary: "Crean una distribuidora con sede en Tokio y Ciudad de México.",
+                        source: "Fuente: Pixel Ibérico",
+                        veracidad: 63,
+                        link: "detalle.html?art=tecnologia-indie"
+                    },
+                    {
+                        tag: "Telecom",
+                        title: "El 6G español probará sensores ambientales",
+                        summary: "Operadoras y universidades lanzan pilotos en puertos mediterráneos.",
+                        source: "Fuente: 6G Lab",
+                        veracidad: 71,
+                        link: "detalle.html?art=tecnologia-6g"
+                    },
+                    {
+                        tag: "Ciberseguridad",
+                        title: "Las pymes crean centros compartidos de SOC",
+                        summary: "Permiten comprar servicios de detección por horas.",
+                        source: "Fuente: CERT Pyme",
+                        veracidad: 77,
+                        link: "detalle.html?art=tecnologia-soc"
+                    }
+                ],
+                briefs: [
+                    { title: "Podcast: inteligencia artificial responsable", meta: "Audio · 8 min", link: "detalle.html?art=tecnologia-podcast" },
+                    { title: "Newsletter: gadgets sostenibles", meta: "Boletín semanal", link: "detalle.html?art=tecnologia-newsletter" },
+                    { title: "Tutorial: herramientas low-code para periodistas", meta: "Guía práctica", link: "detalle.html?art=tecnologia-tutorial" }
+                ]
+            },
+            cultura: {
+                label: "Cultura",
+                strap: "Agenda creativa",
+                intro: "Artes visuales, letras y ocio con curaduría editorial.",
+                hero: {
+                    main: {
+                        tag: "Arte",
+                        title: "Los museos nacionales abrirán depósitos visitables",
+                        summary: "Los fondos ocultos se podrán recorrer con citas guiadas desde otoño.",
+                        source: "Fuente: Patrimonio Vivo",
+                        veracidad: 85,
+                        link: "detalle.html?art=cultura-museos"
+                    },
+                    side: [
+                        {
+                            tag: "Literatura",
+                            title: "Las librerías independientes crean una tarjeta común",
+                            summary: "Ofrece puntos y envíos conjuntos en todo el país.",
+                            source: "Fuente: Alianza de Libreros",
+                            veracidad: 70,
+                            link: "detalle.html?art=cultura-librerias"
+                        },
+                        {
+                            tag: "Escena",
+                            title: "Los festivales combinan compañías locales e iberoamericanas",
+                            summary: "Un circuito compartido financiará residencias de creación.",
+                            source: "Fuente: Red Escénica",
+                            veracidad: 76,
+                            link: "detalle.html?art=cultura-teatro"
+                        }
+                    ]
+                },
+                highlights: [
+                    {
+                        tag: "Música",
+                        title: "El jazz español conquista clubes de Chicago",
+                        summary: "Graba un álbum colectivo con sellos independientes.",
+                        source: "Fuente: Ruta Sonora",
+                        veracidad: 60,
+                        link: "detalle.html?art=cultura-jazz"
+                    },
+                    {
+                        tag: "Cine",
+                        title: "Animadores europeos ruedan en estudios canarios",
+                        summary: "Las islas ofrecen incentivos del 54% a la animación digital.",
+                        source: "Fuente: Canarias Film",
+                        veracidad: 79,
+                        link: "detalle.html?art=cultura-animacion",
+                        layout: "is-horizontal"
+                    },
+                    {
+                        tag: "Patrimonio",
+                        title: "Nace un banco de materiales para restauraciones",
+                        summary: "Compartirá piezas históricas y asesoría técnica entre ayuntamientos.",
+                        source: "Fuente: Fundación Memoria",
+                        veracidad: 68,
+                        link: "detalle.html?art=cultura-patrimonio"
+                    },
+                    {
+                        tag: "Podcast",
+                        title: "La crítica gastronómica redescubre la caza sostenible",
+                        summary: "Chefs jóvenes reivindican recetas tradicionales.",
+                        source: "Fuente: Mesa Ibérica",
+                        veracidad: 62,
+                        link: "detalle.html?art=cultura-gastronomia"
+                    }
+                ],
+                briefs: [
+                    { title: "Agenda: estrenos teatrales del mes", meta: "Cartelera actualizada", link: "detalle.html?art=cultura-agenda" },
+                    { title: "Newsletter: arte urbano y regeneración", meta: "Boletín semanal", link: "detalle.html?art=cultura-newsletter" },
+                    { title: "Podcast: cómic iberoamericano", meta: "Audio · 5 min", link: "detalle.html?art=cultura-comic" }
+                ]
+            }
+        };
+        const params = new URLSearchParams(window.location.search);
+        const requested = (params.get("cat") || "internacional").toLowerCase();
+        const data = SECTION_DATA[requested] || SECTION_DATA.internacional;
+
+        document.body.dataset.topic = requested;
+        window.LaVerdadMarkTopicActive?.();
+
+        document.title = `${data.label} | La Verdad`;
+
+        document.querySelector("[data-section-pill]").textContent = data.strap;
+        document.querySelector("[data-section-title]").textContent = data.label;
+        document.querySelector("[data-section-description]").textContent = data.intro;
+
+        const heroMain = document.querySelector("[data-hero-main]");
+        const heroSide = document.querySelector("[data-hero-side]");
+        const newsGrid = document.querySelector("[data-news-grid]");
+        const briefsList = document.querySelector("[data-briefs-list]");
+        const USER_STORAGE_KEY = "laVerdadUser";
+        const authModal = document.querySelector("[data-auth-modal]");
+        const authDismissBtn = document.querySelector("[data-auth-dismiss]");
+
+        const levelFromVeracity = (value) => {
+            if (value >= 75) return "alto";
+            if (value <= 45) return "bajo";
+            return "medio";
+        };
+
+        const getCurrentUser = () => localStorage.getItem(USER_STORAGE_KEY) || "";
+
+        const openAuthModal = () => {
+            if (!authModal) return;
+            authModal.classList.add("is-visible");
+            authModal.setAttribute("aria-hidden", "false");
+        };
+
+        const closeAuthModal = () => {
+            if (!authModal) return;
+            authModal.classList.remove("is-visible");
+            authModal.setAttribute("aria-hidden", "true");
+        };
+
+        authDismissBtn?.addEventListener("click", closeAuthModal);
+        authModal?.addEventListener("click", (event) => {
+            if (event.target === authModal) {
+                closeAuthModal();
+            }
+        });
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && authModal?.classList.contains("is-visible")) {
+                closeAuthModal();
+            }
+        });
+        document.querySelector("[data-auth-login]")?.addEventListener("click", () => {
+            closeAuthModal();
+        });
+
+        const ensureAuthenticated = () => {
+            const hasUser = Boolean(getCurrentUser());
+            if (!hasUser) {
+                openAuthModal();
+            }
+            return hasUser;
+        };
+
+        /* Centraliza el origen del dato de veracidad para evitar textos undefined */
+        const getVeracityValue = (article) => {
+            if (typeof article.veracidad === "number") return article.veracidad;
+            if (typeof article.veracity === "number") return article.veracity;
+            return null;
+        };
+
+        const createFavoriteButton = () => {
+            const btn = document.createElement("button");
+            btn.className = "favorite-button";
+            btn.type = "button";
+            btn.setAttribute("aria-pressed", "false");
+            btn.setAttribute("aria-label", "Guardar esta noticia");
+            const icon = document.createElement("span");
+            icon.className = "favorite-icon";
+            icon.setAttribute("aria-hidden", "true");
+            icon.textContent = "★";
+            const label = document.createElement("span");
+            label.className = "favorite-label";
+            label.textContent = "Guardar";
+            btn.append(icon, label);
+            const updateState = (state) => {
+                btn.setAttribute("aria-pressed", String(state));
+                btn.classList.toggle("is-active", state);
+                label.textContent = state ? "Guardado" : "Guardar";
+                btn.setAttribute("aria-label", state ? "Quitar de guardados" : "Guardar esta noticia");
+            };
+            btn.addEventListener("click", () => {
+                if (!ensureAuthenticated()) {
+                    return;
+                }
+                const isActive = btn.getAttribute("aria-pressed") === "true";
+                updateState(!isActive);
+            });
+            return btn;
+        };
+
+        const buildMeta = (article) => {
+            const meta = document.createElement("div");
+            meta.className = "story-meta";
+            if (article.source) {
+                const src = document.createElement("span");
+                src.className = "story-source";
+                src.textContent = article.source;
+                meta.appendChild(src);
+            }
+            const truth = document.createElement("span");
+            truth.className = "truth-pill";
+            const veracityValue = getVeracityValue(article);
+            if (typeof veracityValue === "number") {
+                truth.dataset.level = levelFromVeracity(veracityValue);
+                truth.textContent = `Veracidad ${veracityValue}%`;
+            } else {
+                truth.classList.add("is-pending");
+                truth.textContent = "Veracidad en evaluaci\u00f3n";
+            }
+            meta.appendChild(truth);
+            meta.appendChild(createFavoriteButton());
+            return meta;
+        };
+
+        const buildHero = () => {
+            heroMain.innerHTML = "";
+            const tag = document.createElement("div");
+            tag.className = "tag";
+            tag.textContent = data.hero.main.tag;
+            const heading = document.createElement("h2");
+            heading.textContent = data.hero.main.title;
+            const copy = document.createElement("p");
+            copy.textContent = data.hero.main.summary;
+            const meta = buildMeta(data.hero.main);
+            const link = document.createElement("a");
+            link.className = "detail-link";
+            link.href = data.hero.main.link;
+            link.textContent = "Leer noticia completa →";
+            heroMain.append(tag, heading, copy, meta, link);
+        };
+
+        const buildSideCards = () => {
+            heroSide.innerHTML = "";
+            data.hero.side.forEach((item) => {
+                const card = document.createElement("article");
+                const tag = document.createElement("div");
+                tag.className = "tag";
+                tag.textContent = item.tag;
+                const title = document.createElement("h3");
+                title.textContent = item.title;
+                const copy = document.createElement("p");
+                copy.textContent = item.summary;
+                const meta = buildMeta(item);
+                const link = document.createElement("a");
+                link.className = "detail-link";
+                link.href = item.link;
+                link.textContent = "Leer más";
+                card.append(tag, title, copy, meta, link);
+                heroSide.appendChild(card);
+            });
+        };
+
+        const buildNewsGrid = () => {
+            newsGrid.innerHTML = "";
+            data.highlights.forEach((item) => {
+                const card = document.createElement("article");
+                card.className = "news-card";
+                if (item.layout) {
+                    card.classList.add(item.layout);
+                }
+                const tag = document.createElement("div");
+                tag.className = "tag";
+                tag.textContent = item.tag;
+                const body = document.createElement("div");
+                body.className = "card-body";
+                const title = document.createElement("h3");
+                title.textContent = item.title;
+                const summary = document.createElement("p");
+                summary.textContent = item.summary;
+                body.append(title, summary);
+                const meta = buildMeta(item);
+                const link = document.createElement("a");
+                link.className = "detail-link";
+                link.href = item.link;
+                link.textContent = "Leer noticia completa";
+                card.append(tag, body, meta, link);
+                newsGrid.appendChild(card);
+            });
+        };
+
+        const buildBriefs = () => {
+            briefsList.innerHTML = "";
+            data.briefs.forEach((brief) => {
+                const li = document.createElement("li");
+                const link = document.createElement("a");
+                link.href = brief.link;
+                link.textContent = brief.title;
+                const meta = document.createElement("span");
+                meta.className = "briefs-meta";
+                meta.textContent = brief.meta;
+                li.append(link, meta);
+                briefsList.appendChild(li);
+            });
+        };
+
+        buildHero();
+        buildSideCards();
+        buildNewsGrid();
+        buildBriefs();
+    </script>
+</body>
+</html>
+        .hero-card:hover,
+        .hero-card:focus-within {
+            transform: translateY(-4px);
+            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-side article:hover,
+        .feature-side article:focus-within {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        }

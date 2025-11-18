@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajustes | La Verdad</title>
+    <style>
+        :root {
+            --ink: #0f0f0f;
+            --soft: #6a6a6a;
+            --border: #e3e3e3;
+            --background: #f8f7f4;
+            --accent: #0d6efd;
+            --success: #1a9c4d;
+            --danger: #c83330;
+            --text-scale: 1;
+            --font-base: "Inter", "Roboto", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--ink);
+            font-family: var(--font-base);
+            font-size: calc(16px * var(--text-scale));
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="search"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea {
+            font-family: var(--font-base);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink);
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="search"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--ink);
+            box-shadow: 0 0 0 2px rgba(15, 15, 15, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--soft, #6a6a6a);
+            opacity: 1;
+        }
+
+        .settings-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .wordmark {
+            font-family: var(--font-base);
+            font-size: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .back-link {
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--soft);
+        }
+
+        h1 {
+            font-size: clamp(26px, 4vw, 36px);
+            margin: 0;
+        }
+
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
+            align-items: flex-start;
+        }
+
+        .settings-sidebar,
+        .settings-panel {
+            background: #fff;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.08);
+            height: auto;
+        }
+
+        .settings-panel {
+            align-self: flex-start;
+        }
+
+        .settings-sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .settings-link {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--ink);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-link.is-active {
+            border-color: var(--ink);
+        }
+
+        .settings-panel + .settings-panel {
+            margin-top: 24px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 16px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--soft);
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 12px;
+            font-size: 15px;
+            background: #fff;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 16px;
+        }
+
+        .toggle-row strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        .toggle-row small {
+            color: var(--soft);
+            font-size: 13px;
+        }
+
+        .switch {
+            position: relative;
+            width: 42px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #d2d2d2;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.25s ease;
+        }
+
+        .slider::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 3px;
+            left: 4px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.25s ease;
+        }
+
+        .switch input:checked + .slider {
+            background: var(--accent);
+        }
+
+        .switch input:checked + .slider::after {
+            transform: translateX(16px);
+        }
+
+        .section-note {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--soft);
+        }
+
+        .action-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .primary-button {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 26px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .ghost-button {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 12px 26px;
+            background: transparent;
+            color: var(--ink);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .danger-zone {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .danger-zone h3 {
+            margin-top: 0;
+            color: var(--danger);
+            letter-spacing: 0.08em;
+            font-size: 14px;
+        }
+
+        .danger-zone p {
+            font-size: 14px;
+            color: var(--soft);
+        }
+
+        .danger-zone button {
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            background: transparent;
+            border-radius: 999px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .settings-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-shell {
+                padding: 30px 16px 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-shell">
+        <header>
+            <a class="wordmark" href="archivp.html">La Verdad</a>
+            <a class="back-link" href="perfil.html">← Volver al perfil</a>
+        </header>
+        <h1>Centro de ajustes</h1>
+        <div class="settings-layout">
+            <aside class="settings-sidebar">
+                <nav>
+                    <a class="settings-link is-active" href="#" data-settings-target="cuenta">Cuenta</a>
+                    <a class="settings-link" href="#" data-settings-target="alertas">Notificaciones</a>
+                    <a class="settings-link" href="#" data-settings-target="privacidad">Privacidad</a>
+                    <a class="settings-link" href="#" data-settings-target="personalizacion">Personalización</a>
+                    <a class="settings-link" href="#" data-settings-target="seguridad">Seguridad</a>
+                </nav>
+            </aside>
+            <div>
+                <section class="settings-panel" id="cuenta" data-settings-panel="cuenta">
+                    <div class="panel-header">
+                        <h2>Datos de la cuenta</h2>
+                        <small>Actualiza tu información personal</small>
+                    </div>
+                    <div class="settings-grid">
+                        <div>
+                            <label for="display-name">Nombre público</label>
+                            <input type="text" id="display-name" value="Sofía Moreno">
+                        </div>
+                        <div>
+                            <label for="email">Correo principal</label>
+                            <input type="email" id="email" value="sofia.moreno@laverdad.es">
+                        </div>
+                        <div>
+                            <label for="region">Región</label>
+                            <select id="region">
+                                <option>España</option>
+                                <option>Latinoamérica</option>
+                                <option>USA / Canadá</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="section-note">Tu correo se utiliza para recuperar la cuenta y recibir alertas de seguridad críticas.</p>
+                    <div class="action-row">
+                        <button class="primary-button" type="button" data-save-account>Guardar cambios</button>
+                        <button class="ghost-button" type="button">Cancelar</button>
+                    </div>
+                    <p class="section-note" data-account-feedback hidden></p>
+                </section>
+
+                <section class="settings-panel" id="alertas" data-settings-panel="alertas" hidden>
+                    <div class="panel-header">
+                        <h2>Notificaciones</h2>
+                        <small>Decide qué avisos recibes</small>
+                    </div>
+                    <div class="settings-panel-body" style="display:flex;flex-direction:column;gap:14px;">
+                        <div class="toggle-row">
+                            <div>
+                                <strong>Resumen diario</strong>
+                                <small>Titulares priorizados y tendencias.</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <div>
+                                <strong>Comentarios en tus hilos</strong>
+                                <small>Avisos cuando alguien responde en el foro.</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <div>
+                                <strong>Alertas de investigación</strong>
+                                <small>Envíos especiales del equipo de verificación.</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="settings-panel" id="privacidad" data-settings-panel="privacidad" hidden>
+                    <div class="panel-header">
+                        <h2>Privacidad</h2>
+                        <small>Controla la exposición de tu perfil</small>
+                    </div>
+                    <div class="settings-grid">
+                        <div>
+                            <label for="visibilidad">Visibilidad del perfil</label>
+                            <select id="visibilidad">
+                                <option>Público (todo La Verdad)</option>
+                                <option>Solo lectores verificados</option>
+                                <option>Solo yo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="mensaje">Permitir mensajes directos</label>
+                            <select id="mensaje">
+                                <option>Contactos y seguidores</option>
+                                <option>Nadie</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="section-note">Puedes descargar una copia de tus datos o eliminar la cuenta desde la sección de seguridad.</p>
+                </section>
+
+                <section class="settings-panel" id="personalizacion" data-settings-panel="personalizacion" hidden>
+                    <div class="panel-header">
+                        <h2>Personalización</h2>
+                        <small>Adapta la experiencia de lectura</small>
+                    </div>
+                    <div class="settings-grid">
+                        <div>
+                            <label for="modo">Modo de contraste</label>
+                            <select id="modo">
+                                <option>Automático</option>
+                                <option>Claro</option>
+                                <option>Oscuro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="idioma">Idioma preferido</label>
+                            <select id="idioma">
+                                <option>Español</option>
+                                <option>Inglés</option>
+                                <option>Portugués</option>
+                                <option>Francés</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="toggle-row" style="margin-top:18px;">
+                        <div>
+                            <strong>Audio-guías</strong>
+                            <small>Activar narración automática cuando haya disponible.</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="settings-panel" id="seguridad" data-settings-panel="seguridad" hidden>
+                    <div class="panel-header">
+                        <h2>Seguridad</h2>
+                        <small>Protege tu identidad</small>
+                    </div>
+                    <div class="settings-grid">
+                        <div>
+                            <label for="factor">Factor adicional</label>
+                            <select id="factor">
+                                <option>Autenticador móvil</option>
+                                <option>SMS</option>
+                                <option>Correo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sesiones">Cierre automático</label>
+                            <select id="sesiones">
+                                <option>30 minutos</option>
+                                <option>1 hora</option>
+                                <option>4 horas</option>
+                                <option>Desactivado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="danger-zone">
+                        <h3>Zona sensible</h3>
+                        <p>Si sospechas de actividad irregular puedes cerrar todas las sesiones abiertas y restablecer la contraseña.</p>
+                        <button type="button">Cerrar sesiones activas</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script>
+        const settingsLinks = document.querySelectorAll("[data-settings-target]");
+        const settingsPanels = document.querySelectorAll("[data-settings-panel]");
+        const nameInput = document.getElementById("display-name");
+        const emailInput = document.getElementById("email");
+        const regionSelect = document.getElementById("region");
+        const saveAccountBtn = document.querySelector("[data-save-account]");
+        const accountFeedback = document.querySelector("[data-account-feedback]");
+
+        settingsLinks.forEach((link) => {
+            link.addEventListener("click", (event) => {
+                event.preventDefault();
+                const target = link.getAttribute("data-settings-target");
+                settingsLinks.forEach((item) => item.classList.toggle("is-active", item === link));
+                settingsPanels.forEach((panel) => {
+                    panel.hidden = panel.getAttribute("data-settings-panel") !== target;
+                });
+            });
+        });
+
+        const storedName = localStorage.getItem("laVerdadUser");
+        const storedEmail = localStorage.getItem("laVerdadEmail");
+        const storedRegion = localStorage.getItem("laVerdadRegion");
+
+        if (storedName && nameInput) {
+            nameInput.value = storedName;
+        }
+        if (storedEmail && emailInput) {
+            emailInput.value = storedEmail;
+        }
+        if (storedRegion && regionSelect) {
+            regionSelect.value = storedRegion;
+        }
+
+        const showAccountFeedback = (message, tone = "success") => {
+            if (!accountFeedback) return;
+            accountFeedback.hidden = false;
+            accountFeedback.textContent = message;
+            accountFeedback.style.color = tone === "success" ? "#18753c" : "#c83330";
+            setTimeout(() => {
+                accountFeedback.hidden = true;
+            }, 2500);
+        };
+
+        saveAccountBtn?.addEventListener("click", () => {
+            if (!nameInput || !emailInput || !regionSelect) {
+                return;
+            }
+            const nameValue = nameInput.value.trim();
+            const emailValue = emailInput.value.trim();
+            if (nameValue) {
+                localStorage.setItem("laVerdadUser", nameValue);
+            }
+            if (emailValue) {
+                localStorage.setItem("laVerdadEmail", emailValue);
+            }
+            localStorage.setItem("laVerdadRegion", regionSelect.value);
+            showAccountFeedback("Ajustes guardados correctamente.");
+        });
+    </script>
+</body>
+</html>

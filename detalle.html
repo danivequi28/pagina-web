@@ -1,0 +1,1730 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de noticia | La Verdad</title>
+    <style>
+        :root {
+            --ink: #0f0f0f;
+            --soft-ink: #3a3a3a;
+            --muted: #7c7c7c;
+            --border: #dcdcdc;
+            --accent: #f1b500;
+            --text-scale: 1;
+            --font-base: "Inter", "Roboto", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-base);
+            background: #fff;
+            color: var(--ink);
+            font-size: calc(16px * var(--text-scale));
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="search"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea {
+            font-family: var(--font-base);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink);
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="search"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--ink);
+            box-shadow: 0 0 0 2px rgba(15, 15, 15, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--soft-ink, #3a3a3a);
+            opacity: 1;
+        }
+
+        .header-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--ink);
+            padding: 16px 0 12px;
+            position: relative;
+        }
+
+        .menu-toggle {
+            border: none;
+            background: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--ink);
+        }
+
+        .wordmark {
+            font-family: var(--font-base);
+            font-size: 28px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .wordmark a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-base);
+            font-size: 14px;
+        }
+
+        .login-link {
+            text-decoration: none;
+            color: var(--soft-ink);
+        }
+
+        .top-divider {
+            color: var(--muted);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-toggle {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--ink);
+            font-family: var(--font-base);
+        }
+
+        .language-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+            min-width: 140px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            list-style: none;
+            margin: 0;
+        }
+
+        .language-menu.open {
+            display: block;
+        }
+
+        .language-menu button {
+            width: 100%;
+            border: none;
+            background: none;
+            text-align: left;
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: "Inter", system-ui, sans-serif;
+            cursor: pointer;
+        }
+
+        .user-pill {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: capitalize;
+            color: var(--soft-ink);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-pill svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .tools-menu {
+            position: relative;
+        }
+
+        .tools-toggle {
+            border: none;
+            background: transparent;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+
+        .tools-menu.is-open .tools-panel {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .tools-panel {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translate(-50%, -6px);
+            background: #111;
+            color: #fff;
+            border-radius: 18px;
+            padding: 14px;
+            min-width: 240px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+            z-index: 10;
+        }
+
+        .tool-option {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .tool-option + .tool-option {
+            margin-top: 8px;
+        }
+
+        .tool-option strong {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tool-option span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: flex-start;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 40;
+        }
+
+        .nav-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-drawer {
+            width: min(420px, 90vw);
+            background: #050505;
+            color: #f4f4f4;
+            height: 100%;
+            padding: 28px 30px 60px;
+            transform: translateX(-20px);
+            transition: transform 0.25s ease;
+            overflow-y: auto;
+        }
+
+        .nav-overlay.is-visible .nav-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .drawer-close {
+            border: none;
+            background: transparent;
+            color: #f4f4f4;
+            font-size: 28px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .drawer-section + .drawer-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            margin-top: 24px;
+            padding-top: 24px;
+        }
+
+        .drawer-section h3 {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 14px;
+        }
+
+        .drawer-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            padding: 0 12px;
+        }
+
+        .drawer-search input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 15px;
+            padding: 10px 0;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .drawer-search input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-drawer .mic-button {
+            border: none;
+            background: transparent;
+            color: #f4f4f4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-drawer .mic-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .drawer-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drawer-list a,
+        .drawer-list button {
+            color: #f4f4f4;
+            text-decoration: none;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .drawer-list button:hover,
+        .drawer-list a:hover {
+            text-decoration: underline;
+        }
+
+        .drawer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .drawer-actions-user {
+            flex-direction: column;
+        }
+
+        .drawer-logout {
+            background: #d93025;
+            border: 1px solid #d93025;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+        }
+
+        .drawer-logout:hover {
+            background: #b0251c;
+            border-color: #b0251c;
+        }
+
+        .drawer-user-pill {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 10px 16px;
+            gap: 10px;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .drawer-user-pill svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .drawer-user-pill span {
+            font-size: 16px;
+            letter-spacing: 0.06em;
+        }
+
+        .chip-link {
+            flex: 1;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .drawer-actions a:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .social-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .section-nav {
+            border-bottom: 2px solid var(--ink);
+            border-top: 2px solid var(--ink);
+        }
+
+        .section-nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            margin: 0;
+            padding: 12px 0;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .section-nav li {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .section-nav li + li {
+            padding-left: 16px;
+        }
+
+        .section-nav li + li::before {
+            content: "|";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .section-nav a {
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-tooltip {
+            position: relative;
+        }
+
+        .nav-tooltip::after {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
+            margin-top: 8px;
+            background: #111;
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            z-index: 5;
+        }
+
+        .nav-tooltip:hover::after {
+            opacity: 1;
+        }
+
+        .auth-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 120;
+        }
+
+        .auth-modal.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auth-modal-card {
+            background: #fff;
+            border-radius: 32px;
+            padding: 36px 40px;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+        }
+
+        .auth-modal-card h3 {
+            margin: 0 0 12px;
+            font-size: 24px;
+        }
+
+        .auth-modal-card p {
+            margin: 0 0 24px;
+            color: var(--muted);
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .auth-modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .auth-modal-actions .primary {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            background: var(--ink);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .auth-modal-actions button {
+            border-radius: 999px;
+            border: 1px solid var(--ink);
+            padding: 12px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        [data-journalist-link] {
+            display: none;
+        }
+
+        body.is-journalist [data-journalist-link] {
+            display: list-item;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .page-shell {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        .login-link,
+        .back-link {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: lowercase;
+            color: var(--soft-ink);
+            text-decoration: none;
+        }
+
+        .detail-actions {
+            font-family: "Inter", system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-pill {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: capitalize;
+            color: var(--soft-ink);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-pill svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .article-hero {
+            padding-top: 32px;
+        }
+
+        .crumb {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .crumb a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .article-hero h1 {
+            font-size: 40px;
+            margin: 0 0 12px;
+            line-height: 1.2;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0 24px;
+        }
+
+        .save-article-button {
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            padding: 10px 18px;
+            background: transparent;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .save-article-button.is-active {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .meta {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 18px;
+        }
+
+        .ai-note {
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 18px 20px;
+            font-family: "Inter", system-ui, sans-serif;
+            background: #fffaf2;
+            margin-bottom: 32px;
+        }
+
+        .ai-note strong {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        body.high-contrast {
+            background: #050505;
+            color: #f4f4f4;
+        }
+
+        body.high-contrast header.top-bar {
+            border-color: #f4f4f4;
+        }
+
+        body.high-contrast .ai-note {
+            background: #101010;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .article-body p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--soft-ink);
+            margin-bottom: 18px;
+        }
+
+        body.high-contrast .article-body p {
+            color: #ededed;
+        }
+
+        .story-source {
+            font-family: "Inter", system-ui, sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .truth-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid currentColor;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .truth-pill::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .truth-pill[data-level="bajo"] {
+            color: #c91f37;
+        }
+
+        .truth-pill[data-level="medio"] {
+            color: #c58600;
+        }
+
+        .truth-pill[data-level="alto"] {
+            color: #0f8a46;
+        }
+
+        .detail-veracity {
+            margin-top: 40px;
+            border-top: 2px solid var(--ink);
+            padding-top: 20px;
+        }
+
+        .detail-veracity p {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            color: var(--soft-ink);
+            margin: 10px 0 0;
+            line-height: 1.6;
+        }
+
+        body.high-contrast .detail-veracity {
+            border-color: #f4f4f4;
+        }
+
+        body.high-contrast .detail-veracity p {
+            color: #e5e5e5;
+        }
+
+        .sources-list {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .not-found {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .not-found a {
+            color: var(--ink);
+        }
+
+        footer {
+            margin-top: 60px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .chat-dock {
+            position: fixed;
+            right: 32px;
+            bottom: 34px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 26;
+        }
+
+        .chat-bubble {
+            width: 70px;
+            height: 70px;
+            border-radius: 24px 24px 4px 24px;
+            border: none;
+            background: #050505;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .chat-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            background: currentColor;
+            transform: rotate(45deg);
+        }
+
+        .chat-avatar {
+            font-size: 30px;
+        }
+
+        .chat-bubble.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chat-panel {
+            width: 320px;
+            background: #fff;
+            color: var(--ink);
+            border-radius: 22px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+            padding: 18px;
+            position: fixed;
+            right: 32px;
+            bottom: 115px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .chat-panel.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .chat-panel header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chat-panel h3 {
+            margin: 0;
+            font-size: 16px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .chat-close {
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            color: var(--soft-ink);
+            background: #fafafa;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .chat-message.user {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .chat-message.bot {
+            color: var(--soft-ink);
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            background: #fff;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            border: none;
+            resize: none;
+            min-height: 48px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-mic,
+        .chat-send {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--soft-ink);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+        }
+
+        .chat-send:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .chat-send.is-active {
+            background: var(--ink);
+            color: #fff;
+            border-color: var(--ink);
+        }
+
+        @media (max-width: 700px) {
+            .chat-panel {
+                right: 12px;
+                left: 12px;
+                width: auto;
+            }
+
+            .chat-dock {
+                right: 12px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="accessibility.css">
+</head>
+<body data-page-context="esta p&aacute;gina de La Verdad">
+    <div class="header-shell">
+        <header class="site-header" data-global-header>
+            <button class="menu-toggle" type="button" aria-label="Abrir menú principal">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="wordmark"><a href="archivp.html">La Verdad</a></div>
+            <div class="top-actions" data-user-area>
+                <a class="login-link" href="login.html" data-login-link>iniciar sesión</a>
+                <a class="user-pill" data-user-pill href="perfil.html" aria-label="Abrir perfil"></a>
+                <span class="top-divider" aria-hidden="true" data-top-divider>|</span>
+                <div class="language-selector" data-language>
+                    <button class="language-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span data-current-lang>ES</span>
+                        <span aria-hidden="true">&#x25BE;</span>
+                    </button>
+                    <ul class="language-menu" role="listbox" data-language-menu>
+                        <li><button type="button" data-lang-option="ES"><strong>ES</strong><span>Español</span></button></li>
+                        <li><button type="button" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                        <li><button type="button" data-lang-option="PT"><strong>PT</strong><span>Portugués</span></button></li>
+                        <li><button type="button" data-lang-option="FR"><strong>FR</strong><span>Français</span></button></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <nav class="section-nav">
+            <ul>
+                <li><a href="archivp.html#internacional" class="nav-tooltip" data-tip="Cobertura global de pol&iacute;tica y econom&iacute;a.">Internacional</a></li>
+                <li><a href="archivp.html#espana" class="nav-tooltip" data-tip="Actualidad nacional explicada con contexto regional.">Espa&ntilde;a</a></li>
+                <li><a href="archivp.html#economia" class="nav-tooltip" data-tip="Mercados, empresas y empleo.">Econom&iacute;a</a></li>
+                <li><a href="archivp.html#sociedad" class="nav-tooltip" data-tip="Historias humanas, educaci&oacute;n y justicia social.">Sociedad</a></li>
+                <li><a href="archivp.html#salud" class="nav-tooltip" data-tip="Sanidad p&uacute;blica y bienestar cotidiano.">Salud</a></li>
+                <li><a href="archivp.html#tecnologia" class="nav-tooltip" data-tip="Innovaci&oacute;n, ciencia y tendencias digitales.">Tecnolog&iacute;a</a></li>
+                <li><a href="archivp.html#cultura" class="nav-tooltip" data-tip="Artes, literatura y ocio cultural.">Cultura</a></li>
+                <li><a href="foro.html" class="nav-tooltip" data-tip="Debates y comunidad de lectores.">Foro</a></li>
+                <li><a href="resumen.html" class="nav-tooltip" data-tip="Resumen autom&aacute;tico de cada noticia.">Resumen</a></li>
+                <li><a href="analisis.html" class="nav-tooltip" data-tip="Analiza credibilidad, sesgos y tono.">An&aacute;lisis</a></li>
+                <li data-journalist-link hidden><a href="redaccion.html" class="nav-tooltip" data-tip="Crea, revisa y prepara tus noticias antes de publicarlas.">Redacci&oacute;n</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="nav-overlay" data-nav-overlay aria-hidden="true">
+        <nav class="nav-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title-detalle">
+            <div class="drawer-top">
+                <button class="drawer-close" type="button" aria-label="Cerrar menú" data-drawer-close>&times;</button>
+            </div>
+            <div class="drawer-section">
+                <h3 id="drawer-title-detalle">Explorar</h3>
+                <label class="sr-only" for="drawer-search-input-detalle">Buscar</label>
+                <div class="drawer-search">
+                    <input type="search" id="drawer-search-input-detalle" placeholder="Buscar en La Verdad">
+                    <button class="mic-button" type="button" aria-label="Buscar por voz">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+                            <path d="M12 18v3"></path>
+                            <path d="M9 21h6"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="drawer-section">
+                <h3>Categor&iacute;as</h3>
+                <ul class="drawer-list">
+                    <li><a href="archivp.html#internacional">Internacional</a></li>
+                    <li><a href="archivp.html#espana">Espa&ntilde;a</a></li>
+                    <li><a href="archivp.html#economia">Econom&iacute;a</a></li>
+                    <li><a href="archivp.html#sociedad">Sociedad</a></li>
+                    <li><a href="archivp.html#salud">Salud</a></li>
+                    <li><a href="archivp.html#tecnologia">Tecnolog&iacute;a</a></li>
+                    <li><a href="archivp.html#cultura">Cultura</a></li>
+                    <li><a href="foro.html">Foro</a></li>
+                    <li><a href="resumen.html">Resumen</a></li>
+                    <li><a href="analisis.html">An&aacute;lisis</a></li>
+                    <li data-journalist-link hidden><a href="redaccion.html">Redacci&oacute;n</a></li>
+                </ul>
+            </div>
+
+            <div class="drawer-section">
+                <h3>Accesibilidad</h3>
+                <ul class="drawer-list">
+                    <li><button type="button" data-open-access-panel>Preferencias visuales</button></li>
+                    <li><button type="button" data-open-access-panel>Lectura asistida</button></li>
+                    <li><button type="button" data-open-access-panel>Controles de interacción</button></li>
+                </ul>
+            </div>
+            
+            <div class="drawer-section">
+                <h3>&Aacute;rea de usuario</h3>
+                <div class="drawer-actions" data-drawer-guest>
+                    <a class="chip-link" href="login.html" data-drawer-login>Iniciar sesi&oacute;n</a>
+                    <a class="chip-link" href="signup.html" data-drawer-register>Registrarse</a>
+                </div>
+                <div class="drawer-actions drawer-actions-user" data-drawer-user style="display:none;">
+                    <a class="chip-link drawer-user-pill" href="perfil.html" data-drawer-userlink>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path>
+                        </svg>
+                        <span data-drawer-username>Usuario</span>
+                    </a>
+                    <button class="chip-link drawer-logout" type="button" data-drawer-logout>Cerrar sesi&oacute;n</button>
+                </div>
+            </div>
+
+            <div class="drawer-section">
+                <h3>Información general</h3>
+                <ul class="drawer-list">
+                    <li><a href="#">Quiénes somos</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="drawer-section">
+                <h3>Redes oficiales</h3>
+                <div class="social-icons">
+                    <a class="social-icon" href="#" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21.5 6.1a6 6 0 0 1-1.7.5 2.8 2.8 0 0 0 1.3-1.6 5.5 5.5 0 0 1-1.9.8A2.8 2.8 0 0 0 12 7.4a7.8 7.8 0 0 1-5.7-2.9 2.8 2.8 0 0 0 .9 3.8 2.7 2.7 0 0 1-1.3-.3 2.8 2.8 0 0 0 2.2 2.7 2.8 2.8 0 0 1-1.3.1 2.8 2.8 0 0 0 2.6 2 5.6 5.6 0 0 1-3.5 1.2 5.8 5.8 0 0 1-.7 0 8 8 0 0 0 12.2-6.8v-.4a5.3 5.3 0 0 0 1.3-1.3z"></path>
+                        </svg>
+                    </a>
+                    <a class="social-icon" href="#" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"></path>
+                        </svg>
+                    </a>
+                    <a class="social-icon" href="#" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.8A4.2 4.2 0 1 1 7.8 12 4.2 4.2 0 0 1 12 7.8zm0 2A2.2 2.2 0 1 0 14.2 12 2.2 2.2 0 0 0 12 9.8zm5-2.1a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="page-shell">
+        <main>
+            <section class="article-hero" data-article>
+                <p class="crumb"><a href="archivp.html">Portada</a> / <span data-article-category>Actualidad</span></p>
+                <h1 data-article-title>Detalle de noticia</h1>
+                <p class="meta" data-article-meta></p>
+                <div class="article-actions">
+                    <button class="save-article-button" type="button" data-save-article>Guardar noticia</button>
+                </div>
+
+                <div class="ai-note">
+                    <strong>Resumen generado con IA</strong>
+                    <p data-ai-note>
+                        Este resumen ha sido preparado por el laboratorio de datos de La Verdad combinando la noticia original y bases verificadas.
+                    </p>
+                </div>
+
+                <article class="article-body" data-article-body>
+                    <p>Cargando...</p>
+                </article>
+
+                <div class="detail-veracity">
+                    <span class="story-source" data-article-source>Fuente original: -</span>
+                    <span class="truth-pill" data-article-truth data-level="medio">Veracidad 0%</span>
+                    <p data-article-veracity>
+                        La evaluación explica por qué la noticia no es fiable.
+                    </p>
+                    <p class="sources-list" data-article-sources></p>
+                </div>
+            </section>
+
+            <section class="not-found" data-not-found hidden>
+                <h2>No encontramos esa noticia</h2>
+                <p>El enlace puede estar caducado. Vuelve a la <a href="archivp.html">portada</a> para leer los temas actuales.</p>
+            </section>
+        </main>
+
+        <div class="chat-dock" data-chat-dock>
+            <button class="chat-bubble" type="button" aria-label="Abrir chat con la IA" data-chat-toggle>
+                <span class="chat-avatar">&#129302;</span>
+            </button>
+            <section class="chat-panel" aria-hidden="true" data-chat-panel>
+                <header>
+                    <h3>Asistente IA</h3>
+                    <button class="chat-close" type="button" aria-label="Cerrar chat" data-chat-close>&times;</button>
+                </header>
+                <div class="chat-messages" data-chat-messages>
+                    <div class="chat-message bot" data-chat-greeting>
+                        Hola, soy Vera, la IA de La Verdad.
+                    </div>
+                </div>
+                <form class="chat-input" data-chat-form>
+                    <button class="chat-mic" type="button" aria-label="Activar dictado" data-chat-mic>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+                            <path d="M12 18v3"></path>
+                            <path d="M9 21h6"></path>
+                        </svg>
+                    </button>
+                    <label class="sr-only" for="chat-detail-textarea">Escribe tu pregunta</label>
+                    <textarea id="chat-detail-textarea" data-chat-input placeholder="Pregúntame sobre esta noticia..."></textarea>
+                    <button class="chat-send" type="submit" aria-label="Enviar mensaje" data-chat-send disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M3 11l18-8-8 18-2.5-6L3 11z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <footer>
+            &copy; La Verdad &middot; Unidad de Verificaci&oacute;n
+        </footer>
+    </div>
+
+
+    <div class="auth-modal" data-auth-modal aria-hidden="true">
+        <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="detail-auth-title">
+            <h3 id="detail-auth-title">Inicia sesi&oacute;n para guardar</h3>
+            <p>Necesitas una cuenta activa para guardar esta noticia y volver a ella cuando quieras.</p>
+            <div class="auth-modal-actions">
+                <a class="primary" href="login.html" data-auth-login>Iniciar sesi&oacute;n</a>
+                <button type="button" data-auth-dismiss>Seguir leyendo</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="accessibility-dock" data-access-dock>
+        <button class="dock-handle" type="button" aria-label="Ocultar opciones de accesibilidad" data-dock-toggle>&gt;</button>
+        <button class="accessibility-fab" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false">
+            <span class="sr-only">Accesibilidad</span>
+            <span class="wheelchair-icon">&#9855;</span>
+        </button>
+    </div>
+    <div class="accessibility-panel" aria-hidden="true" data-access-panel>
+        <header>
+            <h2>Accesibilidad</h2>
+            <button class="panel-close" type="button" aria-label="Cerrar panel">&times;</button>
+        </header>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Lectura en Voz Alta</strong>
+                    <small>Modo para ciegos</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="voice-mode">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Alto contraste</strong>
+                    <small>Fondo oscuro y texto claro</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="high-contrast">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Aumentar tamaño del texto</strong>
+                    <small>Define el zoom de lectura</small>
+                </div>
+                <div class="text-scale-controls">
+                    <button type="button" class="text-scale-button" data-scale-step="-0.1" aria-label="Reducir texto">-</button>
+                    <span data-text-scale>100%</span>
+                    <button type="button" class="text-scale-button" data-scale-step="0.1" aria-label="Aumentar texto">+</button>
+                </div>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Fuente Accesible / Disléxica</strong>
+                    <small>Elige la tipografía</small>
+                </div>
+                <div class="font-picker" role="radiogroup" aria-label="Opciones de fuente accesible">
+                    <button type="button" class="font-choice" role="radio" aria-checked="true" data-font-class="font-accessible">Accesible</button>
+                    <button type="button" class="font-choice" role="radio" aria-checked="false" data-font-class="font-dyslexic">Disléxica</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Subrayar y resaltar enlaces</strong>
+                    <small>Ayuda a detectar destinos clicables</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="links-highlight">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Desactivar animaciones</strong>
+                    <small>Elimina transiciones activas</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="animations-off">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="header.js"></script>
+    <script>
+        const userArea = document.querySelector("[data-user-area]");
+        const loginLinkEl = document.querySelector("[data-login-link]");
+        const chatDock = document.querySelector("[data-chat-dock]");
+        const chatToggle = document.querySelector("[data-chat-toggle]");
+        const chatPanel = document.querySelector("[data-chat-panel]");
+        const chatCloseBtn = document.querySelector("[data-chat-close]");
+        const chatMessages = document.querySelector("[data-chat-messages]");
+        const chatInput = document.querySelector("[data-chat-input]");
+        const chatSendBtn = document.querySelector("[data-chat-send]");
+        const chatGreeting = document.querySelector("[data-chat-greeting]");
+        const chatForm = document.querySelector("[data-chat-form]");
+
+        const pageContextLabel = () => document.body.dataset.pageContext || document.title;
+
+        const userPillEl = document.querySelector("[data-user-pill]");
+
+        const renderUserState = () => {
+            const storedUser = localStorage.getItem("laVerdadUser");
+            if (storedUser) {
+                userPillEl.innerHTML = `${storedUser} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path></svg>`;
+                userPillEl.style.display = "inline-flex";
+                loginLinkEl.style.display = "none";
+            } else {
+                userPillEl.style.display = "none";
+                loginLinkEl.style.display = "inline";
+            }
+        };
+
+        const refreshChatGreeting = () => {
+            if (chatGreeting) {
+                chatGreeting.textContent = `Hola, soy Vera, la IA de La Verdad. Est\u00e1s leyendo ${pageContextLabel()}. Pregunta lo que quieras sobre esta p\u00e1gina o el resto del sitio.`;
+            }
+        };
+
+        renderUserState();
+
+        userPillEl.addEventListener("click", (event) => {
+            const storedUser = localStorage.getItem("laVerdadUser");
+            if (!storedUser) {
+                event.preventDefault();
+                loginLinkEl.click();
+                return;
+            }
+            userPillEl.href = `perfil.html?user=${encodeURIComponent(storedUser)}`;
+        });
+
+        const updateSendState = () => {
+            const hasText = chatInput.value.trim().length > 0;
+            chatSendBtn.disabled = !hasText;
+            chatSendBtn.classList.toggle("is-active", hasText);
+        };
+
+        const openChat = () => {
+            chatPanel.classList.add("is-visible");
+            chatPanel.setAttribute("aria-hidden", "false");
+            chatToggle.classList.add("is-hidden");
+        };
+
+        const closeChat = () => {
+            chatPanel.classList.remove("is-visible");
+            chatPanel.setAttribute("aria-hidden", "true");
+            chatToggle.classList.remove("is-hidden");
+        };
+
+        chatToggle.addEventListener("click", openChat);
+        chatCloseBtn.addEventListener("click", closeChat);
+        chatInput.addEventListener("input", updateSendState);
+        updateSendState();
+        refreshChatGreeting();
+
+        chatForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) {
+                return;
+            }
+            const userMsg = document.createElement("div");
+            userMsg.className = "chat-message user";
+            userMsg.textContent = text;
+            chatMessages.appendChild(userMsg);
+
+            const botMsg = document.createElement("div");
+            botMsg.className = "chat-message bot";
+            botMsg.textContent = `En breve conectar\u00e9 con la redacci\u00f3n para darte datos sobre ${pageContextLabel()}.`;
+            chatMessages.appendChild(botMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatInput.value = "";
+            updateSendState();
+        });
+
+        document.addEventListener("click", (event) => {
+            if (
+                chatPanel.classList.contains("is-visible") &&
+                !chatPanel.contains(event.target) &&
+                !chatToggle.contains(event.target)
+            ) {
+                closeChat();
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && chatPanel.classList.contains("is-visible")) {
+                closeChat();
+            }
+        });
+
+        const articles = {
+            portada: {
+                category: "Portada",
+                title: "Sanidad abrir\u00e1 una ofensiva legal para blindar el derecho al aborto",
+                meta: "Juan Diego Quesada | Madrid \u00b7 Hace 2 horas",
+                source: "El Pa\u00eds",
+                aiNote: "Este resumen automatizado toma como referencia el art\u00edculo publicado por El Pa\u00eds y lo contrasta con comunicados del Ministerio de Sanidad y archivos parlamentarios.",
+                body: [
+                    "La pieza sostiene que el Gobierno presentar\u00e1 de inmediato una ofensiva judicial ante un supuesto bloqueo regional al registro de objetores. Sin embargo, los documentos oficiales enviados a las comunidades aut\u00f3nomas, consultados por La Verdad Fact-Check, se limitan a un intercambio t\u00e9cnico y no incluyen medidas excepcionales ni plazos perentorios.",
+                    "La comparaci\u00f3n con boletines del Ministerio de Sanidad y las respuestas parlamentarias muestra que la estad\u00edstica de objetores no ha cambiado desde junio, por lo que la situaci\u00f3n descrita es una lectura exagerada para generar alarma."
+                ],
+                veracity: {
+                    level: "medio",
+                    percent: 62,
+                    reasoning: "Evaluaci\u00f3n elaborada con IA propieteria contrastando hemerotecas, comunicados del Ministerio de Sanidad y verificaciones de Maldita.es. El sistema encontr\u00f3 lagunas que demuestran que la supuesta ofensiva no existe en los t\u00e9rminos narrados.",
+                    sources: "Hemeroteca oficial, Ministerio de Sanidad, Maldita.es"
+                }
+            },
+            analisis: {
+                category: "An\u00e1lisis",
+                title: "Diez juristas desmenuzan las claves del procedimiento",
+                meta: "Edici\u00f3n digital | Actualizado hoy",
+                source: "Diario Libre",
+                aiNote: "La IA de La Verdad cruz\u00f3 la publicaci\u00f3n con bases jur\u00eddicas, comunicados del CGPJ y hemerotecas especializadas.",
+                body: [
+                    "La nota asegura que una decena de juristas prueba la incompatibilidad de la norma auton\u00f3mica con la legislaci\u00f3n europea. Los supuestos expertos citados no aparecen en registros acad\u00e9micos ni en comunicados recientes.",
+                    "Al rastrear las declaraciones atribuidas con motores sem\u00e1nticos, se comprob\u00f3 que varias proceden de tribunas de opini\u00f3n publicadas en 2018 y se presentan aqu\u00ed como testimonios actuales. El Consejo General del Poder Judicial confirm\u00f3 que no existe un pronunciamiento colectivo semejante."
+                ],
+                veracity: {
+                    level: "bajo",
+                    percent: 34,
+                    reasoning: "El modelo revis\u00f3 bases jur\u00eddicas, notas del CGPJ y verificaciones de Newtral. Al no hallarse respaldo documental reciente, la historia se clasifica como altamente dudosa.",
+                    sources: "CGPJ, bases jur\u00eddicas europeas, Newtral"
+                }
+            },
+            reportaje: {
+                category: "Reportaje",
+                title: "Los rostros tras el debate: historias de quienes esperan la sentencia",
+                meta: "Agencia Futura | Servicio internacional",
+                source: "Agencia Futura",
+                aiNote: "Resumen generado a partir del cable original y entrevistas verificadas con registros judiciales.",
+                body: [
+                    "El reportaje fusiona declaraciones de distintos procesos judiciales y las agrupa como si pertenecieran a un mismo caso. El cotejo autom\u00e1tico con notas de prensa de los tribunales indica que las fechas citadas no coinciden y que alguno de los protagonistas falleci\u00f3 hace dos a\u00f1os.",
+                    "La IA tambi\u00e9n detect\u00f3 fragmentos copiados palabra por palabra de blogs personales, una pr\u00e1ctica que suele emplearse para crear bulos emocionales."
+                ],
+                veracity: {
+                    level: "alto",
+                    percent: 81,
+                    reasoning: "El motor de verificaci\u00f3n cruz\u00f3 fuentes judiciales abiertas, archivos de Europa Press y entrevistas originales. La base factual existe, aunque con adornos.",
+                    sources: "Europa Press, registros judiciales, entrevistas originales"
+                }
+            },
+            cultura: {
+                category: "Cultura",
+                title: "Los 50 libros esenciales del medio siglo",
+                meta: "Especial literario | Dossier Babelia",
+                source: "Revista Babelia",
+                aiNote: "El resumen utiliza los formularios originales de la encuesta y los coteja con cat\u00e1logos ISBN.",
+                body: [
+                    "El listado viral se presenta como un ranking votado por 116 especialistas. Tras analizar los PDFs distribuidos por la revista, comprobamos que solo 42 personas contestaron a la encuesta y que varias obras fueron incorporadas sin votos para rellenar la lista.",
+                    "Existen tambi\u00e9n incongruencias de fechas y autores: algunas novelas se publicaron fuera del periodo anunciado."
+                ],
+                veracity: {
+                    level: "medio",
+                    percent: 58,
+                    reasoning: "La IA proces\u00f3 los metadatos originales y los compar\u00f3 con cat\u00e1logos ISBN y ferias del libro. La mezcla de datos reales con huecos creativos reduce la fiabilidad.",
+                    sources: "Formularios Babelia, registros ISBN, ferias del libro"
+                }
+            },
+            sociedad: {
+                category: "Sociedad",
+                title: "Encarnita Polo, icono popular que trasciende los t\u00f3picos",
+                meta: "Suplemento dominical | Cr\u00f3nica Popular",
+                source: "Cr\u00f3nica Popular",
+                aiNote: "La IA analiz\u00f3 los audios virales y los compar\u00f3 con entrevistas certificadas de la artista.",
+                body: [
+                    "El texto atribuye entrevistas recientes a la artista pese a que su \u00faltima aparici\u00f3n p\u00fablica documentada data de 2021. Las citas proceden en realidad de una biograf\u00eda publicada hace una d\u00e9cada.",
+                    "El equipo de La Verdad analiz\u00f3 los audios difundidos con herramientas de detecci\u00f3n de voz sint\u00e9tica y confirm\u00f3 que se generaron con IA."
+                ],
+                veracity: {
+                    level: "medio",
+                    percent: 65,
+                    reasoning: "La evaluaci\u00f3n usa IA para comparar timbres de voz y archivos hemerogr\u00e1ficos. Aunque parte del contexto es correcto, las declaraciones no lo son.",
+                    sources: "Archivo audiovisual RTVE, biograf\u00eda editorial, detector de deepfakes"
+                }
+            },
+            tecnologia: {
+                category: "Tecnolog\u00eda",
+                title: "El laboratorio que quiere reinventar la inteligencia clim\u00e1tica",
+                meta: "TecnoPress | Especial innovaci\u00f3n",
+                source: "TecnoPress",
+                aiNote: "El informe sintetiza los datos abiertos del laboratorio y entrevistas con climat\u00f3logos.",
+                body: [
+                    "El laboratorio citado existe, pero sus proyectos est\u00e1n a\u00fan en fase piloto. La noticia afirma que ya anticipa sequ\u00edas con un 90% de acierto; los datasets publicados revelan un margen de error cercano al 30%.",
+                    "Entrevistamos a climat\u00f3logos asociados y confirmaron que los modelos permanecen en validaci\u00f3n cerrada."
+                ],
+                veracity: {
+                    level: "alto",
+                    percent: 78,
+                    reasoning: "La IA revis\u00f3 repositorios abiertos, papers y comunicados del laboratorio. Hay avances prometedores, pero no los resultados definitivos anunciados.",
+                    sources: "GitHub del laboratorio, papers acad\u00e9micos, entrevistas internas"
+                }
+            },
+            economia: {
+                category: "Econom\u00eda",
+                title: "Las cifras del nuevo presupuesto y lo que significan para tu bolsillo",
+                meta: "Mercado Global | Secci\u00f3n econom\u00eda",
+                source: "Mercado Global",
+                aiNote: "Resumen calculado con el agregador presupuestario y comparado con el BOE.",
+                body: [
+                    "Los gr\u00e1ficos compartidos mezclan proyecciones de 2022 con partidas presupuestarias de 2025. El algoritmo de coherencia temporal detect\u00f3 fechas incompatibles y montos inflados un 40%.",
+                    "El Ministerio de Hacienda confirm\u00f3 por escrito que los datos reales se publicar\u00e1n la pr\u00f3xima semana y que nadie ha distribuido cifras oficiales a los medios."
+                ],
+                veracity: {
+                    level: "bajo",
+                    percent: 28,
+                    reasoning: "El porcentaje surge de contrastar la informaci\u00f3n con boletines del BOE, comunicados ministeriales y verificaciones de Civio. La presencia de datos falsos convierte esta noticia en un bulo.",
+                    sources: "BOE, Ministerio de Hacienda, Civio"
+                }
+            },
+            internacional: {
+                category: "Internacional",
+                title: "Las capitales europeas se reorganizan ante el ciclo electoral",
+                meta: "Tribune Europe | Bruselas",
+                source: "Tribune Europe",
+                aiNote: "Este resumen examina comunicados diplom\u00e1ticos y notas de Reuters para contextualizar el cable original.",
+                body: [
+                    "El art\u00edculo agrupa rumores de pactos en pa\u00edses distintos y los presenta como si se hubieran firmado en una misma cumbre. El seguimiento con IA indica que las negociaciones son reales, pero a\u00fan no existen acuerdos.",
+                    "Diplom\u00e1ticos consultados aseguran que el autor exager\u00f3 para crear sensaci\u00f3n de urgencia."
+                ],
+                veracity: {
+                    level: "medio",
+                    percent: 52,
+                    reasoning: "Calificaci\u00f3n generada tras comparar comunicados oficiales, notas de Reuters y bases del Parlamento Europeo. Hay hechos comprobables, pero tambi\u00e9n inferencias que distorsionan la realidad.",
+                    sources: "Reuters, Parlamento Europeo, cables diplom\u00e1ticos"
+                }
+            },
+            salud: {
+                category: "Salud",
+                title: "La medicina personalizada aterriza en los hospitales regionales",
+                meta: "Salud Hoy | Secci\u00f3n Innovaci\u00f3n",
+                source: "Salud Hoy",
+                aiNote: "La IA cruz\u00f3 el reportaje con boletines sanitarios y contratos de compra hospitalarios.",
+                body: [
+                    "Los hospitales mencionados s\u00ed cuentan con proyectos piloto de gen\u00f3mica, pero solo en \u00e1reas muy concretas. El reportaje da a entender que el servicio est\u00e1 disponible para toda la poblaci\u00f3n cuando, en verdad, solo diez pacientes forman parte de la prueba.",
+                    "La verificaci\u00f3n autom\u00e1tica con boletines sanitarios regionales y contratos de compra muestra que la implantaci\u00f3n masiva no est\u00e1 financiada."
+                ],
+                veracity: {
+                    level: "alto",
+                    percent: 89,
+                    reasoning: "Tras cruzar datos con registros cl\u00ednicos y comunicados hospitalarios, la IA confirma que la base de la noticia es cierta. La parte de \"despliegue completo\" es la exageraci\u00f3n.",
+                    sources: "Registros cl\u00ednicos, boletines sanitarios, comunicados hospitalarios"
+                }
+            },
+            agenda: {
+                category: "Cultura",
+                title: "Agenda de fin de semana: exposiciones, teatro y m\u00fasica",
+                meta: "Radar Cultural | Gu\u00eda urbana",
+                source: "Radar Cultural",
+                aiNote: "El motor verific\u00f3 las fechas con APIs municipales y listados en redes sociales.",
+                body: [
+                    "Varias de las actividades anunciadas pertenecen al calendario del a\u00f1o pasado. El rastreo autom\u00e1tico de URLs y eventos de Facebook confirma que los espect\u00e1culos citados ocurrieron en 2023.",
+                    "Los organizadores consultados aclaran que se trata de un listado reciclado sin actualizaci\u00f3n."
+                ],
+                veracity: {
+                    level: "medio",
+                    percent: 55,
+                    reasoning: "La IA detect\u00f3 que casi la mitad de la informaci\u00f3n ya no es vigente, lo que disminuye su confiabilidad.",
+                    sources: "APIs municipales, eventos de Facebook, entrevistas con organizadores"
+                }
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get("art");
+        const article = articles[slug];
+        const saveArticleButton = document.querySelector("[data-save-article]");
+        const savedNewsKey = "laVerdadSavedNews";
+        const authModal = document.querySelector("[data-auth-modal]");
+        const authDismissBtn = document.querySelector("[data-auth-dismiss]");
+        const authLoginLink = document.querySelector("[data-auth-login]");
+
+        const readSavedNews = () => {
+            try {
+                return JSON.parse(localStorage.getItem(savedNewsKey)) || [];
+            } catch {
+                return [];
+            }
+        };
+
+        const writeSavedNews = (items) => {
+            localStorage.setItem(savedNewsKey, JSON.stringify(items));
+        };
+
+        const updateSaveButtonState = () => {
+            if (!saveArticleButton || !article) return;
+            const isSaved = readSavedNews().some((item) => item.id === slug);
+            saveArticleButton.classList.toggle("is-active", isSaved);
+            saveArticleButton.textContent = isSaved ? "Guardada" : "Guardar noticia";
+        };
+
+        const toggleArticleSave = () => {
+            if (!article) return;
+            const user = localStorage.getItem("laVerdadUser");
+            if (!user) {
+                authModal?.classList.add("is-visible");
+                authModal?.setAttribute("aria-hidden", "false");
+                return;
+            }
+            const saved = readSavedNews();
+            const existingIndex = saved.findIndex((item) => item.id === slug);
+            if (existingIndex >= 0) {
+                saved.splice(existingIndex, 1);
+            } else {
+                saved.unshift({
+                    id: slug,
+                    title: article.title,
+                    category: article.category,
+                    link: `detalle.html?art=${slug}`,
+                    savedAt: new Date().toISOString()
+                });
+            }
+            writeSavedNews(saved);
+            updateSaveButtonState();
+        };
+
+        saveArticleButton?.addEventListener("click", toggleArticleSave);
+        authDismissBtn?.addEventListener("click", () => {
+            if (authModal) {
+                authModal.classList.remove("is-visible");
+                authModal.setAttribute("aria-hidden", "true");
+            }
+        });
+        authModal?.addEventListener("click", (event) => {
+            if (event.target === authModal) {
+                authModal.classList.remove("is-visible");
+                authModal.setAttribute("aria-hidden", "true");
+            }
+        });
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && authModal?.classList.contains("is-visible")) {
+                authModal.classList.remove("is-visible");
+                authModal.setAttribute("aria-hidden", "true");
+            }
+        });
+        authLoginLink?.addEventListener("click", () => {
+            authModal?.classList.remove("is-visible");
+            authModal?.setAttribute("aria-hidden", "true");
+        });
+
+        const articleSection = document.querySelector("[data-article]");
+        const notFoundSection = document.querySelector("[data-not-found]");
+
+        if (!article) {
+            articleSection.hidden = true;
+            notFoundSection.hidden = false;
+            document.title = "Noticia no encontrada | La Verdad";
+            if (saveArticleButton) {
+                saveArticleButton.hidden = true;
+            }
+        } else {
+            document.querySelector("[data-article-category]").textContent = article.category;
+            document.querySelector("[data-article-title]").textContent = article.title;
+            document.querySelector("[data-article-meta]").textContent = article.meta;
+            document.querySelector("[data-ai-note]").textContent = article.aiNote;
+            document.querySelector("[data-article-source]").textContent = "Fuente original: " + article.source;
+
+            const bodyContainer = document.querySelector("[data-article-body]");
+            bodyContainer.innerHTML = "";
+            article.body.forEach(paragraph => {
+                const p = document.createElement("p");
+                p.textContent = paragraph;
+                bodyContainer.appendChild(p);
+            });
+
+            const truthPill = document.querySelector("[data-article-truth]");
+            truthPill.dataset.level = article.veracity.level;
+            truthPill.textContent = "Veracidad " + article.veracity.percent + "%";
+            document.querySelector("[data-article-veracity]").textContent = article.veracity.reasoning;
+            document.querySelector("[data-article-sources]").textContent = "Fuentes empleadas: " + article.veracity.sources;
+            document.title = article.title + " | La Verdad";
+            document.body.dataset.pageContext = `la noticia "${article.title}"`;
+            refreshChatGreeting();
+            updateSaveButtonState();
+        }
+    </script>
+    <script src="accessibility.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,1249 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Análisis IA | La Verdad</title>
+    <style>
+        :root {
+            --ink: #0f0f0f;
+            --soft: #6e6e6e;
+            --border: #dcdcdc;
+            --text-scale: 1;
+            --font-base: "Inter", "Roboto", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-base);
+            background: #ffffff;
+            color: var(--ink);
+            min-height: 100vh;
+            font-size: calc(16px * var(--text-scale));
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="search"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea {
+            font-family: var(--font-base);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink);
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="search"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--ink);
+            box-shadow: 0 0 0 2px rgba(15, 15, 15, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--soft, #6e6e6e);
+            opacity: 1;
+        }
+
+        .shell {
+            width: min(720px, 100%);
+            margin: 0 auto;
+            padding: 60px 16px 120px;
+            transition: padding 0.3s ease;
+        }
+
+        .analysis-shell {
+            transition: padding-top 0.35s ease;
+        }
+
+        .analysis-shell.is-condensed {
+            padding-top: 8px;
+        }
+
+        .header-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--ink);
+            padding: 16px 0 12px;
+            position: relative;
+        }
+
+        .menu-toggle {
+            border: none;
+            background: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--ink);
+        }
+
+        .wordmark {
+            font-family: var(--font-base);
+            font-size: 28px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .wordmark a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .login-link {
+            text-decoration: none;
+            color: var(--soft);
+        }
+
+        .top-divider {
+            color: var(--soft);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-toggle {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .language-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+            min-width: 140px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            list-style: none;
+            margin: 0;
+            z-index: 60;
+        }
+
+        .language-menu.open {
+            display: block;
+        }
+
+        .language-menu button {
+            width: 100%;
+            border: none;
+            background: none;
+            text-align: left;
+            padding: 6px 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-base);
+        }
+
+        .user-pill {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: capitalize;
+            color: var(--soft);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-pill svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .tools-menu {
+            position: relative;
+        }
+
+        .tools-toggle {
+            border: none;
+            background: transparent;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+
+        .tools-menu.is-open .tools-panel {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .tools-panel {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translate(-50%, -6px);
+            background: #111;
+            color: #fff;
+            border-radius: 18px;
+            padding: 14px;
+            min-width: 240px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+            z-index: 10;
+        }
+
+        .tool-option {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .tool-option + .tool-option {
+            margin-top: 8px;
+        }
+
+        .tool-option strong {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tool-option span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: flex-start;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 40;
+        }
+
+        .nav-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-drawer {
+            width: min(420px, 90vw);
+            background: #050505;
+            color: #f4f4f4;
+            height: 100%;
+            padding: 28px 30px 60px;
+            transform: translateX(-20px);
+            transition: transform 0.25s ease;
+            overflow-y: auto;
+        }
+
+        .nav-overlay.is-visible .nav-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .drawer-close {
+            border: none;
+            background: transparent;
+            color: #f4f4f4;
+            font-size: 28px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .drawer-section + .drawer-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            margin-top: 24px;
+            padding-top: 24px;
+        }
+
+        .drawer-section h3 {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 14px;
+        }
+
+        .drawer-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            padding: 0 12px;
+        }
+
+        .drawer-search input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 15px;
+            padding: 10px 0;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .drawer-search input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-drawer .mic-button {
+            border: none;
+            background: transparent;
+            color: #f4f4f4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-drawer .mic-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .drawer-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drawer-list a,
+        .drawer-list button {
+            color: #f4f4f4;
+            text-decoration: none;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.04em;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .drawer-list button:hover,
+        .drawer-list a:hover {
+            text-decoration: underline;
+        }
+
+        .drawer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .drawer-actions-user {
+            flex-direction: column;
+        }
+
+        .drawer-logout {
+            background: #d93025;
+            border: 1px solid #d93025;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+        }
+
+        .drawer-logout:hover {
+            background: #b0251c;
+            border-color: #b0251c;
+        }
+
+        .drawer-user-pill {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 10px 16px;
+            gap: 10px;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .drawer-user-pill svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .drawer-user-pill span {
+            font-size: 16px;
+            letter-spacing: 0.06em;
+        }
+
+        .chip-link {
+            flex: 1;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .drawer-actions a:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .social-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .section-nav {
+            border-bottom: 2px solid var(--ink);
+        }
+
+        .section-nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin: 0;
+            padding: 12px 0;
+            font-size: 15px;
+        }
+
+        .section-nav li {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-nav li + li {
+            padding-left: 16px;
+        }
+
+        .section-nav a,
+        .section-nav button {
+            text-decoration: none;
+            color: var(--ink);
+            text-align: center;
+            display: block;
+            padding: 6px 0 10px;
+            background: none;
+            border: none;
+            font: inherit;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            position: relative;
+        }
+
+        .section-nav a.is-active {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+        }
+
+        .section-nav a.is-active::after {
+            content: none;
+        }
+
+        .section-nav li + li::before {
+            content: "|";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        .nav-tooltip {
+            position: relative;
+        }
+
+        .nav-tooltip::before {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
+            margin-top: 8px;
+            background: #111;
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            z-index: 5;
+        }
+
+        .nav-tooltip:hover::before {
+            opacity: 1;
+        }
+
+        [data-journalist-link] {
+            display: none;
+        }
+
+        body.is-journalist [data-journalist-link] {
+            display: list-item;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        .analysis-title {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .analysis-title.is-hidden {
+            opacity: 0;
+            transform: translateY(-12px);
+        }
+
+        .input-bar {
+            display: flex;
+            align-items: center;
+            background: #f3f3f3;
+            border-radius: 40px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+        }
+
+        .plus-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e6e6e6;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--ink);
+            font-size: 16px;
+            resize: none;
+            outline: none;
+        }
+
+        .mic-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #e6e6e6;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-left: 12px;
+        }
+
+        .analysis-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+
+        .analysis-button {
+            border: none;
+            background: #000;
+            color: #fff;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .analysis-button.is-disabled {
+            background: #b5b5b5;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .analysis-button.is-busy {
+            cursor: progress;
+        }
+
+        .analysis-feedback {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #c0342d;
+        }
+
+        .analysis-feedback[hidden] {
+            display: none;
+        }
+
+        .analysis-feedback[data-tone="success"] {
+            color: #18753c;
+        }
+
+        .analysis-layout {
+            margin-top: 20px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .analysis-layout.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .analysis-state {
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(15,15,15,0.05);
+        }
+
+        .analysis-state[hidden] {
+            display: none;
+        }
+
+        .state-loading {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .state-loading[hidden],
+        .analysis-layout[hidden] {
+            display: none;
+        }
+
+        .loading-toolbar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .skeleton-pill {
+            height: 48px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ededed 0%, #f8f8f8 50%, #ededed 100%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.4s ease-in-out infinite;
+        }
+
+        .skeleton-pill:nth-child(3) {
+            width: 70%;
+            justify-self: end;
+        }
+
+        .skeleton-card {
+            border: 1px solid #ececec;
+            border-radius: 18px;
+            padding: 24px;
+        }
+
+        .skeleton-line {
+            display: block;
+            height: 16px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #ededed 0%, #f8f8f8 50%, #ededed 100%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.4s ease-in-out infinite;
+        }
+
+        .skeleton-line.long {
+            width: 90%;
+        }
+
+        .skeleton-line.medium {
+            width: 70%;
+        }
+
+        .skeleton-line.short {
+            width: 40%;
+            margin-bottom: 0;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .summary-card,
+        .veracity-card,
+        .explanation-card {
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            background: #fff;
+        }
+
+        .summary-card h2,
+        .veracity-card h2,
+        .explanation-card h2 {
+            margin-top: 0;
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .veracity-gauge {
+            display: block;
+            width: 100%;
+            height: 16px;
+            border-radius: 999px;
+            background: #ececec;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .veracity-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: #1a9c4d;
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+    </style>
+    <link rel="stylesheet" href="accessibility.css">
+</head>
+<body>
+    <div class="header-shell">
+        <header data-global-header>
+            <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a class="wordmark" href="archivp.html">La Verdad</a>
+            <div class="top-actions" data-user-area>
+                <a class="login-link" href="login.html" data-login-link>iniciar sesión</a>
+                <a class="user-pill" data-user-pill href="perfil.html" aria-label="Abrir perfil"></a>
+                <span class="top-divider" aria-hidden="true" data-top-divider>|</span>
+                <div class="language-selector" data-language>
+                    <button class="language-toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span data-current-lang>ES</span>
+                        <span aria-hidden="true">&#x25BE;</span>
+                    </button>
+                    <ul class="language-menu" role="listbox" data-language-menu>
+                        <li><button type="button" data-lang-option="ES"><strong>ES</strong><span>Español</span></button></li>
+                        <li><button type="button" data-lang-option="EN"><strong>EN</strong><span>English</span></button></li>
+                        <li><button type="button" data-lang-option="PT"><strong>PT</strong><span>Portugués</span></button></li>
+                        <li><button type="button" data-lang-option="FR"><strong>FR</strong><span>Français</span></button></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <nav class="section-nav" aria-label="Secciones principales">
+            <ul>
+                <li><a href="seccion.html?cat=internacional" class="nav-tooltip" data-tip="Cobertura global de pol&iacute;tica y econom&iacute;a.">Internacional</a></li>
+                <li><a href="seccion.html?cat=espana" class="nav-tooltip" data-tip="Actualidad nacional explicada con contexto regional.">Espa&ntilde;a</a></li>
+                <li><a href="seccion.html?cat=economia" class="nav-tooltip" data-tip="Mercados, empresas y empleo.">Econom&iacute;a</a></li>
+                <li><a href="seccion.html?cat=sociedad" class="nav-tooltip" data-tip="Historias humanas, educaci&oacute;n y justicia social.">Sociedad</a></li>
+                <li><a href="seccion.html?cat=salud" class="nav-tooltip" data-tip="Sanidad p&uacute;blica y bienestar cotidiano.">Salud</a></li>
+                <li><a href="seccion.html?cat=tecnologia" class="nav-tooltip" data-tip="Innovaci&oacute;n, ciencia y tendencias digitales.">Tecnolog&iacute;a</a></li>
+                <li><a href="seccion.html?cat=cultura" class="nav-tooltip" data-tip="Artes, literatura y ocio cultural.">Cultura</a></li>
+                <li><a href="foro.html" class="nav-tooltip" data-tip="Debates y comunidad de lectores.">Foro</a></li>
+                <li><a href="resumen.html" class="nav-tooltip" data-tip="Resumen autom&aacute;tico de cada noticia.">Resumen</a></li>
+                <li><a href="analisis.html" class="nav-tooltip is-active" data-tip="Analiza credibilidad, sesgos y tono.">An&aacute;lisis</a></li>
+                <li data-journalist-link hidden><a href="redaccion.html" class="nav-tooltip" data-tip="Crea, revisa y prepara tus noticias antes de publicarlas.">Redacci&oacute;n</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="nav-overlay" data-nav-overlay aria-hidden="true">
+        <nav class="nav-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+            <div class="drawer-top">
+                <button class="drawer-close" type="button" aria-label="Cerrar menú" data-drawer-close>&times;</button>
+            </div>
+            <div class="drawer-section">
+                <h3 id="drawer-title">Explorar</h3>
+                <label class="sr-only" for="drawer-search-input">Buscar</label>
+                <div class="drawer-search">
+                    <input type="search" id="drawer-search-input" placeholder="Buscar en La Verdad">
+                    <button class="mic-button" type="button" aria-label="Buscar por voz">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 12 4z"></path>
+                            <path d="M5 11.5a7 7 0 0 0 14 0"></path>
+                            <path d="M12 18v3"></path>
+                            <path d="M9 21h6"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="drawer-section">
+                <h3>Categor&iacute;as</h3>
+                <ul class="drawer-list">
+                    <li><a href="seccion.html?cat=internacional">Internacional</a></li>
+                    <li><a href="seccion.html?cat=espana">Espa&ntilde;a</a></li>
+                    <li><a href="seccion.html?cat=economia">Econom&iacute;a</a></li>
+                    <li><a href="seccion.html?cat=sociedad">Sociedad</a></li>
+                    <li><a href="seccion.html?cat=salud">Salud</a></li>
+                    <li><a href="seccion.html?cat=tecnologia">Tecnolog&iacute;a</a></li>
+                    <li><a href="seccion.html?cat=cultura">Cultura</a></li>
+                    <li><a href="foro.html">Foro</a></li>
+                    <li><a href="resumen.html">Resumen</a></li>
+                    <li><a href="analisis.html">An&aacute;lisis</a></li>
+                    <li data-journalist-link hidden><a href="redaccion.html">Redacci&oacute;n</a></li>
+                </ul>
+            </div>
+
+            <div class="drawer-section">
+                <h3>Accesibilidad</h3>
+                <ul class="drawer-list">
+                    <li><button type="button" data-open-access-panel>Preferencias visuales</button></li>
+                    <li><button type="button" data-open-access-panel>Lectura asistida</button></li>
+                    <li><button type="button" data-open-access-panel>Controles de interacción</button></li>
+                </ul>
+            </div>
+            
+            <div class="drawer-section">
+                <h3>&Aacute;rea de usuario</h3>
+                <div class="drawer-actions" data-drawer-guest>
+                    <a class="chip-link" href="login.html" data-drawer-login>Iniciar sesi&oacute;n</a>
+                    <a class="chip-link" href="signup.html" data-drawer-register>Registrarse</a>
+                </div>
+                <div class="drawer-actions drawer-actions-user" data-drawer-user style="display:none;">
+                    <a class="chip-link drawer-user-pill" href="perfil.html" data-drawer-userlink>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 21c1.6-4 4.4-6 8-6s6.4 2 8 6"></path>
+                        </svg>
+                        <span data-drawer-username>Usuario</span>
+                    </a>
+                    <button class="chip-link drawer-logout" type="button" data-drawer-logout>Cerrar sesi&oacute;n</button>
+                </div>
+            </div>
+
+            <div class="drawer-section">
+                <h3>Información general</h3>
+                <ul class="drawer-list">
+                    <li><a href="#">Quiénes somos</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="drawer-section">
+                <h3>Redes oficiales</h3>
+                <div class="social-icons">
+                    <a class="social-icon" href="#" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21.5 6.1a6 6 0 0 1-1.7.5 2.8 2.8 0 0 0 1.3-1.6 5.5 5.5 0 0 1-1.9.8A2.8 2.8 0 0 0 12 7.4a7.8 7.8 0 0 1-5.7-2.9 2.8 2.8 0 0 0 .9 3.8 2.7 2.7 0 0 1-1.3-.3 2.8 2.8 0 0 0 2.2 2.7 2.8 2.8 0 0 1-1.3.1 2.8 2.8 0 0 0 2.6 2 5.6 5.6 0 0 1-3.5 1.2 5.8 5.8 0 0 1-.7 0 8 8 0 0 0 12.2-6.8v-.4a5.3 5.3 0 0 0 1.3-1.3z"></path>
+                        </svg>
+                    </a>
+                    <a class="social-icon" href="#" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"></path>
+                        </svg>
+                    </a>
+                    <a class="social-icon" href="#" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.8A4.2 4.2 0 1 1 7.8 12 4.2 4.2 0 0 1 12 7.8zm0 2A2.2 2.2 0 1 0 14.2 12 2.2 2.2 0 0 0 12 9.8zm5-2.1a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="shell analysis-shell" data-analysis-shell>
+        <h1 class="analysis-title" data-analysis-title>¿Qué quieres analizar hoy?</h1>
+        <div class="input-bar">
+            <div class="plus-icon">+</div>
+            <textarea rows="3" placeholder="Introduce la noticia o el fragmento a analizar..." data-input></textarea>
+            <button class="mic-button" type="button" title="Enviar audio">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                    <path d="M12 4a2.5 2.5 0 0 0-2.5 2.5v6a2.5 2.5 0 0 0 5 0v-6A2.5 2.5 0 0 0 12 4z"></path>
+                    <path d="M5 11v1a7 7 0 0 0 14 0v-1"></path>
+                    <path d="M12 18v4"></path>
+                    <path d="M9 22h6"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="analysis-actions">
+            <button class="analysis-button" type="button" data-analyze>Analizar</button>
+        </div>
+        <p class="analysis-feedback" data-analysis-feedback hidden role="status"></p>
+        <section class="analysis-state" data-analysis-state hidden aria-live="polite">
+            <div class="state-loading" data-analysis-loading hidden>
+                <div class="loading-toolbar" aria-hidden="true">
+                    <span class="skeleton-pill"></span>
+                    <span class="skeleton-pill"></span>
+                    <span class="skeleton-pill"></span>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <span class="skeleton-line long"></span>
+                    <span class="skeleton-line long"></span>
+                    <span class="skeleton-line medium"></span>
+                    <span class="skeleton-line short"></span>
+                </div>
+            </div>
+            <div class="analysis-layout" data-result hidden>
+                <div style="grid-column:1 / -1;margin-bottom:8px;">
+                    <h2 style="text-transform:uppercase;letter-spacing:0.1em;font-size:16px;">Resultados del análisis</h2>
+                </div>
+                <article class="summary-card">
+                    <h2>Resumen generado</h2>
+                    <p data-summary>
+                        La IA detecta que la noticia mezcla datos oficiales con afirmaciones sin fuente. El núcleo del texto describe
+                        los retrasos en la construcción del hospital regional y las respuestas del gobierno local.
+                    </p>
+                </article>
+                <div>
+                    <article class="veracity-card">
+                        <h2>Veracidad estimada</h2>
+                        <div class="veracity-gauge">
+                            <div class="veracity-fill" data-veracity-fill></div>
+                        </div>
+                        <p><strong data-veracity-label>64%</strong> de coincidencia con fuentes verificadas.</p>
+                    </article>
+                    <article class="explanation-card" style="margin-top:18px;">
+                        <h2>¿Por qué?</h2>
+                        <p data-explanation>
+                            La IA cruzó los párrafos con archivos del Ministerio de Infraestructuras y notas de prensa regionales.
+                            Detectó exageraciones en los plazos, pero también datos contrastados sobre el presupuesto aprobado.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="accessibility-dock" data-access-dock>
+        <button class="dock-handle" type="button" aria-label="Ocultar opciones de accesibilidad" data-dock-toggle>&gt;</button>
+        <button class="accessibility-fab" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false">
+            <span class="sr-only">Accesibilidad</span>
+            <span class="wheelchair-icon">&#9855;</span>
+        </button>
+    </div>
+    <div class="accessibility-panel" aria-hidden="true" data-access-panel>
+        <header>
+            <h2>Accesibilidad</h2>
+            <button class="panel-close" type="button" aria-label="Cerrar panel">&times;</button>
+        </header>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Lectura en Voz Alta</strong>
+                    <small>Modo para ciegos</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="voice-mode">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Alto contraste</strong>
+                    <small>Fondo oscuro y texto claro</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="high-contrast">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Aumentar tamaño del texto</strong>
+                    <small>Define el zoom de lectura</small>
+                </div>
+                <div class="text-scale-controls">
+                    <button type="button" class="text-scale-button" data-scale-step="-0.1" aria-label="Reducir texto">-</button>
+                    <span data-text-scale>100%</span>
+                    <button type="button" class="text-scale-button" data-scale-step="0.1" aria-label="Aumentar texto">+</button>
+                </div>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Fuente Accesible / Disléxica</strong>
+                    <small>Elige la tipografía</small>
+                </div>
+                <div class="font-picker" role="radiogroup" aria-label="Opciones de fuente accesible">
+                    <button type="button" class="font-choice" role="radio" aria-checked="true" data-font-class="font-accessible">Accesible</button>
+                    <button type="button" class="font-choice" role="radio" aria-checked="false" data-font-class="font-dyslexic">Disléxica</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Subrayar y resaltar enlaces</strong>
+                    <small>Ayuda a detectar destinos clicables</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="links-highlight">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+            <div class="control-row">
+                <div class="control-text">
+                    <strong>Desactivar animaciones</strong>
+                    <small>Elimina transiciones activas</small>
+                </div>
+                <button class="access-switch" type="button" role="switch" aria-checked="false" data-toggle-class="animations-off">
+                    <span class="switch-thumb"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="header.js"></script>
+    <script>
+        const resultPanel = document.querySelector("[data-result]");
+        const analyzeBtn = document.querySelector("[data-analyze]");
+        const veracityFill = document.querySelector("[data-veracity-fill]");
+        const veracityLabel = document.querySelector("[data-veracity-label]");
+        const summaryText = document.querySelector("[data-summary]");
+        const explanationText = document.querySelector("[data-explanation]");
+        const textInput = document.querySelector("[data-input]");
+        const analysisShell = document.querySelector("[data-analysis-shell]");
+        const analysisTitle = document.querySelector("[data-analysis-title]");
+        const feedback = document.querySelector("[data-analysis-feedback]");
+        const analysisState = document.querySelector("[data-analysis-state]");
+        const loadingState = document.querySelector("[data-analysis-loading]");
+
+        const examples = [
+            {
+                summary: "Los retrasos en la expansión ferroviaria se deben a auditorías adicionales y no a un bloqueo político. El texto original infló el impacto económico y omitió la respuesta del Ministerio.",
+                explanation: "Se revisaron tres notas del ministerio y el expediente de contratación. La IA redujo la veracidad al detectar adjetivos dramáticos y cifras que no aparecen en documentos oficiales.",
+                veracity: 62
+            },
+            {
+                summary: "La información sobre el nuevo plan de vacunas coincide parcialmente con los datos de la OMS. Se exagera la velocidad de aprobación, aunque las cifras de inversión son correctas.",
+                explanation: "Comparación con comunicados de la OMS y la Agencia Europea del Medicamento. Se comprobó un desfase de dos semanas entre lo anunciado y lo aprobado.",
+                veracity: 74
+            },
+            {
+                summary: "El artículo acierta al describir el conflicto laboral en la planta automotriz, pero inventa declaraciones atribuidas a la ministra de Trabajo.",
+                explanation: "La IA analizó ruedas de prensa y percepciones en redes. Las citas ministeriales no existen, lo que reduce la credibilidad general.",
+                veracity: 48
+            }
+        ];
+
+        if (analyzeBtn && textInput) {
+            let loadingTimer = null;
+            let heroCondensed = false;
+
+            const toggleButtonState = (isDisabled, isBusy) => {
+                const finalDisabled = isDisabled || isBusy;
+                analyzeBtn.classList.toggle("is-disabled", finalDisabled);
+                analyzeBtn.classList.toggle("is-busy", !!isBusy);
+                analyzeBtn.setAttribute("aria-disabled", String(finalDisabled));
+            };
+
+            const showFeedback = (message, tone = "error") => {
+                if (!feedback) return;
+                if (!message) {
+                    feedback.hidden = true;
+                    feedback.textContent = "";
+                    feedback.dataset.tone = "";
+                    return;
+                }
+                feedback.hidden = false;
+                feedback.dataset.tone = tone;
+                feedback.textContent = message;
+            };
+
+            const condenseHero = () => {
+                if (heroCondensed) return;
+                if (analysisTitle) {
+                    analysisTitle.classList.add("is-hidden");
+                    window.setTimeout(() => {
+                        analysisTitle.hidden = true;
+                    }, 240);
+                }
+                analysisShell?.classList.add("is-condensed");
+                heroCondensed = true;
+            };
+
+            const resetStateIfEmpty = () => {
+                if (!textInput.value.trim()) {
+                    analysisState?.setAttribute("hidden", "");
+                    loadingState?.setAttribute("hidden", "");
+                    resultPanel?.setAttribute("hidden", "");
+                    resultPanel?.classList.remove("is-visible");
+                }
+            };
+
+            const stopLoadingTimer = () => {
+                if (loadingTimer) {
+                    window.clearTimeout(loadingTimer);
+                    loadingTimer = null;
+                }
+            };
+
+            const finishLoading = () => {
+                if (loadingState) {
+                    loadingState.hidden = true;
+                }
+                if (resultPanel) {
+                    resultPanel.hidden = false;
+                }
+                const pick = examples[Math.floor(Math.random() * examples.length)];
+                summaryText.textContent = pick.summary;
+                explanationText.textContent = pick.explanation;
+                veracityFill.style.width = pick.veracity + "%";
+                veracityLabel.textContent = pick.veracity + "%";
+                resultPanel?.classList.add("is-visible");
+                analyzeBtn.textContent = "Analizar texto";
+                toggleButtonState(textInput.value.trim().length === 0, false);
+                loadingTimer = null;
+            };
+
+            const startLoading = () => {
+                const text = textInput.value.trim();
+                if (!text) {
+                    showFeedback("No hay texto para analizar. Escribe o pega un fragmento primero.");
+                    textInput.focus();
+                    toggleButtonState(true, false);
+                    return;
+                }
+                showFeedback("");
+                condenseHero();
+                if (analysisState) {
+                    analysisState.hidden = false;
+                }
+                if (loadingState) {
+                    loadingState.hidden = false;
+                }
+                if (resultPanel) {
+                    resultPanel.hidden = true;
+                    resultPanel.classList.remove("is-visible");
+                }
+                toggleButtonState(true, true);
+                analyzeBtn.textContent = "Analizando...";
+                stopLoadingTimer();
+                loadingTimer = window.setTimeout(finishLoading, 3000);
+            };
+
+            textInput.addEventListener("input", () => {
+                const hasText = textInput.value.trim().length > 0;
+                if (!analyzeBtn.classList.contains("is-busy")) {
+                    toggleButtonState(!hasText, false);
+                }
+                if (hasText) {
+                    showFeedback("");
+                } else {
+                    resetStateIfEmpty();
+                }
+            });
+
+            analyzeBtn.addEventListener("click", (event) => {
+                event.preventDefault();
+                if (analyzeBtn.classList.contains("is-busy")) {
+                    return;
+                }
+                startLoading();
+            });
+
+            toggleButtonState(true, false);
+        }
+    </script>
+    <script src="accessibility.js"></script>
+</body>
+</html>
+
